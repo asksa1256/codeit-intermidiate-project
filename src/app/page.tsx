@@ -13,7 +13,7 @@ export default function Home() {
           priority
         />
         <h2>코드잇 중급 프로젝트 - Tadak</h2>
-        <h3>테스트 화면</h3>
+        <h3>테스트 화면 !</h3>
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
