@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/image"
 
 export default function Home() {
   return (
@@ -12,6 +12,7 @@ export default function Home() {
           height={38}
           priority
         />
+        <h2>코드잇 중급 프로젝트 - Tadak</h2>
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
@@ -99,5 +100,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  );
+  )
 }
