@@ -1,0 +1,6 @@
+.git/
+.github/
+
+.dockerignore
+Dockerfile
+README.md

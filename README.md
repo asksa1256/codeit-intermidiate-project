@@ -1,5 +1,27 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+# 📜 K-Hackathon-BackEnd Project
+
+## Description
+
+<!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
+<p>Node Version : 22.9.0</p>
+<p>NextJS Version : 15.4.1</p>
+
+## Access to Swagger Document
+
+- Swagger Document [Link](https://winereview-api.vercel.app/docs/#/) :
+  해당 서버가 실행시 접속가능
+- teamId는 16-3 사용
+
+## Reference
+
+- Figma 기획 변경본(tadak) [Link](https://www.figma.com/design/Pxl73BvQHgy14e9AsuPqbv/tadak--WHYNE-copy-?node-id=140-7165&t=I25vjOIk2ZbbJx5p-0)
+- Figma 원본(WHYNE) [Link](https://www.figma.com/design/KKEgdM0NWLI4kSqEpdR3RB/WINE-BBB-?node-id=6-1760&p=f&t=47Iv300lVqLIDEGI-0)
+- GitHub Frontend [Link](https://github.com/Alex-Choi0/codeit-intermidiate-project)
+- Discord [Link](https://discord.com/channels/1344520737691668561/1385486572992073788)
+- Notion [Link](https://www.notion.so/2318ca8d39728171822aeb14df352b13?pvs=13)
+
 ## Getting Started
 
 First, run the development server:
