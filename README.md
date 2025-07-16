@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 # 📜 K-Hackathon-BackEnd Project
 
+- 배포 사이트 [Link](https://tadak.alex-choi.com/)
+
 ## Description
 
 <!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
