@@ -1,12 +1,11 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-# 📜 K-Hackathon-BackEnd Project
+# ⌨️ 키보드 추천 서비스 `tadak`
 
 ## Description
 
 <!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
 <p>Node Version : 22.9.0</p>
 <p>NextJS Version : 15.4.1</p>
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Access to Swagger Document
 
@@ -21,6 +20,56 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - GitHub Frontend [Link](https://github.com/Alex-Choi0/codeit-intermidiate-project)
 - Discord [Link](https://discord.com/channels/1344520737691668561/1385486572992073788)
 - Notion [Link](https://www.notion.so/2318ca8d39728171822aeb14df352b13?pvs=13)
+
+## 폴더 구조
+```
+📦public 
+ ┣ 📂fonts 
+ ┃ ┣ 📜Pretendard-Bold.woff 
+ ┃ ┣ 📜Pretendard-Medium.woff
+ ┃ ┣ 📜Pretendard-Regular.woff
+ ┃ ┗ 📜Pretendard-SemiBold.woff
+ ┗ 📂images
+ ┃ ┣ 📜logoImg.svg
+ ┃ ┣ 📜keyboard1.png
+ ┃ ┣ 📜keyboard2.png
+ ┃ ┣ 📜.svg
+ ┃ ┗ 📜window.svg
+ ┃
+ 📦src
+ ┣ 📂app
+ ┃ ┣ 📂(auth)
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┗ 📜layout.tsx
+ ┃ ┣ 📂(global)
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂api
+ ┃ ┃ ┗ 📜getKeyboards.ts
+ ┃ ┃ ┗ 📜addKeyboard.ts
+ ┃ ┣ 📜favicon.ico
+ ┃ ┣ 📜globals.css
+ ┃ ┗ 📜layout.tsx
+ ┣ 📂components
+ ┃ ┣ 📂feature
+ ┃ ┃ ┣ 📜LoginForm.tsx
+ ┃ ┃ ┗ 📜SignUpForm.tsx
+ ┃ ┣ 📂layout
+ ┃ ┃ ┗ 📜Header.tsx
+ ┃ ┗ 📂ui
+ ┃ ┃ ┣ 📜Button.tsx
+ ┃ ┃ ┗ 📜Modal.tsx
+ ┣ 📂constants
+ ┃ ┗ 📜constants.ts
+ ┣ 📂hooks
+ ┃ ┗ 📜useWindowDimension.ts
+ ┣ 📂lib
+ ┃ ┗ 📜axios.ts
+ ┣ 📂types
+ ┗ 📂utils
+ ┃ ┣ 📜formatDate.ts
+ ┃ ┗ 📜formatPrice.ts
+```
 
 ## Getting Started
 
