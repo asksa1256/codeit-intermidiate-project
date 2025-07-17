@@ -24,3 +24,33 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@theme {
+  /* breakpoints */
+  --breakpoint-xs: 280px;
+  --breakpoint-sm: 640px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1440px;
+
+  /* colors */
+  --color-black: #101318;
+  --color-white: #fff;
+
+  --color-gray-100: #f2f4f8;
+  --color-gray-300: #cfd8ea;
+  --color-gray-500: #9fa6bd;
+  --color-gray-800: #203034;
+
+  --color-primary: #8642db;
+  --color-primary-10: #f1e0fc;
+
+  /* font-size [font-size, line-height] */
+  --text-3xl: [32px, 42px];
+  --text-2xl: [24px, 32px];
+  --text-xl: [20px, 32px];
+  --text-lg: [18px, 26px];
+  --text-md: [14px, 24px];
+  --text-sm: [13px, 22px];
+  --text-xs: [12px, 20px];
+  --text-xs-tight: [12px, 18px];
+}
