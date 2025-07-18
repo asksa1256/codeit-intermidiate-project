@@ -1,5 +1,11 @@
+import LoginForm from "@/components/feature/LoginForm";
+
 const LoginPage = () => {
-  return <section>로그인</section>;
+  return (
+    <section>
+      <LoginForm />
+    </section>
+  );
 };
 
 export default LoginPage;
