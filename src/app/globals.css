@@ -1,36 +1,10 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+@import 'tailwindcss';
 
 @theme {
   /* breakpoints */
-  --breakpoint-xs: 280px;
-  --breakpoint-sm: 640px;
+  --breakpoint-sm: 280px;
+  --breakpoint-md: 640px;
   --breakpoint-lg: 1280px;
-  --breakpoint-xl: 1440px;
 
   /* colors */
   --color-black: #101318;
@@ -44,13 +18,40 @@ body {
   --color-primary: #8642db;
   --color-primary-10: #f1e0fc;
 
-  /* font-size [font-size, line-height] */
-  --text-3xl: [32px, 42px];
-  --text-2xl: [24px, 32px];
-  --text-xl: [20px, 32px];
-  --text-lg: [18px, 26px];
-  --text-md: [14px, 24px];
-  --text-sm: [13px, 22px];
-  --text-xs: [12px, 20px];
-  --text-xs-tight: [12px, 18px];
+  /* font-size */
+  --text-3xl: 32px;
+  --text-3xl--line-height: 42px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+  --text-xl: 20px;
+  --text-xl--line-height: 32px;
+  --text-lg: 18px;
+  --text-lg--line-height: 26px;
+  --text-md: 14px;
+  --text-md--line-height: 24px;
+  --text-sm: 13px;
+  --text-sm--line-height: 22px;
+  --text-xs: 12px;
+  --text-xs--line-height: 20px;
+  --text-xs-tight: 12px;
+  --text-xs-tight--line-height: 18px;
+}
+
+@layer components {
+  .input {
+    @apply w-full px-5 border py-2.5 text-md sm:rounded-xl
+           md:py-3 md:text-base md:rounded-2xl
+           bg-white text-gray-800 placeholder-gray-500
+           shadow-sm transition focus:outline-none
+           focus:ring-2 focus:ring-primary;
+  }
+}
+
+/* button */
+button {
+  @apply cursor-pointer;
+}
+
+button:disabled {
+  @apply cursor-not-allowed;
 }
