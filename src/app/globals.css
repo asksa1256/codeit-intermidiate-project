@@ -55,3 +55,9 @@ button {
 button:disabled {
   @apply cursor-not-allowed;
 }
+
+@custom-variant dd-sm '[data-size="sm"] &';
+@custom-variant dd-md '[data-size="md"] &';
+@custom-variant dd-wide '[data-wide=true] &';
+@custom-variant dd-wideS '[data-size="sm"][data-wide=true] &';
+@custom-variant dd-wideL '[data-size="md"][data-wide=true] &';
