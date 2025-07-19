@@ -1,7 +1,6 @@
 // 공용 모달창 컴포넌트
 
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment, ReactNode } from 'react';
 
 interface ModalProps {
@@ -71,7 +70,7 @@ export default function Modal({
                     className='absolute top-4 right-4 text-gray-500 hover:text-gray-600'
                     aria-label='닫기'
                   >
-                    <XMarkIcon className='w-5 h-5' />
+                    x {/*  아이콘 지정 이전에 임시로 붙여놓음 */}
                   </button>
                 )}
 
