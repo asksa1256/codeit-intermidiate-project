@@ -10,6 +10,7 @@ interface ModalProps {
   showCloseButton?: boolean;
   size?: 'sm' | 'md' | 'lg';
   children: ReactNode;
+  footer?: ReactNode; // 추가: 모달 하단에 버튼 등을 넣을 수 있는 props 하단의 버튼 까지 children으로 처리하지 않도록
 }
 
 export default function Modal({

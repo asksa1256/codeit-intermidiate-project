@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -27,10 +27,9 @@ body {
 
 @theme {
   /* breakpoints */
-  --breakpoint-xs: 280px;
-  --breakpoint-sm: 640px;
+  --breakpoint-sm: 280px;
+  --breakpoint-md: 640px;
   --breakpoint-lg: 1280px;
-  --breakpoint-xl: 1440px;
 
   /* colors */
   --color-black: #101318;
