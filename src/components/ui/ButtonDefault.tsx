@@ -33,7 +33,7 @@ type ButtonDefaultProps = {
  * 이 컴포넌트는 일관된 UI/UX를 제공하며, `className` prop을 통해 유연하게 스타일을 커스터마이징할 수 있습니다.
  *
  * @example
- * // 기본 스타일이 적용된 버튼 (Figma 명세에 따른 기본 크기, 색상, 위치)
+ * // 기본 스타일이 적용된 버튼 (Figma 명세에 따른 기본 크기, 색상)
  * <ButtonDefault>클릭</ButtonDefault>
  *
  * @example
@@ -65,22 +65,23 @@ const ButtonDefault = ({
    * Figma에서 제공된 디자인 명세를 기반으로 하는 버튼의 기본 스타일입니다.
    * 이 스타일들은 `className` prop을 통해 전달되는 커스텀 클래스에 의해 재정의될 수 있습니다.
    *
-   * - `absolute top-[20px] left-[20px]`: 이 버튼은 특정 레이아웃 컨텍스트(예: 부모 요소 내에서 절대 위치)를 위해
-   *   초기 위치가 지정되어 있습니다. 이 위치는 `className`을 통해 쉽게 재정의할 수 있습니다.
-   * - `w-[400px] h-[50px]`: 버튼의 기본 너비와 높이입니다.
-   * - `flex flex-row justify-center items-center`: flexbox를 사용하여 자식 요소를 중앙에 정렬합니다.
-   * - `py-4 px-[172px] gap-[10px]`: 내부 패딩과 자식 요소 간의 간격입니다.
-   * - `bg-[#8642DB] rounded-2xl`: 기본 배경색과 모서리 둥글기입니다.
-   * - `text-white font-semibold`: 텍스트 색상과 폰트 두께입니다.
-   * - `disabled:bg-gray-400 disabled:cursor-not-allowed`: 버튼이 비활성화되었을 때 적용되는 스타일입니다.
-   *   배경색이 회색으로 변하고 마우스 커서가 '금지' 아이콘으로 변경됩니다.
-   * - `transition-colors duration-200`: 배경색 변경 시 부드러운 전환 효과를 제공합니다.
+   * - `w-[400px]`: 버튼의 기본 너비를 400px로 설정합니다.
+   * - `h-[50px]`: 버튼의 기본 높이를 50px로 설정합니다.
+   * - `flex flex-row justify-center items-center`: flexbox를 사용하여 자식 요소를 가로 방향으로 중앙에 정렬합니다.
+   * - `py-4 px-[50px]`: 상하 패딩(py-4)과 좌우 패딩(px-[50px])을 설정합니다.
+   * - `gap-[10px]`: flex 아이템(자식 요소)들 사이의 간격을 10px로 설정합니다.
+   * - `bg-[#8642DB]`: 버튼의 배경색을 Figma 명세에 따른 보라색으로 설정합니다.
+   * - `rounded-2xl`: 버튼의 모서리를 둥글게 만듭니다 (radius 16px).
+   * - `text-white`: 텍스트 색상을 흰색으로 설정합니다.
+   * - `font-semibold`: 텍스트의 폰트 두께를 세미볼드(600)로 설정합니다.
+   * - `disabled:bg-gray-400`: 버튼이 `disabled` 상태일 때 배경색을 회색(gray-400)으로 변경합니다.
+   * - `disabled:cursor-not-allowed`: 버튼이 `disabled` 상태일 때 마우스 커서를 '금지' 아이콘으로 변경합니다.
+   * - `transition-colors duration-200`: 배경색 변경 시 200ms 동안 부드러운 전환 효과를 적용합니다.
    */
   const baseStyles = `
-    absolute top-[20px] left-[20px]
     w-[400px] h-[50px]
     flex flex-row justify-center items-center
-    py-4 px-[172px] gap-[10px]
+    py-4 px-[50px] gap-[10px]
     bg-[#8642DB] rounded-2xl
     text-white font-semibold
     disabled:bg-gray-400 disabled:cursor-not-allowed
@@ -89,17 +90,18 @@ const ButtonDefault = ({
 
   /**
    * 기본 스타일(`baseStyles`)과 `className` prop으로 전달된 커스텀 스타일을 결합합니다.
-   * `className`에 정의된 스타일은 `baseStyles`의 동일한 속성을 덮어씁니다.
+   * `className`에 정의된 스타일은 Tailwind CSS의 우선순위 규칙에 따라 `baseStyles`의 동일한 속성을 덮어씁니다.
+   * 예를 들어, `baseStyles`에 `w-[400px]`가 있고 `className`에 `w-[100px]`가 있다면, 최종적으로 `w-[100px]`가 적용됩니다.
    */
   const buttonClasses = `${baseStyles} ${className}`;
 
   return (
     /**
      * HTML <button> 요소를 렌더링합니다.
-     * - `type`: 버튼의 동작을 정의합니다.
-     * - `onClick`: 클릭 이벤트 핸들러를 연결합니다.
-     * - `disabled`: 버튼의 활성화 상태를 제어합니다.
-     * - `className`: 최종적으로 계산된 Tailwind CSS 클래스를 적용하여 버튼의 시각적 스타일을 결정합니다.
+     * - `type`: 버튼의 동작을 정의합니다. (예: 폼 제출, 일반 버튼 등)
+     * - `onClick`: 버튼 클릭 시 실행될 콜백 함수를 연결합니다.
+     * - `disabled`: 불리언 값에 따라 버튼의 활성화 상태를 제어합니다. `true`이면 버튼이 비활성화됩니다.
+     * - `className`: 최종적으로 계산된 Tailwind CSS 클래스 문자열을 적용하여 버튼의 시각적 스타일을 결정합니다.
      *   `.trim().replace(/\s+/g, ' ')`는 여러 공백을 단일 공백으로 정리하여 클래스 문자열을 최적화합니다.
      */
     <button
