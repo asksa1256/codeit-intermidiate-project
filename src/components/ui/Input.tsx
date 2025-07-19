@@ -1,9 +1,11 @@
-import { Input } from '@headlessui/react';
+import { Input, Label } from '@headlessui/react';
 import { forwardRef, ReactNode, MouseEvent } from 'react';
 
 interface InputProps {
   type: string;
   placeholder: string;
+  label?: string;
+  inputLabelGap?: number;
   autoComplete?: string;
   error?: string;
   icon?: ReactNode;
@@ -12,13 +14,22 @@ interface InputProps {
 }
 
 const InputField = forwardRef<HTMLInputElement, InputProps>(
-  ({ type, placeholder, error, icon, iconTitle, onClick, ...props }, ref) => {
+  ({ type, placeholder, error, icon, iconTitle, onClick, inputLabelGap, ...props }, ref) => {
     return (
       <div>
+        {props.label && (
+          <Label
+            className='block font-medium text-sm md:text-base'
+            style={{ marginBottom: `${inputLabelGap}px` }}
+          >
+            {props.label}
+          </Label>
+        )}
         <div className='w-full relative'>
           <Input
             type={type}
             placeholder={placeholder}
+            autoComplete={props.autoComplete}
             className={`input ${error ? 'border-red-500' : 'border-gray-300'}`}
             ref={ref}
             {...props}
