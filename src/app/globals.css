@@ -35,6 +35,9 @@
   --text-xs--line-height: 20px;
   --text-xs-tight: 12px;
   --text-xs-tight--line-height: 18px;
+
+  /* box-shadow */
+  --shadow-primary: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
 }
 
 @layer components {

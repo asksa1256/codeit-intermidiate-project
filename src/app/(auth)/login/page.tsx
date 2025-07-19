@@ -1,8 +1,8 @@
-import LoginForm from "@/components/feature/LoginForm";
+import LoginForm from '@/components/feature/LoginForm';
 
 const LoginPage = () => {
   return (
-    <section>
+    <section className='py-20'>
       <LoginForm />
     </section>
   );
