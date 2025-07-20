@@ -9,12 +9,11 @@ import { cn } from '@/utils/style';
 
 const Dropdown = ({ children, size, wide, className }: DropdownWrapProps) => {
   const defaultStyle = `relative`;
-  const isWide = wide ? 'block' : 'inline-block';
-  const mergedClassName = cn(defaultStyle, isWide, className ?? null);
+  const mergedClassName = cn(defaultStyle, className ?? null);
 
   return (
     <DropdownProvider size={size} wide={wide}>
-      <div data-size={size} data-wide={wide} className={mergedClassName}>
+      <div className={mergedClassName}>
         <Menu>{children}</Menu>
       </div>
     </DropdownProvider>
