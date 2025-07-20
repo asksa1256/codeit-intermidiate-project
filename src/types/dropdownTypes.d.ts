@@ -37,11 +37,4 @@ export interface DropdownLinkItemProps extends DropdownItemBaseProps {
   href: string;
 }
 
-export interface DropdownTextItemProps extends DropdownItemBaseProps {
-  variant: 'text';
-}
-
-export type DropdownItemProps =
-  | DropdownButtonItemProps
-  | DropdownLinkItemProps
-  | DropdownTextItemProps;
+export type DropdownItemProps = DropdownButtonItemProps | DropdownLinkItemProps;
