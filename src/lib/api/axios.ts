@@ -10,13 +10,13 @@ export class AxiosApiAuth {
    * @private
    * @property {string | undefined} team - 환경 변수에서 가져온 팀 이름입니다.
    */
-  private team = process.env.TEAM;
+  private team = process.env.NEXT_PUBLIC_TEAM;
 
   /**
    * @private
    * @property {string | undefined} baseUrl - 환경 변수에서 가져온 백엔드 API의 기본 URL입니다.
    */
-  private baseUrl = process.env.BACKEND_URL;
+  private baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   /**
    * @private
