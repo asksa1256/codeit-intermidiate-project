@@ -21,9 +21,15 @@ const wideStyle = {
 const DropdownList = ({ children, align = 'right', className }: DropdownListProps) => {
   const { size, wide } = useDropdownSize();
 
-  const isStyle = wide ? wideStyle[size ?? 'sm'] : normalStyle;
+  const isSizeStyle = wide ? wideStyle[size ?? 'sm'] : normalStyle;
 
-  const mergedClassName = cn(defaultStyle, animationStyle, alignStyle[align], isStyle, className);
+  const mergedClassName = cn(
+    defaultStyle,
+    animationStyle,
+    alignStyle[align],
+    isSizeStyle,
+    className,
+  );
 
   return (
     <MenuItems className={mergedClassName} transition={true}>
