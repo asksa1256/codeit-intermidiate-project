@@ -1,45 +1,4 @@
-import { DropdownListProps, DropdownWrapProps } from '@/types/dropdownTypes';
 import { cn } from '@/utils/style';
-
-export const getDropdownWrapStyle = ({
-  className,
-  wide,
-}: Pick<DropdownWrapProps, 'className' | 'wide'>) => {
-  const defaultStyle = `relative ${className}`;
-  const isWide = wide === true ? 'block' : 'inline-block';
-  const mergedClassName = cn(`${defaultStyle}`, isWide);
-
-  return mergedClassName;
-};
-
-export const getDropdownListStyle = ({ align, className }: Omit<DropdownListProps, 'children'>) => {
-  const defaultStyle = `absolute border border-gray-300 px-[4px] py-[3px] bg-white whitespace-nowrap outline-none rounded-[16px]`;
-  const animationStyle = `transition duration-200 ease-out data-closed:scale-95 data-closed:opacity-0`;
-
-  const ALIGN_STYLE = {
-    right: 'end-0 origin-top-right',
-    left: 'start-0 origin-top-left',
-  };
-
-  const SIZE_WIDE = {
-    base: 'dd-wide:w-full dd-wide:start-0 dd-wide:origin-top',
-    small: {
-      base: 'dd-wideS:px-[6px] dd-wideS:py-[5px]',
-      md: 'md:dd-wideS:py-[6px]',
-    },
-    large: {
-      base: 'dd-wideL:px-[6px] dd-wideL:py-[6px]',
-    },
-  };
-
-  const isAlign = align ? align : 'right';
-
-  const mergedClassName = cn(
-    `${defaultStyle} ${animationStyle} ${ALIGN_STYLE[isAlign]} ${SIZE_WIDE.base} ${SIZE_WIDE.small.base} ${SIZE_WIDE.small.md} ${SIZE_WIDE.large.base} ${className}`,
-  );
-
-  return mergedClassName;
-};
 
 export const getDropdownItemStyle = <T extends { className?: string }>(props: T) => {
   const defaultStyle =
