@@ -1,18 +1,23 @@
 import { Menu } from '@headlessui/react';
 
+import DropdownProvider from '@/components/ui/Dropdown/DropdownContext';
 import DropdownItem from '@/components/ui/Dropdown/DropdownItem';
 import DropdownList from '@/components/ui/Dropdown/DropdownList';
 import DropdownTrigger from '@/components/ui/Dropdown/DropdownTrigger';
-import { getDropdownWrapStyle } from '@/styles/dropdownStyles';
 import { DropdownWrapProps } from '@/types/dropdownTypes';
+import { cn } from '@/utils/style';
 
-const Dropdown = ({ children, size = 'sm', wide = false, className }: DropdownWrapProps) => {
-  const mergedClassName = getDropdownWrapStyle({ className, wide });
+const Dropdown = ({ children, size, wide, className }: DropdownWrapProps) => {
+  const defaultStyle = `relative`;
+  const isWide = wide ? 'block' : 'inline-block';
+  const mergedClassName = cn(defaultStyle, isWide, className ?? null);
 
   return (
-    <div data-size={size} data-wide={wide} className={mergedClassName}>
-      <Menu>{children}</Menu>
-    </div>
+    <DropdownProvider size={size} wide={wide}>
+      <div data-size={size} data-wide={wide} className={mergedClassName}>
+        <Menu>{children}</Menu>
+      </div>
+    </DropdownProvider>
   );
 };
 

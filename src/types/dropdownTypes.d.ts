@@ -1,10 +1,13 @@
 import { ReactNode } from 'react';
 
-// 드랍다운 Props
-export interface DropdownWrapProps {
-  children: ReactNode;
+export type DropdownContextProps = Omit<DropdownWrapProps, 'className'>;
+export interface DropdownContextValue {
   size?: 'sm' | 'md';
   wide?: boolean;
+}
+// 드랍다운 Props
+export interface DropdownWrapProps extends DropdownContextValue {
+  children: ReactNode;
   className?: string;
 }
 
