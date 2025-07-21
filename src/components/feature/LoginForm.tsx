@@ -71,7 +71,7 @@ const LoginForm = () => {
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',
             })}
-            onClick={() => setIsPwVisible((prev) => !prev)}
+            onIconBtnClick={() => setIsPwVisible((prev) => !prev)}
             error={errors.password?.message}
           />
         </Field>
@@ -85,10 +85,7 @@ const LoginForm = () => {
         >
           <span className='text-sm md:text-base'>로그인</span>
         </ButtonDefault>
-        <ButtonDefault
-          type='button'
-          className='w-full bg-white border border-gray-300 sm:rounded-xl'
-        >
+        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl'>
           <span className='relative w-6 h-6 rounded-full'>
             <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
           </span>

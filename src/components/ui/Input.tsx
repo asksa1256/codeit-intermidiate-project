@@ -10,11 +10,11 @@ interface InputProps {
   error?: string;
   icon?: ReactNode;
   iconTitle?: string;
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onIconBtnClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const InputField = forwardRef<HTMLInputElement, InputProps>(
-  ({ type, placeholder, error, icon, iconTitle, onClick, inputLabelGap, ...props }, ref) => {
+  ({ type, placeholder, error, icon, iconTitle, onIconBtnClick, inputLabelGap, ...props }, ref) => {
     return (
       <>
         {props.label && (
@@ -37,8 +37,9 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
           {icon && (
             // 추후 IconButton 컴포넌트로 변경
             <button
+              type='button'
               title={iconTitle}
-              onClick={onClick}
+              onClick={onIconBtnClick}
               className='absolute right-[20px] top-1/2 -translate-y-1/2'
             >
               {icon}
