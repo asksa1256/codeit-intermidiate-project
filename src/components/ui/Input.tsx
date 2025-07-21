@@ -16,7 +16,7 @@ interface InputProps {
 const InputField = forwardRef<HTMLInputElement, InputProps>(
   ({ type, placeholder, error, icon, iconTitle, onClick, inputLabelGap, ...props }, ref) => {
     return (
-      <div>
+      <>
         {props.label && (
           <Label
             className='block font-medium text-sm md:text-base'
@@ -45,8 +45,8 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
-        {error && <p className='mt-1 text-sm md:text-md text-red-500'>{error}</p>}
-      </div>
+        <p className={`mt-1 text-sm md:text-md text-red-500 h-6`}>{error ? error : ''}</p>
+      </>
     );
   },
 );
