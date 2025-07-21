@@ -3,6 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, ReactNode } from 'react';
 
+import CloseIcon from '../../assets/icons/CloseIcon.svg';
 interface ModalProps {
   open: boolean;
   onClose: () => void;
@@ -59,7 +60,8 @@ export default function Modal({
               leaveTo='opacity-0 scale-95'
             >
               <Dialog.Panel
-                className={`relative w-full ${sizeClasses[size]} transform overflow-hidden rounded-2xl bg-white p-6 shadow-xl transition-all`}
+                className={`relative w-full ${sizeClasses[size]} transform overflow-hidden rounded-2xl bg-white
+                 p-6 shadow-xl transition-all`}
               >
                 {/* {title 있으면 렌더링} */}
                 {title && <Dialog.Title className='text-lg font-bold mb-4'>{title}</Dialog.Title>}
@@ -71,7 +73,7 @@ export default function Modal({
                     className='absolute top-4 right-4 text-gray-500 hover:text-gray-600'
                     aria-label='닫기'
                   >
-                    <img src='fonts/CloseIcon.svg' alt='닫기' />
+                    <CloseIcon className='w-6 h-6 text-gray-500 hover:text-gray-700' />
                   </button>
                 )}
 
