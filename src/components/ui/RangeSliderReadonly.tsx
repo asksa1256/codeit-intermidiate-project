@@ -1,16 +1,14 @@
 import Image from 'next/image';
 
-import KeyCap from '../../../public/icons/keyCap3.png';
+import { RangeSliderReadonlyProps } from '@/types/rangeSliderTypes';
 
-interface Props {
-  //슬라이더 컨테이너에 들어갈 className -> 슬라이더 길이 or 여백 등 커스텀 용도
-  className?: string;
-  //handle의 left 퍼센테이지를 정하기 위한 value
-  value: number;
-}
+import KeyCap from '../../../public/images/keyCap.png';
 
-const RangeSliderReadonly = ({ className = 'w-65 h-4 px-2 pt-3 pb-4', value }: Props) => {
-  const handleStyle = { left: `${(value / 100) * 100}%` };
+const RangeSliderReadonly = ({
+  className = 'w-65 h-4 px-2 pt-3 pb-4',
+  value,
+}: RangeSliderReadonlyProps) => {
+  const handleStyle = { left: `${(value / 10) * 100}%` };
 
   return (
     <div className={className}>

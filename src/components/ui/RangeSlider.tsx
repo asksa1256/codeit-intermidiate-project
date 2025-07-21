@@ -2,24 +2,23 @@
 
 import Image from 'next/image';
 
-import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-import KeyCap from '../../../public/icons/keyCap3.png';
+import { RangeSliderProps } from '@/types/rangeSliderTypes';
 
-interface Props {
-  //슬라이더 컨테이너에 들어갈 className -> 슬라이더 길이 or 여백 등 커스텀 용도
-  className?: string;
-  //formData key에 대응하기 위한 label
-  label: 'lightBold' | 'smoothTannic' | 'drySweet' | 'softAcidic';
-  //슬라이더 value값을 저장할 formdata setter함수
-  formDataSetter: Dispatch<SetStateAction<object>>;
-}
+import KeyCap from '../../../public/images/keyCap.png';
 
-const RangeSlider = ({ className = 'w-65 h-4 px-2 pt-3 pb-4', label, formDataSetter }: Props) => {
-  const [value, setValue] = useState(50);
+const INITIAL_HANDLE_STATE = 5;
+
+const RangeSlider = ({
+  className = 'w-65 h-4 px-2 pt-3 pb-4',
+  label,
+  valueRef,
+}: RangeSliderProps) => {
+  const [value, setValue] = useState(INITIAL_HANDLE_STATE);
   const RangesliderRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
-  const handleStyle = { left: `${(value / 100) * 100}%` };
+  const handleStyle = { left: `${(value / 10) * 100}%` };
 
   const handleMouseDown = (event: React.MouseEvent | MouseEvent) => {
     isDragging.current = true;
@@ -40,17 +39,11 @@ const RangeSlider = ({ className = 'w-65 h-4 px-2 pt-3 pb-4', label, formDataSet
       let mappedValue = (newX / RangesliderRect.width) * 100; //(트랙 내 마우스 x좌표 / 트랙의 길이) * 100 -> 백분율
 
       mappedValue = Math.max(0, Math.min(100, mappedValue)); //0~100 사이 값으로 매핑
-      const value = Math.round(mappedValue); //정수값으로 변경한 최종 value
+      const value = Math.round(mappedValue / 10); //정수값으로 변경한 최종 value
       setValue(value); //디바운싱을 넣는다면 여기에
-      // formData state의 형태에 따라 추후 수정가능
-      formDataSetter((prev) => {
-        return {
-          ...prev,
-          [`${label}`]: value,
-        };
-      });
+      valueRef.current[`${label}`] = value; //Ref current의 정의는 type파일에
     },
-    [label],
+    [label, valueRef],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -81,15 +74,9 @@ const RangeSlider = ({ className = 'w-65 h-4 px-2 pt-3 pb-4', label, formDataSet
       mappedValue = Math.max(0, Math.min(100, mappedValue));
       const value = Math.round(mappedValue);
       setValue(value);
-      // formData state의 형태에 따라 추후 수정가능
-      formDataSetter((prev) => {
-        return {
-          ...prev,
-          [`${label}`]: value,
-        };
-      });
+      valueRef.current[`${label}`] = value; //Ref current의 정의는 type파일에
     },
-    [label],
+    [label, valueRef],
   );
 
   const handleTouchEnd = useCallback(() => {
