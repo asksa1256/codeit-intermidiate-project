@@ -6,12 +6,12 @@ import { useRouter } from 'next/navigation';
 
 import { Field } from '@headlessui/react';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import EyeIcon from '@/assets/EyeIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
+import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 import { AxiosApiAuth } from '@/lib/api/axios';
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -22,7 +22,7 @@ interface FormValues {
 }
 
 const LoginForm = () => {
-  const [isPwVisible, setIsPwVisible] = useState(false);
+  const { isPwVisible, setIsPwVisible } = usePwVisibleToggle();
 
   const {
     register,
@@ -104,7 +104,7 @@ const LoginForm = () => {
           <span>로그인</span>
         </ButtonDefault>
 
-        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-primary'>
+        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-primary hover:bg-white'>
           <span className='relative w-6 h-6 rounded-full'>
             <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
           </span>
