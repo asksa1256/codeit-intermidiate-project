@@ -69,7 +69,7 @@ const RangeSlider = ({ className = 'w-31', label, valueRef }: RangeSliderProps) 
       let mappedValue = (newX / RangesliderRect.width) * 100;
 
       mappedValue = Math.max(0, Math.min(100, mappedValue));
-      const value = Math.round(mappedValue);
+      const value = Math.round(mappedValue / 10);
       setValue(value);
       valueRef.current[`${label}`] = value; //Ref current의 정의는 type파일에
     },

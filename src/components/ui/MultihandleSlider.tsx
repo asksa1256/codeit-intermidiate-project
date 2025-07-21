@@ -98,20 +98,20 @@ const MultihandleSlider = ({ className = 'w-65', priceRef }: MultihandleSliderPr
 
       const RangesliderRect = RangesliderRef.current.getBoundingClientRect();
       const newX = event.touches[0].clientX - RangesliderRect.left; //touches[0]로 변경
-      let mappedValue = (newX / RangesliderRect.width) * 100;
+      let mappedValue = (newX / RangesliderRect.width) * 300;
 
-      mappedValue = Math.max(0, Math.min(100, mappedValue));
+      mappedValue = Math.max(0, Math.min(300, mappedValue));
       const value = Math.round(mappedValue);
 
       if (activeHandleRef.current === 'min') {
-        if (Math.abs(value - maxValue) <= 9) {
+        if (Math.abs(value - maxValue) <= 19) {
           isDragging.current = false;
           return;
         }
         setminValue((prev) => (prev === value ? prev : value));
         priceRef.current.minPrice = 1000 * value;
       } else if (activeHandleRef.current === 'max') {
-        if (Math.abs(value - minValue) <= 9) {
+        if (Math.abs(value - minValue) <= 19) {
           isDragging.current = false;
           return;
         }
