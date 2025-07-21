@@ -100,19 +100,15 @@ const LoginForm = () => {
       </div>
 
       <div className='form-btm-actions'>
-        <ButtonDefault
-          type='submit'
-          disabled={!isValid || isSubmitting}
-          className='w-full sm:rounded-xl hover:bg-primary-dark'
-        >
-          <span className='text-sm md:text-base'>로그인</span>
+        <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
+          <span>로그인</span>
         </ButtonDefault>
 
         <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-primary'>
           <span className='relative w-6 h-6 rounded-full'>
             <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
           </span>
-          <span className='text-gray-800 text-sm md:text-base'>카카오로 시작하기</span>
+          <span className='text-gray-800'>카카오로 시작하기</span>
         </ButtonDefault>
       </div>
 

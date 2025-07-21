@@ -82,10 +82,11 @@ const ButtonDefault = ({
     w-[400px] h-[50px]
     flex flex-row justify-center items-center
     py-4 px-[50px] gap-[10px]
-    bg-[#8642DB] rounded-2xl
-    text-white font-semibold
+    bg-primary rounded-xl md:rounded-2xl
+    text-white font-semibold text-sm md:text-base
     disabled:bg-gray-400 disabled:cursor-not-allowed
     transition-colors duration-200
+    hover:bg-primary-dark
   `;
 
   /**
