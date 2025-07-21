@@ -10,7 +10,7 @@ import { formatPrice } from '@/utils/formatters';
 
 import KeyCap from '../../../public/images/keyCap.png';
 
-const MultihandleSlider = ({ className = 'w-65', priceRef }: MultihandleSliderProps) => {
+const MultihandleSlider = ({ className, priceRef }: MultihandleSliderProps) => {
   const [minValue, setminValue] = useState(0);
   const [maxValue, setmaxValue] = useState(300);
   const activeHandleRef = useRef<string | null>(null);
@@ -133,36 +133,44 @@ const MultihandleSlider = ({ className = 'w-65', priceRef }: MultihandleSliderPr
   }
 
   return (
-    <div className={clsx('flex items-center h-15', className)}>
+    <div className={clsx('flex items-center w-66 h-15', className)}>
       <div className='w-full h-[6px] rounded-[50px] bg-gray-100 relative' ref={RangesliderRef}>
         <div
           className='absolute w-full h-[6px] bg-primary'
           style={{ width: `${(maxValue - minValue) / 3}%`, ...minHandleStyle }}
         />
-        <div
-          className={'absolute top-[50%] translate-[-50%] w-6 h-6 cursor-grab'}
+        <button
+          className='absolute top-[50%] translate-[-50%] w-6 h-6 cursor-grab'
+          type='button'
           data-handle-type='min'
           style={minHandleStyle}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
         >
-          <div className='absolute -bottom-5 -left-[30px] w-20 text-primary whitespace-nowrap'>
+          <div
+            className='absolute -bottom-5 -left-[30px] w-20 text-primary whitespace-nowrap'
+            draggable={false}
+          >
             {minPrice}
           </div>
           <Image src={KeyCap} alt='슬라이더 핸들을 나타내는 키캡 이미지' draggable='false' />
-        </div>
-        <div
-          className={'absolute top-[50%] translate-[-50%] w-6 h-6 cursor-grab'}
+        </button>
+        <button
+          className='absolute top-[50%] translate-[-50%] w-6 h-6 cursor-grab'
+          type='button'
           data-handle-type='max'
           style={maxHandleStyle}
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
         >
-          <div className='absolute -top-5 -left-[30px] w-20 text-primary whitespace-nowrap'>
+          <div
+            className='absolute -top-5 -left-[30px] w-20 text-primary whitespace-nowrap'
+            draggable={false}
+          >
             {maxPrice}
           </div>
           <Image src={KeyCap} alt='슬라이더 핸들을 나타내는 키캡 이미지' draggable='false' />
-        </div>
+        </button>
       </div>
     </div>
   );
