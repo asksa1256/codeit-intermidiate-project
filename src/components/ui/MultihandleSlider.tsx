@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useCallback, useRef, useState } from 'react';
 
 import { MultihandleSliderProps } from '@/types/rangeSliderTypes';
-import formatNumber from '@/utils/formatNumber';
+import { formatPrice } from '@/utils/formatters';
 
 import KeyCap from '../../../public/images/keyCap.png';
 
@@ -20,8 +20,8 @@ const MultihandleSlider = ({
   const isDragging = useRef(false);
   const minHandleStyle = { left: `${(minValue / 300) * 100}%` };
   const maxHandleStyle = { left: `${(maxValue / 300) * 100}%` };
-  const minPrice = `￦ ${formatNumber(1000 * minValue)}`;
-  const maxPrice = `￦ ${formatNumber(1000 * maxValue)}`;
+  const minPrice = `￦ ${formatPrice(1000 * minValue)}`;
+  const maxPrice = `￦ ${formatPrice(1000 * maxValue)}`;
 
   const handleMouseDown = (event: React.MouseEvent | MouseEvent) => {
     isDragging.current = true;
