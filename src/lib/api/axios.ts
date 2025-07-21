@@ -79,11 +79,6 @@ export class AxiosApiAuth {
       );
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        // Axios 에러인 경우, 서버에서 받은 에러 응답 데이터를 반환합니다.
-        return error.response?.data;
-      }
-      // 그 외의 예상치 못한 에러는 다시 던집니다.
       throw error;
     }
   }
