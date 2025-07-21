@@ -2,14 +2,17 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Field } from '@headlessui/react';
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import EyeIcon from '@/assets/EyeIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
+import { AxiosApiAuth } from '@/lib/api/axios';
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 interface FormValues {
@@ -25,10 +28,28 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
+    setError,
   } = useForm<FormValues>({ mode: 'onBlur' });
 
-  const onSubmit = (formValues: FormValues) => {
-    console.log(formValues);
+  const auth = new AxiosApiAuth();
+
+  const router = useRouter();
+
+  const onSubmit = async (formValues: FormValues) => {
+    const { email, password } = formValues;
+
+    try {
+      await auth.signInByEmail(email, password);
+      router.push('/');
+    } catch (error) {
+      const err = error as AxiosError;
+      if (err.response?.status === 400) {
+        setError('email', {
+          type: 'manual',
+          message: '이메일 혹은 비밀번호를 확인해주세요.',
+        });
+      }
+    }
   };
 
   return (
@@ -67,6 +88,10 @@ const LoginForm = () => {
             iconTitle='비밀번호 보기'
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',
+              minLength: {
+                value: 8,
+                message: '비밀번호를 8자 이상 입력해주세요.',
+              },
             })}
             onIconBtnClick={() => setIsPwVisible((prev) => !prev)}
             error={errors.password?.message}
