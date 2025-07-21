@@ -4,12 +4,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Field } from '@headlessui/react';
-import { useState } from 'react';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
 import EyeIcon from '@/assets/EyeIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
+import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 interface FormValues {
@@ -19,7 +20,7 @@ interface FormValues {
 }
 
 const LoginForm = () => {
-  const [isPwVisible, setIsPwVisible] = useState(false);
+  const { isPwVisible, setIsPwVisible } = usePwVisibleToggle();
 
   const {
     register,
@@ -27,8 +28,22 @@ const LoginForm = () => {
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({ mode: 'onBlur' });
 
-  const onSubmit = (formValues: FormValues) => {
-    console.log(formValues);
+  const onSubmit = async (formValues: FormValues) => {
+    const { email, password } = formValues;
+
+    try {
+      const response = await axios.post(
+        `https://winereview-api.vercel.app/16-3/auth/signIn`,
+        { email, password },
+        { headers: { 'Content-Type': 'application/json' } },
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return error.response?.data;
+      }
+      throw error;
+    }
   };
 
   return (
