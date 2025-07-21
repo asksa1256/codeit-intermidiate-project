@@ -3,5 +3,9 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <main className="bg-gray-100 min-h-screen flex items-center justify-center">
+      {children}
+    </main>
+  );
 }
