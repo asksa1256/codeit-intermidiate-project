@@ -18,15 +18,21 @@ export const formatRelativeTime = (targetDate: string) => {
 
   if (passedYear > 0) {
     return `${passedYear}년 전`;
-  } else if (passedMonth > 0) {
+  }
+  if (passedMonth > 0) {
     return `${passedMonth}달 전`;
-  } else if (passedDay > 0) {
+  }
+  if (passedDay > 0) {
     return `${passedDay}일 전`;
-  } else if (passedHour > 0) {
+  }
+  if (passedHour > 0) {
     return `${passedHour}시간 전`;
-  } else if (passedMinute > 0) {
+  }
+  if (passedMinute > 0) {
     return `${passedMinute}분 전`;
-  } else {
+  }
+  if (passedSecond > 0) {
     return `${passedSecond}초 전`;
   }
+  return '방금 전';
 };
