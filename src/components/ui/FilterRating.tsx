@@ -1,3 +1,5 @@
+'use client';
+
 import { Field, Label, Radio, RadioGroup } from '@headlessui/react';
 import { useState } from 'react';
 
