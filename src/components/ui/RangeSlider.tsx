@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 
+import clsx from 'clsx';
 import { useCallback, useRef, useState } from 'react';
 
 import { RangeSliderProps } from '@/types/rangeSliderTypes';
@@ -10,11 +11,7 @@ import KeyCap from '../../../public/images/keyCap.png';
 
 const INITIAL_HANDLE_STATE = 5;
 
-const RangeSlider = ({
-  className = 'w-65 h-4 px-2 pt-3 pb-4',
-  label,
-  valueRef,
-}: RangeSliderProps) => {
+const RangeSlider = ({ className = 'w-31', label, valueRef }: RangeSliderProps) => {
   const [value, setValue] = useState(INITIAL_HANDLE_STATE);
   const RangesliderRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
@@ -90,7 +87,7 @@ const RangeSlider = ({
   }
 
   return (
-    <div className={className}>
+    <div className={clsx('flex items-center h-4', className)}>
       <div
         className='w-full h-[6px] rounded-[50px] border-1 border-gray-300 bg-gray-100 relative'
         ref={RangesliderRef}
