@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Field } from '@headlessui/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import EyeIcon from '@/assets/EyeIcon.svg';
@@ -18,6 +19,8 @@ interface FormValues {
 }
 
 const LoginForm = () => {
+  const [isPwVisible, setIsPwVisible] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -58,16 +61,17 @@ const LoginForm = () => {
 
         <Field>
           <InputField
-            type='password'
+            type={isPwVisible ? 'text' : 'password'}
             label='비밀번호'
             inputLabelGap={10}
             placeholder='비밀번호 입력'
             autoComplete='current-password'
             icon={<EyeIcon className='w-5 h-5 text-gray-500' />}
-            iconTitle='비밀번호 표시'
+            iconTitle='비밀번호 보기'
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',
             })}
+            onClick={() => setIsPwVisible((prev) => !prev)}
             error={errors.password?.message}
           />
         </Field>
