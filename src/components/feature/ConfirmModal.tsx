@@ -1,4 +1,4 @@
-// 공용 모달창 컴포넌트
+// 공용 컨펌 모달창 컴포넌트
 
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, ReactNode } from 'react';
