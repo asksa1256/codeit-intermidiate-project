@@ -32,10 +32,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className='flex flex-col items-center w-full md:w-[496px] bg-white px-5 py-14 md:px-12 md:py-16 rounded-2xl shadow-primary'
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className='form'>
       <Link href='/' className='mb-10'>
         <Image src='/images/Logo.svg' alt='타닥 로고' width={118} height={48} priority />
       </Link>
@@ -77,15 +74,16 @@ const LoginForm = () => {
         </Field>
       </div>
 
-      <div className='flex flex-col w-full mt-10 md:mt-10 mb-6 md:mb-8 gap-4'>
+      <div className='form-btm-actions'>
         <ButtonDefault
           type='submit'
           disabled={!isValid || isSubmitting}
-          className='w-full sm:rounded-xl'
+          className='w-full sm:rounded-xl hover:bg-primary-dark'
         >
           <span className='text-sm md:text-base'>로그인</span>
         </ButtonDefault>
-        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl'>
+
+        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-primary'>
           <span className='relative w-6 h-6 rounded-full'>
             <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
           </span>
