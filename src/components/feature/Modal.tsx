@@ -71,7 +71,7 @@ export default function Modal({
                     className='absolute top-4 right-4 text-gray-500 hover:text-gray-600'
                     aria-label='닫기'
                   >
-                    x {/*  아이콘 지정 이전에 임시로 붙여놓음 */}
+                    <img src='fonts/CloseIcon.svg' alt='닫기' />
                   </button>
                 )}
 
