@@ -66,7 +66,7 @@ export default function Modal({
                  p-6 shadow-xl transition-all`}
               >
                 {/* {title 있으면 렌더링} */}
-                {title && <Dialog.Title className='text-lg font-bold mb-4'>{title}</Dialog.Title>}
+                {title && <Dialog.Title className='text-xl font-bold mb-4'>{title}</Dialog.Title>}
 
                 {/* {닫기 x버튼 있으면 렌더링} */}
                 {showCloseButton && (

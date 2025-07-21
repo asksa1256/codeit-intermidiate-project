@@ -1,39 +1,18 @@
 // 공용 컨펌 모달창 컴포넌트
 
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, ReactNode } from 'react';
+import { Fragment } from 'react';
 
-import CloseIcon from '../../assets/icons/CloseIcon.svg';
-
-interface ModalProps {
+interface ConfirmModalProps {
   open: boolean;
-  onClose: () => void;
-  title?: string;
-  showCloseButton?: boolean;
-  size?: 'sm' | 'md' | 'lg';
-  children: ReactNode;
-  footer?: ReactNode; // 추가: 모달 하단에 버튼 등을 넣을 수 있는 props 하단의 버튼 까지 children으로 처리하지 않도록 하기 위해서 입니다.
+  onCancel: () => void;
+  onConfirm: () => void;
 }
 
-export default function Modal({
-  open,
-  onClose,
-  title,
-  showCloseButton = true,
-  size = 'md',
-  children,
-  footer,
-}: ModalProps) {
-  const sizeClasses = {
-    sm: 'max-w-xs',
-    md: 'max-w-lg',
-    lg: 'max-w-3xl',
-  };
-
+export default function ConfirmModal({ open, onCancel, onConfirm }: ConfirmModalProps) {
   return (
-    // Transition: 모달 열림/닫힘 시 애니메이션을 주기 위해 Fragment로 감쌈
     <Transition appear show={open} as={Fragment}>
-      <Dialog as='div' className='relative z-50' onClose={onClose}>
+      <Dialog as='div' className='relative z-50' onClose={onCancel}>
         {/* 모달 배경 */}
         <Transition
           show={open}
@@ -62,28 +41,51 @@ export default function Modal({
               leaveTo='opacity-0 scale-95'
             >
               <Dialog.Panel
-                className={`relative w-full ${sizeClasses[size]} transform overflow-hidden rounded-2xl bg-white
-                 p-6 shadow-xl transition-all`}
+                className={`
+                  relative
+                   w-[353px] h-[172px]
+                   lg:w-[353px] lg:h-[182px]
+                   transform overflow-hidden 
+                   rounded-2xl bg-white
+                  p-6 shadow-xl transition-all
+                  `}
               >
-                {/* {title 있으면 렌더링} */}
-                {title && <Dialog.Title className='text-lg font-bold mb-4'>{title}</Dialog.Title>}
-
-                {/* {닫기 x버튼 있으면 렌더링} */}
-                {showCloseButton && (
+                <Dialog.Title className='text-xl font-bold mb-6 text-center'>
+                  정말 삭제하시겠습니까?
+                </Dialog.Title>
+                {/* 버튼 영역 */}
+                <div className='w-full h-[50px] lg:h-[54px] flex justify-center gap-[10px] mt-4'>
+                  {/* 취소 버튼 */}
                   <button
-                    onClick={onClose}
-                    className='absolute top-4 right-4 text-gray-500 hover:text-gray-600'
-                    aria-label='닫기'
+                    onClick={onCancel}
+                    className='
+                    w-[156px] h-[50px]
+                    lg:w-[156px] lg:h-[54px]
+                    rounded-[12px]
+                    border border-gray-300
+                    text-gray-500
+                    hover:bg-gray-100
+
+                    '
                   >
-                    <CloseIcon className='w-6 h-6 text-gray-500 hover:text-gray-700' />
+                    취소
                   </button>
-                )}
 
-                {/* {모달 내부 컨텐츠} */}
-                <div className='mb-4'>{children}</div>
-
-                {/* footer 영역 */}
-                {footer && <div className='mt-4 flex justify-end gap-2'>{footer}</div>}
+                  {/* 삭제하기 버튼 */}
+                  <button
+                    onClick={onConfirm}
+                    className='
+                    w-[156px] h-[50px]
+                    rounded-[12px]
+                    border border-gray-300
+                    bg-purple-600 
+                    text-white 
+                    hover:bg-purple-700
+                    '
+                  >
+                    삭제하기
+                  </button>
+                </div>
               </Dialog.Panel>
             </Transition>
           </div>
