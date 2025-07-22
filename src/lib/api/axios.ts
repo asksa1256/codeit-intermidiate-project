@@ -82,6 +82,32 @@ export class AxiosApiAuth {
       throw error;
     }
   }
+
+  /**
+   * @method refreshToken
+   * @description RefreshToken을 사용하여 새로운 AccessToken을 발급받습니다.
+   * @param {string} refreshToken - 사용자의 리프레시 토큰입니다.
+   * @returns {Promise<any>} - 새로운 AccessToken을 포함한 응답 데이터를 반환합니다.
+   *                            성공 시 백엔드에서 반환하는 데이터, 실패 시 에러 응답 데이터를 포함합니다.
+   * @throws {Error} - Axios 에러가 아닌 다른 종류의 에러 발생 시 해당 에러를 던집니다.
+   */
+  async refreshToken(refreshToken: string) {
+    try {
+      const response = await axios.post(
+        `${this.requestUrl}/refresh-token`,
+        { refreshToken },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Axios 에러인 경우, 서버에서 받은 에러 응답 데이터를 반환합니다.
+        return error.response?.data;
+      }
+      // 그 외의 예상치 못한 에러는 다시 던집니다.
+      throw error;
+    }
+  }
 }
 
 
