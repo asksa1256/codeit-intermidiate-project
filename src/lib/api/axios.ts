@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { AxiosInstance } from 'axios';
+
+import { tokenService } from './tokenService';
 
 /**
  * @class AxiosApiAuth
@@ -24,6 +27,12 @@ export class AxiosApiAuth {
    *                                 `baseUrl`, `team`, 그리고 `/auth` 경로를 조합하여 생성됩니다.
    */
   private requestUrl = this.baseUrl + '/' + this.team + '/auth';
+
+  private api: AxiosInstance;
+
+  constructor() {
+    this.api = axios.create({ baseURL: this.baseUrl });
+  }
 
   /**
    * @method signUpByEmail
@@ -68,7 +77,7 @@ export class AxiosApiAuth {
    * @param {string} password - 사용자의 비밀번호입니다.
    * @returns {Promise<any>} - 로그인 요청의 응답 데이터를 반환합니다.
    *                            성공 시 백엔드에서 반환하는 데이터, 실패 시 에러 응답 데이터를 포함합니다.
-   * @throws {Error} - Axios 에러가 아닌 다른 종류의 에러 발생 시 해당 에러를 던집니다.
+   * @throws {Error} - 로그인 폼에서 상태 코드에 따른 에러 메시지 처리를 위해 전체 에러를 던집니다.
    */
   async signInByEmail(email: string, password: string) {
     try {
@@ -77,9 +86,31 @@ export class AxiosApiAuth {
         { email, password },
         { headers: { 'Content-Type': 'application/json' } },
       );
+
+      const { accessToken, refreshToken } = response.data;
+
+      // next.js 서버에 쿠키로 저장
+      await fetch('/api/auth/signIn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ accessToken, refreshToken }),
+      });
+
       return response.data;
     } catch (error) {
+      // 로그인 폼에서 상태 코드에 따른 에러 메시지 처리를 위해 전체 error throw
       throw error;
     }
+  }
+
+  /**
+   * @method signOut
+   * @description 로그인 계정을 로그아웃 처리합니다.
+   * @returns {void} - 저장해둔 토큰 정보를 삭제합니다.
+   */
+  signOut() {
+    tokenService.clearTokens();
   }
 }
