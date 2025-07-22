@@ -1,5 +1,11 @@
+import LoginForm from '@/components/feature/LoginForm';
+
 const LoginPage = () => {
-  return <section>로그인</section>;
+  return (
+    <section className='w-full flex justify-center py-20 px-4'>
+      <LoginForm />
+    </section>
+  );
 };
 
 export default LoginPage;
