@@ -36,3 +36,11 @@ export const formatRelativeTime = (targetDate: string) => {
   }
   return '방금 전';
 };
+
+export const formatRating = (rating: number) => {
+  if (rating % 1) {
+    return `${rating}`;
+  } else {
+    return `${rating}.0`;
+  }
+};
