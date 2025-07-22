@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import Modal from '../../components/feature/Modal';
+import Modal from '@/components/feature/Modal';
 export default function KeyboardsPage() {
   // 모달 열림/닫힘 상태
   const [open, setOpen] = useState(false);

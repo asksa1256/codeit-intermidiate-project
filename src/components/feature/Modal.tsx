@@ -3,7 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, ReactNode } from 'react';
 
-import CloseIcon from '../../assets/icons/CloseIcon.svg';
+import CloseIcon from '@/assets/icons/CloseIcon.svg';
 
 interface ModalProps {
   open: boolean;
