@@ -3,6 +3,8 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, ReactNode } from 'react';
 
+import CloseIcon from '../../assets/icons/CloseIcon.svg';
+
 interface ModalProps {
   open: boolean;
   onClose: () => void;
@@ -10,7 +12,7 @@ interface ModalProps {
   showCloseButton?: boolean;
   size?: 'sm' | 'md' | 'lg';
   children: ReactNode;
-  footer?: ReactNode; // 추가: 모달 하단에 버튼 등을 넣을 수 있는 props 하단의 버튼 까지 children으로 처리하지 않도록
+  footer?: ReactNode; // 추가: 모달 하단에 버튼 등을 넣을 수 있는 props 하단의 버튼 까지 children으로 처리하지 않도록 하기 위해서 입니다.
 }
 
 export default function Modal({
@@ -20,6 +22,7 @@ export default function Modal({
   showCloseButton = true,
   size = 'md',
   children,
+  footer,
 }: ModalProps) {
   const sizeClasses = {
     sm: 'max-w-xs',
@@ -59,10 +62,11 @@ export default function Modal({
               leaveTo='opacity-0 scale-95'
             >
               <Dialog.Panel
-                className={`relative w-full ${sizeClasses[size]} transform overflow-hidden rounded-2xl bg-white p-6 shadow-xl transition-all`}
+                className={`relative w-full ${sizeClasses[size]} transform overflow-hidden rounded-2xl bg-white
+                 p-6 shadow-xl transition-all`}
               >
                 {/* {title 있으면 렌더링} */}
-                {title && <Dialog.Title className='text-lg font-bold mb-4'>{title}</Dialog.Title>}
+                {title && <Dialog.Title className='text-xl font-bold mb-4'>{title}</Dialog.Title>}
 
                 {/* {닫기 x버튼 있으면 렌더링} */}
                 {showCloseButton && (
@@ -71,12 +75,15 @@ export default function Modal({
                     className='absolute top-4 right-4 text-gray-500 hover:text-gray-600'
                     aria-label='닫기'
                   >
-                    x {/*  아이콘 지정 이전에 임시로 붙여놓음 */}
+                    <CloseIcon className='w-6 h-6 text-gray-500 hover:text-gray-700' />
                   </button>
                 )}
 
                 {/* {모달 내부 컨텐츠} */}
-                {children}
+                <div className='mb-4'>{children}</div>
+
+                {/* footer 영역 */}
+                {footer && <div className='mt-4 flex justify-end gap-2'>{footer}</div>}
               </Dialog.Panel>
             </Transition>
           </div>
