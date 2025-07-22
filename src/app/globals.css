@@ -59,11 +59,13 @@
   }
 }
 
-/* button */
-button {
-  @apply cursor-pointer;
-}
+@layer base {
+  /* button */
+  button {
+    @apply cursor-pointer;
+  }
 
-button:disabled {
-  @apply cursor-not-allowed;
+  button:disabled {
+    @apply cursor-not-allowed;
+  }
 }
