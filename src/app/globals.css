@@ -60,6 +60,10 @@
 }
 
 @layer base {
+  body {
+    @apply text-gray-800;
+  }
+
   /* button */
   button {
     @apply cursor-pointer;
