@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { cn } from '@/utils/style';
+
 type ButtonDefaultProps = {
   /**
    * 버튼 내부에 렌더링될 내용을 정의합니다. 텍스트, 아이콘 또는 다른 React 컴포넌트가 될 수 있습니다.
@@ -81,7 +83,7 @@ const ButtonDefault = ({
   const baseStyles = `
     w-[400px] h-[50px]
     flex flex-row justify-center items-center
-    py-4 px-[50px] gap-[10px]
+    py-4 px-[20px] gap-[10px]
     bg-[#8642DB] rounded-2xl
     text-white font-semibold
     disabled:bg-gray-400 disabled:cursor-not-allowed
@@ -93,7 +95,7 @@ const ButtonDefault = ({
    * `className`에 정의된 스타일은 Tailwind CSS의 우선순위 규칙에 따라 `baseStyles`의 동일한 속성을 덮어씁니다.
    * 예를 들어, `baseStyles`에 `w-[400px]`가 있고 `className`에 `w-[100px]`가 있다면, 최종적으로 `w-[100px]`가 적용됩니다.
    */
-  const buttonClasses = `${baseStyles} ${className}`;
+  const buttonClasses = cn(baseStyles, className);
 
   return (
     /**
