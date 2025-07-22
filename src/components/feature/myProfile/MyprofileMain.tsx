@@ -1,7 +1,7 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
-import MyKeyboardList from '@/components/feature/MyKeyboardList';
-import MyReviewList from '@/components/feature/MyReviewList';
+import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
+import MyReviewList from '@/components/feature/myProfile/MyReviewList';
 
 const MYPAGE_MENUS = [
   { title: '내가 쓴 후기', component: MyReviewList },
