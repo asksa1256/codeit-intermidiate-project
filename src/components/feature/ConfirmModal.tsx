@@ -65,7 +65,6 @@ export default function ConfirmModal({ open, onCancel, onConfirm }: ConfirmModal
                     border border-gray-300
                     text-gray-500
                     hover:bg-gray-100
-
                     '
                   >
                     취소

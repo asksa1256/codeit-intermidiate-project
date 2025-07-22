@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import ConfirmModal from '../../components/feature/ConfirmModal';
+import ConfirmModal from '@/components/feature/ConfirmModal';
 export default function KeyboardsPage() {
   // 모달 열림/닫힘 상태
   const [open, setOpen] = useState(false);
