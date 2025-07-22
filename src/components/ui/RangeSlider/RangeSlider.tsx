@@ -7,7 +7,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import { RangeSliderProps } from '@/types/rangeSliderTypes';
 
-import KeyCap from '../../../public/images/keyCap.png';
+import keyCap from '../../../../public/images/KeyCap.png';
 
 const INITIAL_HANDLE_STATE = 5;
 
@@ -101,7 +101,7 @@ const RangeSlider = ({ className, label, valueRef }: RangeSliderProps) => {
           onMouseDown={handleMouseDown}
           onTouchStart={handleTouchStart}
         >
-          <Image src={KeyCap} alt='슬라이더 핸들을 나타내는 키캡 이미지' draggable='false' />
+          <Image src={keyCap} alt='슬라이더 핸들' draggable='false' />
         </button>
       </div>
     </div>

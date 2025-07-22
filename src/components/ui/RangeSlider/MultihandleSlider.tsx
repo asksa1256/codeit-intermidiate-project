@@ -8,7 +8,9 @@ import { useCallback, useRef, useState } from 'react';
 import { MultihandleSliderProps } from '@/types/rangeSliderTypes';
 import { formatPrice } from '@/utils/formatters';
 
-import KeyCap from '../../../public/images/keyCap.png';
+import keyCap from '../../../../public/images/KeyCap.png';
+
+const MINIMUM_HANDLE_GAP = 20; // 전체 트랙 길이 300중 20
 
 const MultihandleSlider = ({ className, priceRef }: MultihandleSliderProps) => {
   const [minValue, setminValue] = useState(0);
@@ -49,7 +51,7 @@ const MultihandleSlider = ({ className, priceRef }: MultihandleSliderProps) => {
       const value = Math.round(mappedValue); //정수값으로 변경한 최종 value
 
       if (activeHandleRef.current === 'min') {
-        if (Math.abs(value - maxValue) <= 19) {
+        if (Math.abs(value - maxValue) < MINIMUM_HANDLE_GAP) {
           isDragging.current = false;
           return;
         }
@@ -57,7 +59,7 @@ const MultihandleSlider = ({ className, priceRef }: MultihandleSliderProps) => {
         setminValue((prev) => (prev === value ? prev : value));
         priceRef.current.minPrice = 1000 * value;
       } else if (activeHandleRef.current === 'max') {
-        if (Math.abs(value - minValue) <= 19) {
+        if (Math.abs(value - minValue) < MINIMUM_HANDLE_GAP) {
           isDragging.current = false;
           return;
         }
@@ -104,14 +106,14 @@ const MultihandleSlider = ({ className, priceRef }: MultihandleSliderProps) => {
       const value = Math.round(mappedValue);
 
       if (activeHandleRef.current === 'min') {
-        if (Math.abs(value - maxValue) <= 19) {
+        if (Math.abs(value - maxValue) < MINIMUM_HANDLE_GAP) {
           isDragging.current = false;
           return;
         }
         setminValue((prev) => (prev === value ? prev : value));
         priceRef.current.minPrice = 1000 * value;
       } else if (activeHandleRef.current === 'max') {
-        if (Math.abs(value - minValue) <= 19) {
+        if (Math.abs(value - minValue) < MINIMUM_HANDLE_GAP) {
           isDragging.current = false;
           return;
         }
@@ -148,12 +150,12 @@ const MultihandleSlider = ({ className, priceRef }: MultihandleSliderProps) => {
           onTouchStart={handleTouchStart}
         >
           <div
-            className='absolute -bottom-5 -left-[30px] w-20 text-primary whitespace-nowrap'
+            className='absolute -bottom-[150%] left-[50%] translate-[-50%] font-medium text-primary whitespace-nowrap'
             draggable={false}
           >
             {minPrice}
           </div>
-          <Image src={KeyCap} alt='슬라이더 핸들을 나타내는 키캡 이미지' draggable='false' />
+          <Image src={keyCap} alt='슬라이더 핸들' draggable='false' />
         </button>
         <button
           className='absolute top-[50%] translate-[-50%] w-6 h-6 cursor-grab'
@@ -164,12 +166,12 @@ const MultihandleSlider = ({ className, priceRef }: MultihandleSliderProps) => {
           onTouchStart={handleTouchStart}
         >
           <div
-            className='absolute -top-5 -left-[30px] w-20 text-primary whitespace-nowrap'
+            className='absolute -top-[50%] left-[50%] translate-[-50%] font-medium text-primary whitespace-nowrap'
             draggable={false}
           >
             {maxPrice}
           </div>
-          <Image src={KeyCap} alt='슬라이더 핸들을 나타내는 키캡 이미지' draggable='false' />
+          <Image src={keyCap} alt='슬라이더 핸들' draggable='false' />
         </button>
       </div>
     </div>
