@@ -1,12 +1,9 @@
 import Image from 'next/image';
 
 import ButtonDefault from '@/components/ui/ButtonDefault';
+import { KAKAO_AUTH_URL } from '@/constants';
 
 const KakaoLoginButton = () => {
-  const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
-  const REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
   const handleLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
