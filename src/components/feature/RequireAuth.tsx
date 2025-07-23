@@ -58,7 +58,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // 로그인 권한 필요한 페이지 접근 시 (e.g. 키보드 상세 페이지, 프로필 페이지)
+      // 로그인/회원가입 외 페이지 접근: 로그인 권한 필요
       if (!accessToken) {
         if (refreshToken) {
           const success = await refreshAccessToken(refreshToken);
