@@ -113,7 +113,7 @@ const LoginForm = () => {
 
       <div className='flex gap-3.5 text-sm md:text-base'>
         <span className='text-gray-500'>계정이 없으신가요?</span>
-        <Link href='/signup' className='text-primary underline underline-offset-4'>
+        <Link href='/signUp' className='text-primary underline underline-offset-4'>
           회원가입하기
         </Link>
       </div>
