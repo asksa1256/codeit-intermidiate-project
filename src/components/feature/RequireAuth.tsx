@@ -10,10 +10,13 @@ import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
 
 const RequireAuth = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const PUBLIC_PATHS = [LOGIN_PAGE, SIGNUP_PAGE];
+  const isPublicPath = PUBLIC_PATHS.includes(pathname) || pathname.startsWith('/oauth/kakao'); // 로그인/회원가입/소셜 로그인
 
   // refreshToken 기반 accessToken 재발급 받기
   const refreshAccessToken = async (refreshToken: string) => {
@@ -37,51 +40,48 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
       const accessToken = tokenService.getAccessToken();
       const refreshToken = tokenService.getRefreshToken();
 
-      if (pathname === LOGIN_PAGE || pathname === SIGNUP_PAGE) {
-        // 로그인/회원가입 페이지: accessToken 있을 경우 해당 페이지로 접근하면 메인으로 리다이렉트
+      if (isPublicPath) {
         if (accessToken) {
           router.replace('/');
           return;
         }
 
         if (!refreshToken) {
-          setIsAuthChecked(true); // refreshToken도 없음: 로그인 페이지 유지
+          setIsAuthChecked(true);
           return;
         }
 
         const success = await refreshAccessToken(refreshToken);
         if (success) {
-          router.replace('/'); // accessToken 재발급 성공: 메인으로 리다이렉트
+          router.replace('/');
         } else {
-          setIsAuthChecked(true); // accessToken 재발급 실패: 로그인 페이지 유지
+          setIsAuthChecked(true);
         }
-      }
-
-      // 로그인/회원가입 외 페이지 접근: 로그인 권한 필요
-      if (!accessToken) {
-        if (!refreshToken) {
-          // refreshToken까지 없음: 로그인 페이지로 리다이렉트
-          router.replace(LOGIN_PAGE);
-          return;
-        }
-
-        const success = await refreshAccessToken(refreshToken);
-        if (!success) {
-          // accessToken 재발급 실패: 로그인 페이지로 리다이렉트
-          router.replace(LOGIN_PAGE);
-          return;
-        }
-
-        // accessToken 재발급 성공: 해당 페이지 표시
-        setIsAuthChecked(true);
         return;
-      }
+      } else {
+        // 로그인/회원가입/소셜 로그인 외 페이지 접근
+        if (!accessToken) {
+          if (!refreshToken) {
+            router.replace(LOGIN_PAGE);
+            return;
+          }
 
-      setIsAuthChecked(true);
+          const success = await refreshAccessToken(refreshToken);
+          if (!success) {
+            router.replace(LOGIN_PAGE);
+            return;
+          }
+
+          setIsAuthChecked(true);
+          return;
+        }
+
+        setIsAuthChecked(true);
+      }
     };
 
     checkAndRefreshToken();
-  }, [pathname, router]);
+  }, [pathname, router, isPublicPath]);
 
   if (!isAuthChecked) return isRefreshing ? <LoadingSpinner text='로그인 확인중...' /> : null;
 
