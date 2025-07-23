@@ -39,12 +39,17 @@ export class AxiosApiAuth {
    *                            성공 시 백엔드에서 반환하는 데이터, 실패 시 에러 응답 데이터를 포함합니다.
    * @throws {Error} - Axios 에러가 아닌 다른 종류의 에러 발생 시 해당 에러를 던집니다.
    */
-  async signUpByEmail(email: string, nickname: string, password: string, passwordConfirmation: string) {
+  async signUpByEmail(
+    email: string,
+    nickname: string,
+    password: string,
+    passwordConfirmation: string,
+  ) {
     try {
       const response = await axios.post(
         `${this.requestUrl}/signUp`,
         { email, nickname, password, passwordConfirmation },
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       );
       return response.data;
     } catch (error) {
@@ -72,7 +77,7 @@ export class AxiosApiAuth {
       const response = await axios.post(
         `${this.requestUrl}/signIn`,
         { email, password },
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       );
       return response.data;
     } catch (error) {
@@ -98,7 +103,7 @@ export class AxiosApiAuth {
       const response = await axios.post(
         `${this.requestUrl}/refresh-token`,
         { refreshToken },
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       );
       return response.data;
     } catch (error) {
@@ -122,12 +127,17 @@ export class AxiosApiAuth {
    *                            성공 시 백엔드에서 반환하는 데이터, 실패 시 에러 응답 데이터를 포함합니다.
    * @throws {Error} - Axios 에러가 아닌 다른 종류의 에러 발생 시 해당 에러를 던집니다.
    */
-  async signInBySocial(provider: SocialProvider, state: string, redirectUri: string, token: string) {
+  async signInBySocial(
+    provider: SocialProvider,
+    redirectUri: string | undefined,
+    token: string,
+    state?: string,
+  ) {
     try {
       const response = await axios.post(
         `${this.requestUrl}/signIn/${provider}`,
         { state, redirectUri, token },
-        { headers: { 'Content-Type': 'application/json' } }
+        { headers: { 'Content-Type': 'application/json' } },
       );
       return response.data;
     } catch (error) {
@@ -140,5 +150,3 @@ export class AxiosApiAuth {
     }
   }
 }
-
-

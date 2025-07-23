@@ -12,12 +12,15 @@ import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+import KakaoLoginButton from './KakaoLoginButton';
+
 interface FormValues {
   email: string;
   password: string;
   passwordCheck: string;
 }
+
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const LoginForm = () => {
   const { isPwVisible, setIsPwVisible } = usePwVisibleToggle();
@@ -98,12 +101,7 @@ const LoginForm = () => {
           <span className='text-sm md:text-base'>로그인</span>
         </ButtonDefault>
 
-        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-primary'>
-          <span className='relative w-6 h-6 rounded-full'>
-            <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
-          </span>
-          <span className='text-gray-800 text-sm md:text-base'>카카오로 시작하기</span>
-        </ButtonDefault>
+        <KakaoLoginButton />
       </div>
 
       <div className='flex gap-3.5 text-sm md:text-base'>
