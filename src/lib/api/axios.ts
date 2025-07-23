@@ -1,6 +1,8 @@
 import axios from 'axios';
-
 export type SocialProvider = 'GOOGLE' | 'NAVER' | 'KAKAO';
+import { AxiosInstance } from 'axios';
+
+import { tokenService } from './tokenService';
 
 /**
  * @class AxiosApiAuth
@@ -26,6 +28,12 @@ export class AxiosApiAuth {
    *                                 `baseUrl`, `team`, 그리고 `/auth` 경로를 조합하여 생성됩니다.
    */
   private requestUrl = this.baseUrl + '/' + this.team + '/auth';
+
+  private api: AxiosInstance;
+
+  constructor() {
+    this.api = axios.create({ baseURL: this.baseUrl });
+  }
 
   /**
    * @method signUpByEmail
@@ -70,7 +78,7 @@ export class AxiosApiAuth {
    * @param {string} password - 사용자의 비밀번호입니다.
    * @returns {Promise<any>} - 로그인 요청의 응답 데이터를 반환합니다.
    *                            성공 시 백엔드에서 반환하는 데이터, 실패 시 에러 응답 데이터를 포함합니다.
-   * @throws {Error} - Axios 에러가 아닌 다른 종류의 에러 발생 시 해당 에러를 던집니다.
+   * @throws {Error} - 로그인 폼에서 상태 코드에 따른 에러 메시지 처리를 위해 전체 에러를 던집니다.
    */
   async signInByEmail(email: string, password: string) {
     try {
@@ -79,13 +87,14 @@ export class AxiosApiAuth {
         { email, password },
         { headers: { 'Content-Type': 'application/json' } },
       );
+
+      const { accessToken, refreshToken } = response.data;
+      tokenService.setAccessToken(accessToken);
+      tokenService.setRefreshToken(refreshToken);
+
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        // Axios 에러인 경우, 서버에서 받은 에러 응답 데이터를 반환합니다.
-        return error.response?.data;
-      }
-      // 그 외의 예상치 못한 에러는 다시 던집니다.
+      // 로그인 폼에서 상태 코드에 따른 에러 메시지 처리를 위해 전체 error throw
       throw error;
     }
   }
@@ -98,7 +107,7 @@ export class AxiosApiAuth {
    *                            성공 시 백엔드에서 반환하는 데이터, 실패 시 에러 응답 데이터를 포함합니다.
    * @throws {Error} - Axios 에러가 아닌 다른 종류의 에러 발생 시 해당 에러를 던집니다.
    */
-  async refreshToken(refreshToken: string) {
+  async refreshToken(refreshToken: string | null) {
     try {
       const response = await axios.post(
         `${this.requestUrl}/refresh-token`,
@@ -148,5 +157,14 @@ export class AxiosApiAuth {
       // 그 외의 예상치 못한 에러는 다시 던집니다.
       throw error;
     }
+  }
+
+  /**
+   * @method signOut
+   * @description 로그인 계정을 로그아웃 처리합니다.
+   * @returns {void} - 저장해둔 토큰 정보를 삭제합니다.
+   */
+  signOut() {
+    tokenService.clearTokens();
   }
 }

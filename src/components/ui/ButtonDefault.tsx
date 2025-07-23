@@ -88,6 +88,7 @@ const ButtonDefault = ({
     text-white font-semibold
     disabled:bg-gray-400 disabled:cursor-not-allowed
     transition-colors duration-200
+    hover:bg-primary-dark
   `;
 
   /**

@@ -14,17 +14,16 @@ import InputField from '@/components/ui/Input';
 import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 import { AxiosApiAuth } from '@/lib/api/axios';
 
-import KakaoLoginButton from './KakaoLoginButton';
-
 interface FormValues {
   email: string;
+  nickname: string;
   password: string;
   passwordCheck: string;
 }
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-const LoginForm = () => {
+const SignInForm = () => {
   const router = useRouter();
   const { isPwVisible, setIsPwVisible } = usePwVisibleToggle();
   const auth = new AxiosApiAuth();
@@ -80,6 +79,23 @@ const LoginForm = () => {
 
         <Field>
           <InputField
+            type='text'
+            label='닉네임'
+            inputLabelGap={10}
+            placeholder='닉네임 입력'
+            {...register('nickname', {
+              required: '이메일은 필수 입력입니다.',
+              pattern: {
+                value: emailRegex,
+                message: '이메일 형식으로 작성해주세요.',
+              },
+            })}
+            error={errors.nickname?.message}
+          />
+        </Field>
+
+        <Field>
+          <InputField
             type={isPwVisible ? 'text' : 'password'}
             label='비밀번호'
             inputLabelGap={10}
@@ -98,24 +114,43 @@ const LoginForm = () => {
             error={errors.password?.message}
           />
         </Field>
+
+        <Field>
+          <InputField
+            type={isPwVisible ? 'text' : 'password'}
+            label='비밀번호 확인'
+            inputLabelGap={10}
+            placeholder='비밀번호 확인'
+            autoComplete='current-password'
+            icon={<EyeIcon className='w-5 h-5 text-gray-500' />}
+            iconTitle='비밀번호 보기'
+            {...register('password', {
+              required: '비밀번호는 필수 입력입니다.',
+              minLength: {
+                value: 8,
+                message: '비밀번호를 8자 이상 입력해주세요.',
+              },
+            })}
+            onIconBtnClick={() => setIsPwVisible((prev) => !prev)}
+            error={errors.password?.message}
+          />
+        </Field>
       </div>
 
       <div className='form-btm-actions'>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
-          <span>로그인</span>
+          <span>회원가입</span>
         </ButtonDefault>
-
-        <KakaoLoginButton />
       </div>
 
       <div className='flex gap-3.5 text-sm md:text-base'>
-        <span className='text-gray-500'>계정이 없으신가요?</span>
-        <Link href='/signUp' className='text-primary underline underline-offset-4'>
-          회원가입하기
+        <span className='text-gray-500'>계정이 있으신가요?</span>
+        <Link href='/login' className='text-primary underline underline-offset-4'>
+          로그인하기
         </Link>
       </div>
     </form>
   );
 };
 
-export default LoginForm;
+export default SignInForm;
