@@ -16,7 +16,7 @@ const MyprofileMain = () => {
           {MYPAGE_MENUS.map(({ title }, idx) => (
             <Tab
               key={idx}
-              className='text-lg font-bold text-gray-500 data-selected:text-gray-800 md:text-xl'
+              className='text-lg font-bold text-gray-500 data-selected:text-gray-800 md:text-xl outline-none'
             >
               {title}
             </Tab>
