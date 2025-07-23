@@ -89,15 +89,8 @@ export class AxiosApiAuth {
       );
 
       const { accessToken, refreshToken } = response.data;
-
-      // next.js 서버에 쿠키로 저장
-      await fetch('/api/auth/signIn', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ accessToken, refreshToken }),
-      });
+      tokenService.setAccessToken(accessToken);
+      tokenService.setRefreshToken(refreshToken);
 
       return response.data;
     } catch (error) {
@@ -114,7 +107,7 @@ export class AxiosApiAuth {
    *                            성공 시 백엔드에서 반환하는 데이터, 실패 시 에러 응답 데이터를 포함합니다.
    * @throws {Error} - Axios 에러가 아닌 다른 종류의 에러 발생 시 해당 에러를 던집니다.
    */
-  async refreshToken(refreshToken: string) {
+  async refreshToken(refreshToken: string | null) {
     try {
       const response = await axios.post(
         `${this.requestUrl}/refresh-token`,

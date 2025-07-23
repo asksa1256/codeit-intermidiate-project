@@ -1,26 +1,22 @@
-// cookie 기반
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constants';
+
 export const tokenService = {
   getAccessToken(): string | null {
-    if (typeof document === 'undefined') return null;
-    return getCookieValue('accessToken');
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem(ACCESS_TOKEN_KEY);
   },
   setAccessToken(token: string) {
-    document.cookie = `accessToken=${token}; path=/; secure; sameSite=Lax`;
+    localStorage.setItem(ACCESS_TOKEN_KEY, token);
   },
   getRefreshToken(): string | null {
-    if (typeof document === 'undefined') return null;
-    return getCookieValue('refreshToken');
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem(REFRESH_TOKEN_KEY);
   },
   setRefreshToken(token: string) {
-    document.cookie = `refreshToken=${token}; path=/; secure; sameSite=Lax`;
+    localStorage.setItem(REFRESH_TOKEN_KEY, token);
   },
   clearTokens() {
-    document.cookie = `accessToken=; Max-Age=0; path=/`;
-    document.cookie = `refreshToken=; Max-Age=0; path=/`;
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
 };
-
-function getCookieValue(key: string): string | null {
-  const match = document.cookie.match(new RegExp(`${key}=([^;]+)`));
-  return match ? decodeURIComponent(match[1]) : null;
-}

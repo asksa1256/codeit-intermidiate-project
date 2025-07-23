@@ -1,9 +1,18 @@
 import axios, { AxiosInstance } from 'axios';
 
+import { AxiosApiAuth } from './axios';
+import { tokenService } from './tokenService';
+
 const apiClient: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
-  withCredentials: true,
 });
+
+const auth = new AxiosApiAuth();
+
+const signOutToLogin = () => {
+  auth.signOut();
+  window.location.href = '/login';
+};
 
 // 응답 - 토큰 만료(401 Unauthorized 에러) 시 자동 재발급
 apiClient.interceptors.response.use(
@@ -11,32 +20,23 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const status = error?.status || error?.response?.status;
-    const isBrowser = typeof document !== 'undefined';
+    const isBrowser = typeof window !== 'undefined';
+    const token = tokenService.getRefreshToken();
 
     if (status === 401 && !originalRequest._retry && isBrowser) {
       originalRequest._retry = true; // 요청 무한 루프 방지
 
       try {
-        const refreshRes = await fetch('/api/auth/refresh', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const refreshRes = await auth.refreshToken(token);
+        const newAccessToken = refreshRes.data.accessToken;
+        tokenService.setAccessToken(newAccessToken);
 
-        if (refreshRes.ok) {
-          // accessToken은 next.js 서버가 쿠키에 자동 저장
-          return apiClient(originalRequest); // 재시도
-        } else {
-          // 리프레시 토큰 요청 실패: 로그아웃 처리
-          await fetch('/api/auth/signOut', { method: 'POST' });
-          window.location.href = '/login';
-          return Promise.reject(error);
-        }
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        return apiClient(originalRequest);
       } catch (refreshError) {
-        // 리프레시 토큰 요청 실패: 로그아웃 처리
-        await fetch('/api/auth/signOut', { method: 'POST' });
-        window.location.href = '/login';
+        // 리프레시 실패: 로그아웃
+        signOutToLogin();
         return Promise.reject(refreshError);
       }
     }
