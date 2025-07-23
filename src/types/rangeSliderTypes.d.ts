@@ -1,18 +1,10 @@
 // -- RangeSlider 타입 --
 
-type Label = 'lightBold' | 'smoothTannic' | 'drySweet' | 'softAcidic';
-
-type ReviewDataRefCurrent = {
-  [key in Label]: number;
-};
-
 // className: 슬라이더 컨테이너에 들어갈 className -> 슬라이더 너비 or 여백 등 커스텀 용도
-// label: formData key에 대응하기 위한 label
-// valueRef: 슬라이더 value값을 저장할 부모의 ref객체
+// valueUpdater: 슬라이더의 state인 value를 전달하는 함수
 export interface RangeSliderProps {
   className?: string;
-  label: Label;
-  valueRef: RefObject<ReviewDataRefCurrent>;
+  valueUpdater: (value: number) => void;
 }
 
 // -- RangeSliderReadonly 타입 --
@@ -32,8 +24,8 @@ type PriceDataRefCurrent = {
 };
 
 // className: 슬라이더 컨테이너에 들어갈 className -> 슬라이더 너비 or 여백 등 커스텀 용도
-// priceRef: 쿼리에 사용될 가격의 최소, 최대값을 저장할 부모의 ref객체
+// valueUpdater: 슬라이더의 state인 value를 전달하는 함수
 export interface MultihandleSliderProps {
   className?: string;
-  priceRef: RefObject<PriceDataRefCurrent>;
+  valueUpdater: (minPrice: number, maxPrice: number) => void;
 }
