@@ -44,35 +44,36 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
           return;
         }
 
-        if (refreshToken) {
-          const success = await refreshAccessToken(refreshToken);
-          if (success) {
-            router.replace('/'); // accessToken 재발급 성공 시 메인으로 리다이렉트
-          } else {
-            setIsAuthChecked(true); // 실패 시 그냥 로그인 페이지 유지
-          }
+        if (!refreshToken) {
+          setIsAuthChecked(true); // refreshToken도 없음: 로그인 페이지 유지
           return;
         }
 
-        setIsAuthChecked(true);
-        return;
+        const success = await refreshAccessToken(refreshToken);
+        if (success) {
+          router.replace('/'); // accessToken 재발급 성공: 메인으로 리다이렉트
+        } else {
+          setIsAuthChecked(true); // accessToken 재발급 실패: 로그인 페이지 유지
+        }
       }
 
       // 로그인/회원가입 외 페이지 접근: 로그인 권한 필요
       if (!accessToken) {
-        if (refreshToken) {
-          const success = await refreshAccessToken(refreshToken);
-          if (success) {
-            // accessToken 재발급 성공: 해당 페이지 표시
-            setIsAuthChecked(true);
-          } else {
-            // accessToken 재발급 실패: 로그인 페이지로 리다이렉트
-            router.replace(LOGIN_PAGE);
-          }
-        } else {
-          // accessToken, refreshToken 둘 다 없음: 로그인 페이지로 리다이렉트
+        if (!refreshToken) {
+          // refreshToken까지 없음: 로그인 페이지로 리다이렉트
           router.replace(LOGIN_PAGE);
+          return;
         }
+
+        const success = await refreshAccessToken(refreshToken);
+        if (!success) {
+          // accessToken 재발급 실패: 로그인 페이지로 리다이렉트
+          router.replace(LOGIN_PAGE);
+          return;
+        }
+
+        // accessToken 재발급 성공: 해당 페이지 표시
+        setIsAuthChecked(true);
         return;
       }
 
