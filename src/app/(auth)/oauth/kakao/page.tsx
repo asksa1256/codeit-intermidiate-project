@@ -35,7 +35,6 @@ const KakaoOAuthPage = () => {
           process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
           code,
         );
-        console.log(res);
 
         tokenService.setAccessToken(res.accessToken);
         tokenService.setRefreshToken(res.refreshToken);
