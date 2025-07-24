@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 import clsx from 'clsx';
-import { useCallback, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { RangeSliderProps } from '@/types/rangeSliderTypes';
 
@@ -11,7 +11,7 @@ import keyCap from '../../../../public/images/KeyCap.png';
 
 const INITIAL_HANDLE_STATE = 5;
 
-const RangeSlider = ({ className, label, valueRef }: RangeSliderProps) => {
+const RangeSlider = ({ className, valueUpdater }: RangeSliderProps) => {
   const [value, setValue] = useState(INITIAL_HANDLE_STATE);
   const RangesliderRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
@@ -25,29 +25,27 @@ const RangeSlider = ({ className, label, valueRef }: RangeSliderProps) => {
     handleMouseMove(event);
   };
 
-  const handleMouseMove = useCallback(
-    (event: React.MouseEvent | MouseEvent) => {
-      if (!isDragging.current || !RangesliderRef.current) {
-        return;
-      }
+  const handleMouseMove = (event: React.MouseEvent | MouseEvent) => {
+    if (!isDragging.current || !RangesliderRef.current) {
+      return;
+    }
 
-      const RangesliderRect = RangesliderRef.current.getBoundingClientRect();
-      const newX = event.clientX - RangesliderRect.left; //트랙 내 마우스 x 좌표
-      let mappedValue = (newX / RangesliderRect.width) * 100; //(트랙 내 마우스 x좌표 / 트랙의 길이) * 100 -> 백분율
+    const RangesliderRect = RangesliderRef.current.getBoundingClientRect();
+    const newX = event.clientX - RangesliderRect.left; //트랙 내 마우스 x 좌표
+    let mappedValue = (newX / RangesliderRect.width) * 100; //(트랙 내 마우스 x좌표 / 트랙의 길이) * 100 -> 백분율
 
-      mappedValue = Math.max(0, Math.min(100, mappedValue)); //0~100 사이 값으로 매핑
-      const value = Math.round(mappedValue / 10); //정수값으로 변경한 최종 value
-      setValue(value); //디바운싱을 넣는다면 여기에
-      valueRef.current[`${label}`] = value; //Ref current의 정의는 type파일에
-    },
-    [label, valueRef],
-  );
+    mappedValue = Math.max(0, Math.min(100, mappedValue)); //0~100 사이 값으로 매핑
+    const value = Math.round(mappedValue / 10); //정수값으로 변경한 최종 value
+    //과도한 리렌더링 방지를 위해 매핑된 값이 실제로 변경되었을 때만 setter를 실행
+    setValue((prev) => (prev === value ? prev : value));
+    //디바운싱을 넣는다면 여기에
+  };
 
-  const handleMouseUp = useCallback(() => {
+  const handleMouseUp = () => {
     isDragging.current = false;
     window.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('mouseup', handleMouseUp);
-  }, [handleMouseMove]);
+  };
 
   //아래로는 모바일 환경의 터치 이벤트를 위한 핸들러이며 로직은 같음
   const handleTouchStart = (event: React.TouchEvent | TouchEvent) => {
@@ -58,29 +56,30 @@ const RangeSlider = ({ className, label, valueRef }: RangeSliderProps) => {
     handleTouchMove(event);
   };
 
-  const handleTouchMove = useCallback(
-    (event: React.TouchEvent | TouchEvent) => {
-      if (!isDragging.current || !RangesliderRef.current) {
-        return;
-      }
+  const handleTouchMove = (event: React.TouchEvent | TouchEvent) => {
+    if (!isDragging.current || !RangesliderRef.current) {
+      return;
+    }
 
-      const RangesliderRect = RangesliderRef.current.getBoundingClientRect();
-      const newX = event.touches[0].clientX - RangesliderRect.left; //touches[0]로 변경
-      let mappedValue = (newX / RangesliderRect.width) * 100;
+    const RangesliderRect = RangesliderRef.current.getBoundingClientRect();
+    const newX = event.touches[0].clientX - RangesliderRect.left; //touches[0]로 변경
+    let mappedValue = (newX / RangesliderRect.width) * 100;
 
-      mappedValue = Math.max(0, Math.min(100, mappedValue));
-      const value = Math.round(mappedValue / 10);
-      setValue(value);
-      valueRef.current[`${label}`] = value; //Ref current의 정의는 type파일에
-    },
-    [label, valueRef],
-  );
+    mappedValue = Math.max(0, Math.min(100, mappedValue));
+    const value = Math.round(mappedValue / 10);
+    setValue((prev) => (prev === value ? prev : value));
+  };
 
-  const handleTouchEnd = useCallback(() => {
+  const handleTouchEnd = () => {
     isDragging.current = false;
     window.removeEventListener('touchmove', handleTouchMove);
     window.removeEventListener('touchend', handleTouchEnd);
-  }, [handleTouchMove]);
+  };
+
+  //마운트시 초기값 전달
+  useEffect(() => {
+    valueUpdater(value);
+  }, [value]);
 
   if (!RangesliderRef) {
     return;

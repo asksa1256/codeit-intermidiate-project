@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
+import StarRating from '@/components/ui/StarRating';
 
 interface IndexKeyboardsCardProps {
   name: string;
@@ -38,7 +39,8 @@ const IndexKeyboardsCard = (props: IndexKeyboardsCardProps) => {
       </div>
       {/* 평점 */}
       <div className='mb-2'>{avgRating}</div>
-      <RatingAndPrice label='rating' value={avgRating} className='inline-flex w-auto' />
+      {/* 별점 5개 */}
+      <StarRating value={avgRating} />
       {/* 리뷰 개수 */}
       <div className='text-xs text-gray-500 mb-2'>{reviewCount}개의 후기</div>
       {/* 최근 리뷰 */}
