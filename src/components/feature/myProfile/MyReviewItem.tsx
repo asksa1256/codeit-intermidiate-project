@@ -4,63 +4,14 @@ import Image from 'next/image';
 
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
+import { MyReviewItemType } from '@/types/reviewTypes';
 import { formatRelativeTime } from '@/utils/formatters';
 
-type KeyboardColorType =
-  | 'CHERRY'
-  | 'BERRY'
-  | 'OAK'
-  | 'VANILLA'
-  | 'PEPPER'
-  | 'BAKING'
-  | 'GRASS'
-  | 'APPLE'
-  | 'PEACH'
-  | 'CITRUS'
-  | 'TROPICAL'
-  | 'MINERAL'
-  | 'FLOWER'
-  | 'TOBACCO'
-  | 'EARTH'
-  | 'CHOCOLATE'
-  | 'SPICE'
-  | 'CARAMEL'
-  | 'LEATHER';
-
-type KeyboardCategoryType = 'RED' | 'WHITE' | 'SPARKLING';
-
-interface ReviewItemType {
-  id: number;
-  rating: number;
-  lightBold: number;
-  smoothTannic: number;
-  drySweet: number;
-  softAcidic: number;
-  aroma: KeyboardColorType[];
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  user: {
-    id: number;
-    nickname: string;
-    image: string | null;
-  };
-  wine: {
-    id: number;
-    name: string;
-    region: string;
-    image: string;
-    price: number;
-    avgRating: number;
-    type: KeyboardCategoryType;
-  };
+interface MyReviewItemProps {
+  review: MyReviewItemType;
 }
 
-interface ReviewItemProps {
-  review: ReviewItemType;
-}
-
-const MyReviewItem = ({ review }: ReviewItemProps) => {
+const MyReviewItem = ({ review }: MyReviewItemProps) => {
   const { rating, content, updatedAt, wine } = review;
   return (
     <li className='border border-gray-300 py-4 px-5 bg-white rounded-2xl mb-4 md:py-6 md:px-10 lg:mb-2 lg:pb-7'>

@@ -6,56 +6,10 @@ import React from 'react';
 
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
-
-type KeyboardColorType =
-  | 'CHERRY'
-  | 'BERRY'
-  | 'OAK'
-  | 'VANILLA'
-  | 'PEPPER'
-  | 'BAKING'
-  | 'GRASS'
-  | 'APPLE'
-  | 'PEACH'
-  | 'CITRUS'
-  | 'TROPICAL'
-  | 'MINERAL'
-  | 'FLOWER'
-  | 'TOBACCO'
-  | 'EARTH'
-  | 'CHOCOLATE'
-  | 'SPICE'
-  | 'CARAMEL'
-  | 'LEATHER';
-type KeyboardCategoryType = 'RED' | 'WHITE' | 'SPARKLING';
-
-interface KeyboardItemType {
-  id: number;
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  type: KeyboardCategoryType;
-  avgRating: number;
-  reviewCount: number;
-  recentReview: {
-    user: {
-      id: number;
-      nickname: string;
-      image: string;
-    };
-    updatedAt: string;
-    createdAt: string;
-    content: string;
-    aroma: KeyboardColorType[];
-    rating: number;
-    id: number;
-  } | null;
-  userId: number;
-}
+import { MyKeyboardItemType } from '@/types/keyboardTypes';
 
 interface MyKeyboardItemProps {
-  keyboard: KeyboardItemType;
+  keyboard: MyKeyboardItemType;
 }
 
 const MyKeyboardItem = ({ keyboard }: MyKeyboardItemProps) => {

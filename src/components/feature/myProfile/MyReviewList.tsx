@@ -1,62 +1,7 @@
 import MyReviewItem from '@/components/feature/myProfile/MyReviewItem';
+import { MyReviewListType } from '@/types/reviewTypes';
 
-type KeyboardColorType =
-  | 'CHERRY'
-  | 'BERRY'
-  | 'OAK'
-  | 'VANILLA'
-  | 'PEPPER'
-  | 'BAKING'
-  | 'GRASS'
-  | 'APPLE'
-  | 'PEACH'
-  | 'CITRUS'
-  | 'TROPICAL'
-  | 'MINERAL'
-  | 'FLOWER'
-  | 'TOBACCO'
-  | 'EARTH'
-  | 'CHOCOLATE'
-  | 'SPICE'
-  | 'CARAMEL'
-  | 'LEATHER';
-
-type KeyboardCategoryType = 'RED' | 'WHITE' | 'SPARKLING';
-
-interface ReviewItemType {
-  id: number;
-  rating: number;
-  lightBold: number;
-  smoothTannic: number;
-  drySweet: number;
-  softAcidic: number;
-  aroma: KeyboardColorType[];
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  user: {
-    id: number;
-    nickname: string;
-    image: string | null;
-  };
-  wine: {
-    id: number;
-    name: string;
-    region: string;
-    image: string;
-    price: number;
-    avgRating: number;
-    type: KeyboardCategoryType;
-  };
-}
-
-interface ReviewListType {
-  list: ReviewItemType[];
-  totalCount: number;
-  nextCursor: number;
-}
-
-const reviewsData: ReviewListType = {
+const reviewsData: MyReviewListType = {
   list: [
     {
       id: 3054,

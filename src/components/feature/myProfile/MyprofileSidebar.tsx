@@ -5,8 +5,9 @@ import { Input } from '@headlessui/react';
 import CameraIcon from '@/assets/icons/CameraIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import UserThumbnail from '@/components/ui/UserThumbnail';
+import { UserType } from '@/types/userTypes';
 
-const userData = {
+const userData: UserType = {
   id: 1642,
   nickname: '테스트163',
   teamId: '16-3',
