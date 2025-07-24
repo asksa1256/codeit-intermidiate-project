@@ -18,7 +18,13 @@ const RatingAndPrice = ({ className, label, value }: Props) => {
       `￦ ${formatPrice(value)}`
     ) : (
       <>
-        <Image src={'/images/StarIcon.svg'} alt='별 아이콘' width={14} height={14} />
+        <Image
+          className='w-4 h-4 md:w-5 md:h-5'
+          src={'/images/StarIcon.svg'}
+          alt='별 아이콘'
+          width={16}
+          height={16}
+        />
         <span>{`${formatRating(value)}`}</span>
       </>
     );
