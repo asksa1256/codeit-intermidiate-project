@@ -43,13 +43,14 @@ const IndexKeyboardsCard = (props: IndexKeyboardsCardProps) => {
       <StarRating value={avgRating} />
       {/* 리뷰 개수 */}
       <div className='text-xs text-gray-500 mb-2'>{reviewCount}개의 후기</div>
+      <Image src='/public/images/RightArrowIcon.svg' alt='오른쪽 이동' width={20} height={20} />
       {/* 최근 리뷰 */}
       {recentReview ? (
         <div className='text-xs text-gray-600 mb-2'>
-          <span className='font-semibold'>최근 리뷰:</span> {recentReview.content}
+          <span className='font-semibold'>최신 후기:</span> {recentReview.content}
         </div>
       ) : (
-        <div className='text-xs text-gray-600 mb-2'>최근 리뷰가 없습니다.</div>
+        <div className='text-xs text-gray-600 mb-2'>최신 후기가 없습니다.</div>
       )}
     </div>
   );
