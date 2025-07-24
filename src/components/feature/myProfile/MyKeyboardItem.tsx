@@ -69,8 +69,8 @@ const MyKeyboardItem = ({ keyboard }: MyKeyboardItemProps) => {
   return (
     <li className='flex mb-[10px] border border-gray-300 rounded-xl'>
       <div className='relative shrink-0 w-[108px] px-[14px] md:w-[176px] md:px-5 self-center md:self-end'>
-        <div className='relative pt-[180%] md:w-[85%] md:mx-auto'>
-          <figure className='absolute bottom-0 right-full rotate-90 origin-bottom-right w-[180%] aspect-[180/100]'>
+        <div className='relative pt-[180%] md:w-[70%] md:mx-auto overflow-hidden'>
+          <figure className='absolute bottom-0 right-full rotate-90 origin-bottom-right w-[180%] aspect-[180/100] md:w-[220%] md:aspect-[220/100]'>
             <Image
               src={newImageSrc}
               alt={name}
