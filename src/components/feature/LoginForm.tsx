@@ -8,7 +8,6 @@ import { Field } from '@headlessui/react';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 
-import EyeIcon from '@/assets/icons/EyeIcon.svg';
 import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
