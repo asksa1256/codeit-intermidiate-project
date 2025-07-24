@@ -2,7 +2,7 @@
 'use client';
 
 import axios from 'axios';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 
@@ -27,7 +27,7 @@ const KeyboardsPage = () => {
 
   useEffect(() => {
     axios
-      .get('https://winereview-api.vercel.app/16-3/wines?limit=5')
+      .get('https://winereview-api.vercel.app/16-3/wines?limit=1')
       .then((res) => setKeyboards(res.data.list))
       .catch((err) => console.error('호출 실패', err));
   }, []);
@@ -36,13 +36,18 @@ const KeyboardsPage = () => {
     <div>
       <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
       <div className='grid grid-cols-2 gap-4'>
-        <IndexKeyboardsCard
-          name='Keychron K3'
-          price='99,000원'
-          alt='키보드 이미지'
-          rating={4.5}
-          imageUrl=''
-        />
+        {keyboards.map((keyboard) => (
+          <IndexKeyboardsCard
+            key={keyboard.id}
+            name={keyboard.name}
+            region={keyboard.region}
+            price={keyboard.price}
+            avgRating={keyboard.avgRating}
+            image={keyboard.image}
+            reviewCount={keyboard.reviewCount}
+            recentReview={keyboard.recentReview || null}
+          />
+        ))}
       </div>
     </div>
   );
