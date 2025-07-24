@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
+import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import { MyKeyboardItemType } from '@/types/keyboardTypes';
 
@@ -23,18 +24,13 @@ const MyKeyboardItem = ({ keyboard }: MyKeyboardItemProps) => {
   return (
     <li className='flex mb-[10px] border border-gray-300 rounded-xl'>
       <div className='relative shrink-0 w-[108px] px-[14px] md:w-[176px] md:px-5 self-center md:self-end'>
-        <div className='relative pt-[180%] md:w-[70%] md:mx-auto overflow-hidden'>
-          <figure className='absolute bottom-0 right-full rotate-90 origin-bottom-right w-[180%] aspect-[180/100] md:w-[220%] md:aspect-[220/100]'>
-            <Image
-              src={newImageSrc}
-              alt={name}
-              width={300}
-              height={300}
-              className='w-full h-full object-contain object-left md:object-cover'
-            />
-          </figure>
-        </div>
+        <KeyboardThumbnail
+          imgSrc={newImageSrc}
+          keyboardName={name}
+          className='md:w-[70%] md:mx-auto'
+        />
       </div>
+
       <div className='relative grow pt-[25px] pr-12 pb-6 md:py-[30px] md:pr-[86px] lg:pr-[124px]'>
         <h3 className='mb-[10px] text-lg font-semibold break-keep md:text-[28px] md:leading-[1.17] md:mb-[20px]'>
           {name}
