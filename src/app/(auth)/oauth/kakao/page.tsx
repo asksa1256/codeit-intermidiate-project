@@ -30,11 +30,8 @@ const KakaoOAuthPage = () => {
 
     const signIn = async () => {
       try {
-        const res = await authService.signInBySocial(
-          'KAKAO',
-          process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
-          code,
-        );
+        const KAKAO_REDIRECT_URI = `${window.location.origin}/oauth/kakao`;
+        const res = await authService.signInBySocial('KAKAO', KAKAO_REDIRECT_URI, code);
 
         tokenService.setAccessToken(res.accessToken);
         tokenService.setRefreshToken(res.refreshToken);
