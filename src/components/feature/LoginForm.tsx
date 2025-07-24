@@ -14,6 +14,8 @@ import InputField from '@/components/ui/Input';
 import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 import { AxiosApiAuth } from '@/lib/api/axios';
 
+import KakaoLoginButton from './KakaoLoginButton';
+
 interface FormValues {
   email: string;
   password: string;
@@ -103,12 +105,7 @@ const LoginForm = () => {
           <span>로그인</span>
         </ButtonDefault>
 
-        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-primary hover:bg-white'>
-          <span className='relative w-6 h-6 rounded-full'>
-            <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
-          </span>
-          <span className='text-gray-800'>카카오로 시작하기</span>
-        </ButtonDefault>
+        <KakaoLoginButton />
       </div>
 
       <div className='flex gap-3.5 text-sm md:text-base'>

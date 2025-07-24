@@ -138,9 +138,9 @@ export class AxiosApiAuth {
    */
   async signInBySocial(
     provider: SocialProvider,
-    state: string,
-    redirectUri: string,
+    redirectUri: string | undefined,
     token: string,
+    state?: string,
   ) {
     try {
       const response = await axios.post(

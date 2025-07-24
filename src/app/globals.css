@@ -58,6 +58,9 @@
     @apply flex flex-col w-full mt-10 md:mt-10 mb-6 md:mb-8 gap-4;
   }
 
+  .btn-outlined {
+    @apply !bg-white border border-gray-300 sm:rounded-xl hover:border-primary;
+
   /* 목록 카드 별 */
   .list-star {
     @apply w-[14px] h-[14px] md:w-[24px] md:h-[24px];
