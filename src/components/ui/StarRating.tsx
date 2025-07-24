@@ -5,24 +5,20 @@ interface StarRatingProps {
   className?: string; // 쓰이는 페이지, 모달에 따라 글로벌 css에서 클래스를 가져다 써주시면 됩니다.
 }
 
-const StarRating = ({ value }: StarRatingProps) => {
+const StarRating = ({ value, className }: StarRatingProps) => {
+  const FilledStarSrc = '/images/StarRatingIcon.svg';
+  const EmptyStarSrc = '/images/EmptyStarIcon.svg';
+
   // 별 5개를 만들어서 채울지 비울지 결정, 소수점 처리
-  const filledStars = Math.floor(value);
+  const FilledStar = Math.floor(value);
   const stars = Array.from({ length: 5 }, (_, i) => {
-    return i < filledStars ? '/images/StarRatingIcon.svg' : '/images/EmptyStarIcon.svg';
+    return i < FilledStar ? FilledStarSrc : EmptyStarSrc;
   });
 
   return (
     <div className='flex'>
       {stars.map((src, idx) => (
-        <Image
-          key={idx}
-          src={src}
-          alt='별 아이콘'
-          width={24}
-          height={24}
-          className={`list-star md:recommend-star`}
-        />
+        <Image key={idx} src={src} alt='별 아이콘' width={24} height={24} className={className} />
       ))}
     </div>
   );
