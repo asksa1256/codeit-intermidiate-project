@@ -27,7 +27,7 @@ const KeyboardsPage = () => {
 
   useEffect(() => {
     axios
-      .get('https://winereview-api.vercel.app/16-3/wines?limit=1')
+      .get('https://winereview-api.vercel.app/16-3/wines?limit=10')
       .then((res) => setKeyboards(res.data.list))
       .catch((err) => console.error('호출 실패', err));
   }, []);
@@ -35,7 +35,7 @@ const KeyboardsPage = () => {
   return (
     <div>
       <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
-      <div className='grid grid-cols-2 gap-4'>
+      <div className='flex flex-col gap-4'>
         {keyboards.map((keyboard) => (
           <IndexKeyboardsCard
             key={keyboard.id}

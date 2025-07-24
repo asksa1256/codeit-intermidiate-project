@@ -60,13 +60,15 @@ const IndexKeyboardsCard = (props: IndexKeyboardsCardProps) => {
         />
       </div>
       {/* 최근 리뷰 */}
-      {recentReview ? (
-        <div className='text-xs text-gray-600 mb-2'>
-          <span className='font-semibold'>최신 후기:</span> {recentReview.content}
-        </div>
-      ) : (
-        <div className='text-xs text-gray-600 mb-2'>최신 후기가 없습니다.</div>
-      )}
+      <div className='mt-2 pt-2 border-t border-gray-300'>
+        {recentReview ? (
+          <div className='text-xs text-gray-600 mb-2'>
+            <span className='font-semibold'>최신 후기:</span> {recentReview.content}
+          </div>
+        ) : (
+          <div className='text-xs text-gray-600 mb-2'>최신 후기가 없습니다.</div>
+        )}
+      </div>
     </div>
   );
 };
