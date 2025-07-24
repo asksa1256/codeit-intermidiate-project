@@ -2,6 +2,8 @@ import localFont from 'next/font/local';
 
 import './globals.css';
 
+import RequireAuth from '@/components/feature/RequireAuth';
+
 import type { Metadata } from 'next';
 
 const pretendard = localFont({
@@ -43,7 +45,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body className={pretendard.className}>{children}</body>
+      <body className={pretendard.className}>
+        <RequireAuth>{children}</RequireAuth>
+      </body>
     </html>
   );
 }
