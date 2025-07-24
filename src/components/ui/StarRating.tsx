@@ -12,7 +12,7 @@ const StarRating = ({ value }: StarRatingProps) => {
   });
 
   return (
-    <div className='flex gap-1'>
+    <div className='flex gap-1 sm:gap-[2px] md:gap-[6px] lg:gap-2'>
       {stars.map((src, idx) => (
         <Image
           key={idx}
@@ -20,7 +20,7 @@ const StarRating = ({ value }: StarRatingProps) => {
           alt='별 아이콘'
           width={14}
           height={14}
-          className='w-[14px] h-[14px]'
+          className='w-[14px] h-[14px] sm:w-[12px] sm:h-[12px] md:w-[18px] md:h-[18px] lg:w-[24px] lg:h-[24px]'
         />
       ))}
     </div>
