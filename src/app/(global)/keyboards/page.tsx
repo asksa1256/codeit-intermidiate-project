@@ -6,28 +6,14 @@ import { useState, useEffect } from 'react';
 
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 
-interface KeyboardItem {
-  id: number;
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  avgRating: number;
-  reviewCount: number;
-  recentReview?: {
-    id: number;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-  } | null;
-}
+import type { KeyboardItemType, KeyboardListType } from '@/types/keyboardTypes';
 
 const KeyboardsPage = () => {
-  const [keyboards, setKeyboards] = useState<KeyboardItem[]>([]);
+  const [keyboards, setKeyboards] = useState<KeyboardItemType[]>([]);
 
   useEffect(() => {
     axios
-      .get('https://winereview-api.vercel.app/16-3/wines?limit=10')
+      .get<KeyboardListType>('https://winereview-api.vercel.app/16-3/wines?limit=10')
       .then((res) => setKeyboards(res.data.list))
       .catch((err) => console.error('호출 실패', err));
   }, []);

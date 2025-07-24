@@ -6,6 +6,8 @@ import React from 'react';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import StarRating from '@/components/ui/StarRating';
 
+import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
+
 interface IndexKeyboardsCardProps {
   name: string;
   region: string;
@@ -13,16 +15,18 @@ interface IndexKeyboardsCardProps {
   price: number;
   avgRating: number;
   reviewCount: number;
-  recentReview: {
-    id: number;
-    content: string;
-    createdAt: string;
-    updatedAt: string;
-  } | null;
+  recentReview: KeyboardItemRecentReview | null;
 }
 
-const IndexKeyboardsCard = (props: IndexKeyboardsCardProps) => {
-  const { name, region, image, price, avgRating, reviewCount, recentReview } = props;
+const IndexKeyboardsCard = ({
+  name,
+  region,
+  image,
+  price,
+  reviewCount,
+  avgRating,
+  recentReview,
+}: IndexKeyboardsCardProps) => {
   return (
     <div className='w-[343px] h-[360px] p-4 rounded-xl border border-gray-300 shadow-sm flex flex-col bg-white'>
       {/* 이미지 */}
