@@ -69,3 +69,13 @@
     @apply cursor-not-allowed;
   }
 }
+
+/* 목록 카드 별 */
+.list-star {
+  @apply w-[14px] h-[14px] md:w-[24px] md:h-[24px];
+}
+
+/* 추천 카드 별 */
+.recommend-star {
+  @apply w-[12px] h-[12px] md:w-[18px] md:h-[18px];
+}

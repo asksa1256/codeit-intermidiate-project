@@ -29,8 +29,8 @@ const IndexKeyboardsCard = (props: IndexKeyboardsCardProps) => {
       <div className='w-[70px] h-[212px] rounded-md overflow-hidden mb-4'>
         <Image src={image} alt={name} width={500} height={500} className='object-cover' />
       </div>
-      {/* 이름 */}
-      <h3 className='text-xl font-semibold text-gray-800 line-clamp-2 mb-2'>{name}</h3>
+      {/* 키보드명 */}
+      <h3 className='text-xl font-semibold text-gray-800 line-clamp-2 mb-2 truncate'>{name}</h3>
       {/* 제조사 */}
       <div className='text-xs text-gray-500 mb-2'>{region}</div>
       {/* 가격 */}
