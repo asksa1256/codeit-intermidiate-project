@@ -11,8 +11,9 @@ import { useForm } from 'react-hook-form';
 
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
-import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 import { AxiosApiAuth } from '@/lib/api/axios';
+
+import PasswordInputField from './PasswordInputField';
 
 interface FormValues {
   email: string;
@@ -26,7 +27,6 @@ const passwordRegex = /^[A-Za-z0-9!@#$%^&*]+$/;
 
 const SignInForm = () => {
   const router = useRouter();
-  const { isPwVisible, setIsPwVisible, ToggleIcon } = usePwVisibleToggle();
   const auth = new AxiosApiAuth();
 
   const {
@@ -116,14 +116,11 @@ const SignInForm = () => {
         </Field>
 
         <Field>
-          <InputField
-            type={isPwVisible ? 'text' : 'password'}
+          <PasswordInputField
             label='비밀번호'
             inputLabelGap={10}
             placeholder='영문, 숫자, 일부 특수문자(!@#$%^&*) 입력'
             autoComplete='new-password'
-            icon={<ToggleIcon isPwVisible={isPwVisible} />}
-            iconTitle='비밀번호 보기'
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',
               minLength: {
@@ -135,20 +132,16 @@ const SignInForm = () => {
                 message: '비밀번호는 숫자, 영문, 일부 특수문자(!@#$%^&*)로만 가능합니다.',
               },
             })}
-            onIconBtnClick={() => setIsPwVisible((prev) => !prev)}
             error={errors.password?.message}
           />
         </Field>
 
         <Field>
-          <InputField
-            type={isPwVisible ? 'text' : 'password'}
+          <PasswordInputField
             label='비밀번호 확인'
             inputLabelGap={10}
             placeholder='비밀번호 확인'
             autoComplete='new-password'
-            icon={<ToggleIcon isPwVisible={isPwVisible} />}
-            iconTitle='비밀번호 보기'
             {...register('passwordCheck', {
               required: '비밀번호 확인을 입력해주세요.',
               minLength: {
@@ -163,7 +156,6 @@ const SignInForm = () => {
                 }
               },
             })}
-            onIconBtnClick={() => setIsPwVisible((prev) => !prev)}
             error={errors.passwordCheck?.message}
           />
         </Field>

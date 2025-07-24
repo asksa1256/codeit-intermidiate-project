@@ -1,5 +1,5 @@
 import { Input, Label } from '@headlessui/react';
-import { forwardRef, ReactNode, MouseEvent } from 'react';
+import { forwardRef } from 'react';
 
 interface InputProps {
   type: string;
@@ -8,13 +8,10 @@ interface InputProps {
   inputLabelGap?: number;
   autoComplete?: string;
   error?: string;
-  icon?: ReactNode;
-  iconTitle?: string;
-  onIconBtnClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const InputField = forwardRef<HTMLInputElement, InputProps>(
-  ({ type, placeholder, error, icon, iconTitle, onIconBtnClick, inputLabelGap, ...props }, ref) => {
+  ({ type, placeholder, error, inputLabelGap, ...props }, ref) => {
     return (
       <>
         {props.label && (
@@ -34,16 +31,6 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             {...props}
           />
-          {icon && (
-            <button
-              type='button'
-              title={iconTitle}
-              onClick={onIconBtnClick}
-              className='absolute right-[20px] top-1/2 -translate-y-1/2'
-            >
-              {icon}
-            </button>
-          )}
         </div>
         <p className={`mt-1 text-sm md:text-md text-red-500 h-6`}>{error ? error : ''}</p>
       </>

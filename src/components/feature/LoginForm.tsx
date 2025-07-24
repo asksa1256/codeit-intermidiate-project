@@ -11,8 +11,9 @@ import { useForm } from 'react-hook-form';
 import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
-import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 import { AxiosApiAuth } from '@/lib/api/axios';
+
+import PasswordInputField from './PasswordInputField';
 
 interface FormValues {
   email: string;
@@ -24,7 +25,6 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const LoginForm = () => {
   const router = useRouter();
-  const { isPwVisible, setIsPwVisible, ToggleIcon } = usePwVisibleToggle();
   const auth = new AxiosApiAuth();
 
   const {
@@ -77,14 +77,11 @@ const LoginForm = () => {
         </Field>
 
         <Field>
-          <InputField
-            type={isPwVisible ? 'text' : 'password'}
+          <PasswordInputField
             label='비밀번호'
             inputLabelGap={10}
             placeholder='비밀번호 입력'
             autoComplete='current-password'
-            icon={<ToggleIcon isPwVisible={isPwVisible} />}
-            iconTitle='비밀번호 보기'
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',
               minLength: {
@@ -92,7 +89,6 @@ const LoginForm = () => {
                 message: '비밀번호를 8자 이상 입력해주세요.',
               },
             })}
-            onIconBtnClick={() => setIsPwVisible((prev) => !prev)}
             error={errors.password?.message}
           />
         </Field>
