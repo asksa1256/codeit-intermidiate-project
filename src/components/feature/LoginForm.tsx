@@ -8,13 +8,12 @@ import { Field } from '@headlessui/react';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 
-import EyeIcon from '@/assets/EyeIcon.svg';
+import EyeIcon from '@/assets/icons/EyeIcon.svg';
+import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
 import { AxiosApiAuth } from '@/lib/api/axios';
-
-import KakaoLoginButton from './KakaoLoginButton';
 
 interface FormValues {
   email: string;
@@ -26,7 +25,7 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const LoginForm = () => {
   const router = useRouter();
-  const { isPwVisible, setIsPwVisible } = usePwVisibleToggle();
+  const { isPwVisible, setIsPwVisible, ToggleIcon } = usePwVisibleToggle();
   const auth = new AxiosApiAuth();
 
   const {
@@ -85,7 +84,7 @@ const LoginForm = () => {
             inputLabelGap={10}
             placeholder='비밀번호 입력'
             autoComplete='current-password'
-            icon={<EyeIcon className='w-5 h-5 text-gray-500' />}
+            icon={<ToggleIcon isPwVisible={isPwVisible} />}
             iconTitle='비밀번호 보기'
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',

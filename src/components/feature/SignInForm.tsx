@@ -9,7 +9,6 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import EyeIcon from '@/assets/EyeIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
@@ -27,7 +26,7 @@ const passwordRegex = /^[A-Za-z0-9!@#$%^&*]+$/;
 
 const SignInForm = () => {
   const router = useRouter();
-  const { isPwVisible, setIsPwVisible } = usePwVisibleToggle();
+  const { isPwVisible, setIsPwVisible, ToggleIcon } = usePwVisibleToggle();
   const auth = new AxiosApiAuth();
 
   const {
@@ -123,7 +122,7 @@ const SignInForm = () => {
             inputLabelGap={10}
             placeholder='영문, 숫자, 일부 특수문자(!@#$%^&*) 입력'
             autoComplete='new-password'
-            icon={<EyeIcon className='w-5 h-5 text-gray-500' />}
+            icon={<ToggleIcon isPwVisible={isPwVisible} />}
             iconTitle='비밀번호 보기'
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',
@@ -148,7 +147,7 @@ const SignInForm = () => {
             inputLabelGap={10}
             placeholder='비밀번호 확인'
             autoComplete='new-password'
-            icon={<EyeIcon className='w-5 h-5 text-gray-500' />}
+            icon={<ToggleIcon isPwVisible={isPwVisible} />}
             iconTitle='비밀번호 보기'
             {...register('passwordCheck', {
               required: '비밀번호 확인을 입력해주세요.',
