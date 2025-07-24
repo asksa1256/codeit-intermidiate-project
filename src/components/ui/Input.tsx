@@ -35,7 +35,6 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {icon && (
-            // 추후 IconButton 컴포넌트로 변경
             <button
               type='button'
               title={iconTitle}
