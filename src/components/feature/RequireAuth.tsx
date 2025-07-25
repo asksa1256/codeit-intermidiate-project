@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { LOGIN_PAGE, SIGNUP_PAGE } from '@/constants';
+import { LOGIN_PAGE, SIGNUP_PAGE, KEYBOARD_LIST_PAGE } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
 
@@ -15,8 +15,8 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
 
   const router = useRouter();
   const pathname = usePathname();
-  const PUBLIC_PATHS = [LOGIN_PAGE, SIGNUP_PAGE];
-  const isPublicPath = PUBLIC_PATHS.includes(pathname) || pathname.startsWith('/oauth/kakao'); // 로그인/회원가입/소셜 로그인
+  const PUBLIC_PATHS = [LOGIN_PAGE, SIGNUP_PAGE, '/', KEYBOARD_LIST_PAGE];
+  const isPublicPath = PUBLIC_PATHS.includes(pathname) || pathname.startsWith('/oauth/kakao'); // 로그인 하지 않아도 접근 가능한 페이지: 랜딩, 로그인, 회원가입, 소셜 로그인, 키보드 목록 페이지
 
   // refreshToken 기반 accessToken 재발급 받기
   const refreshAccessToken = async (refreshToken: string) => {
@@ -59,7 +59,6 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
         }
         return;
       } else {
-        // 로그인/회원가입/소셜 로그인 외 페이지 접근
         if (!accessToken) {
           if (!refreshToken) {
             router.replace(LOGIN_PAGE);
