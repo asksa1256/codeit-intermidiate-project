@@ -10,3 +10,4 @@ export const REFRESH_TOKEN_KEY = 'refreshToken';
 // pages
 export const LOGIN_PAGE = '/login';
 export const SIGNUP_PAGE = '/signUp';
+export const KEYBOARD_LIST_PAGE = '/keyboards';
