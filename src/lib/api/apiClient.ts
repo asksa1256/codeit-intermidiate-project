@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 import { AxiosApiAuth } from './axios';
 import { tokenService } from './tokenService';
 
-const apiClient: AxiosInstance = axios.create({
+export const apiClient: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
 
