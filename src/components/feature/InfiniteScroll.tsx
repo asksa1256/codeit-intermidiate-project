@@ -4,15 +4,16 @@ import { useEffect, useRef } from 'react';
 
 import Spinner from '@/components/ui/Spinner';
 
-// 목록, 상세, 개인 페이지에서 로딩할 데이터들의 타입이 다를 것이므로 props로 받아오게 했습니다.
 interface InfiniteScrollProps<T> {
   items: T[];
   loading: boolean;
   hasMore: boolean;
   fetchNext: () => void;
   renderItem: (item: T) => React.ReactNode;
+  className?: string;
 }
 
+//제네릭 타입으로 여러 페이지에서 쓰기 편하게 해보기 items 부분에 사용하실 공통 타입을 넣어주시면 됩니다.
 const InfiniteScroll = <T,>({
   items,
   loading,

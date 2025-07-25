@@ -1,6 +1,7 @@
 // api
 export const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const TEAM_ID = process.env.NEXT_PUBLIC_TEAM;
+export const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY;
 
 // token
 export const ACCESS_TOKEN_KEY = 'accessToken';
