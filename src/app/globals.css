@@ -64,6 +64,7 @@
 
   .btn-outlined {
     @apply !bg-white border border-gray-300 sm:rounded-xl hover:border-primary;
+  }
 
   /* 목록 카드 별 */
   .list-star {
