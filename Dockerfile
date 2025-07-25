@@ -8,6 +8,10 @@ ENV TZ="Asia/Seoul"
 # Docker Container안의 디렉토리를 설정합니다. 설정을 안할시 Root리렉토리로 설정됩니다.
 WORKDIR /frontend
 
+
+# 환경 변수 파일 먼저 복사 (중요)
+COPY .env /frontend
+
 # package.json을 도커 이미지에 복사합니다.
 COPY package.json /frontend
 
