@@ -12,6 +12,7 @@ import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import { AxiosApiAuth } from '@/lib/api/axios';
+import useAuthStore from '@/stores/authStore';
 
 import PasswordInputField from './PasswordInputField';
 
@@ -26,6 +27,7 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const LoginForm = () => {
   const router = useRouter();
   const auth = new AxiosApiAuth();
+  const signIn = useAuthStore((state) => state.signIn);
 
   const {
     register,
@@ -38,7 +40,9 @@ const LoginForm = () => {
     const { email, password } = formValues;
 
     try {
-      await auth.signInByEmail(email, password);
+      const res = await auth.signInByEmail(email, password);
+      const { user, accessToken, refreshToken } = res;
+      signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
       router.push('/');
     } catch (error) {
       const err = error as AxiosError;

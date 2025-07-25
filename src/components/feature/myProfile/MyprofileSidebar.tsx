@@ -5,7 +5,8 @@ import { Input } from '@headlessui/react';
 import CameraIcon from '@/assets/icons/CameraIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import UserThumbnail from '@/components/ui/UserThumbnail';
-import { UserType } from '@/types/userTypes';
+import useAuthStore from '@/stores/authStore';
+import { UserType, AuthStore } from '@/types/userTypes';
 
 const userData: UserType = {
   id: 1642,
@@ -18,6 +19,7 @@ const userData: UserType = {
 
 const MyprofileSidebar = () => {
   const { nickname, image } = userData;
+  const { user, isLoggedIn, accessToken, refreshToken } = useAuthStore<AuthStore>((state) => state);
 
   return (
     <article className='p-5 border border-gray-300 bg-white rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.04)] md:px-10 md:pt-[23px] md:pb-[30px] lg:w-[280px] lg:shrink lg:px-5 lg:py-[39px]'>
@@ -39,7 +41,7 @@ const MyprofileSidebar = () => {
           </label>
         </div>
         <span className='grow text-xl font-bold md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px]'>
-          {nickname}
+          {user?.nickname}
         </span>
       </div>
       <div className='mt-5 md:flex md:flex-wrap md:mt-[30px] lg:mt-[48px]'>
