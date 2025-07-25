@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import React from 'react';
 
+import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import StarRating from '@/components/ui/StarRating';
 
@@ -30,8 +31,12 @@ const IndexKeyboardsCard = ({
   return (
     <div className='w-[343px] h-[360px] p-4 rounded-xl border border-gray-300 shadow-sm flex flex-col bg-white'>
       {/* 이미지 */}
-      <div className='w-[70px] h-[212px] rounded-md overflow-hidden mb-4'>
-        <Image src={image} alt={name} width={500} height={500} className='object-cover' />
+      <div className='w-[150px] h-[150px] overflow-hidden relative rounded-lg'>
+        <KeyboardThumbnail
+          imgSrc={image}
+          keyboardName={name}
+          ratioClass='w-[70%] aspect-[70/100]'
+        />
       </div>
       {/* 키보드명 */}
       <h3 className='text-xl font-semibold text-gray-800 line-clamp-2 mb-2 truncate'>{name}</h3>
