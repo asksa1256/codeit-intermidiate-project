@@ -71,11 +71,12 @@ jobs:
       - name: Set Docker image
         run: echo "DOCKER_IMAGE=${{secrets.DOCKER_USERNAME}}/${{secrets.GIT_REPOSITORY_NAME}}" >> $GITHUB_ENV
 
-      # - name: Create .env file
-      #   run: |
-      #     echo "PG_HOST=${{ secrets.PG_HOST }}" >> .env
-      #     echo "NESTJS_STATUS=${{ secrets.NESTJS_STATUS }}" >> .env
-      #     echo "SALT=${{ secrets.SALT }}" >> .env
+      - name: Create .env file
+        run: |
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
+          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env
+          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env
+          echo "NEXT_PUBLIC_KAKAO_REDIRECT_URI=${{ secrets.NEXT_PUBLIC_KAKAO_REDIRECT_URI }}" >> .env
 
       # Docker Hub에 로그인하는 단계
       - name: Login to Docker Hub
