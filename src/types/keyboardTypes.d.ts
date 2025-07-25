@@ -76,6 +76,8 @@ interface KeyboardItemBase {
  */
 interface KeyboardItemType extends KeyboardItemBase {
   recentReview: KeyboardItemRecentReview | null;
+  reviews: ReviewItemType[];
+  avgRatings: AvgRatings;
 }
 
 interface KeyboardItemRecentReview {
