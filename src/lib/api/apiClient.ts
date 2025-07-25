@@ -36,12 +36,9 @@ apiClient.interceptors.response.use(
 
       if (refreshTkn) {
         try {
-          const { data } = await auth.refreshToken(refreshTkn);
-
-          tokenService.setAccessToken(data.accessToken);
-          tokenService.setRefreshToken(data.refreshToken);
-
-          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+          const { accessToken } = await auth.refreshToken(refreshTkn);
+          tokenService.setAccessToken(accessToken);
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return apiClient(originalRequest);
         } catch {
           // 재발급 실패 시 토큰 삭제 후 로그인 페이지 이동 처리
