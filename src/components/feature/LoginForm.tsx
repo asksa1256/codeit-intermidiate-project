@@ -2,47 +2,52 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Field } from '@headlessui/react';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 
-import EyeIcon from '@/assets/EyeIcon.svg';
+import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
-import usePwVisibleToggle from '@/hooks/usePwVisibleToggle';
+import { AxiosApiAuth } from '@/lib/api/axios';
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+import PasswordInputField from './PasswordInputField';
+
 interface FormValues {
   email: string;
   password: string;
   passwordCheck: string;
 }
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 const LoginForm = () => {
-  const { isPwVisible, setIsPwVisible } = usePwVisibleToggle();
+  const router = useRouter();
+  const auth = new AxiosApiAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
+    setError,
   } = useForm<FormValues>({ mode: 'onBlur' });
 
   const onSubmit = async (formValues: FormValues) => {
     const { email, password } = formValues;
 
     try {
-      const response = await axios.post(
-        `https://winereview-api.vercel.app/16-3/auth/signIn`,
-        { email, password },
-        { headers: { 'Content-Type': 'application/json' } },
-      );
-      return response.data;
+      await auth.signInByEmail(email, password);
+      router.push('/');
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return error.response?.data;
+      const err = error as AxiosError;
+      if (err.response?.status === 400) {
+        setError('email', {
+          type: 'manual',
+          message: '이메일 혹은 비밀번호를 확인해주세요.',
+        });
       }
-      throw error;
     }
   };
 
@@ -72,43 +77,34 @@ const LoginForm = () => {
         </Field>
 
         <Field>
-          <InputField
-            type={isPwVisible ? 'text' : 'password'}
+          <PasswordInputField
             label='비밀번호'
             inputLabelGap={10}
             placeholder='비밀번호 입력'
             autoComplete='current-password'
-            icon={<EyeIcon className='w-5 h-5 text-gray-500' />}
-            iconTitle='비밀번호 보기'
             {...register('password', {
               required: '비밀번호는 필수 입력입니다.',
+              minLength: {
+                value: 8,
+                message: '비밀번호를 8자 이상 입력해주세요.',
+              },
             })}
-            onIconBtnClick={() => setIsPwVisible((prev) => !prev)}
             error={errors.password?.message}
           />
         </Field>
       </div>
 
       <div className='form-btm-actions'>
-        <ButtonDefault
-          type='submit'
-          disabled={!isValid || isSubmitting}
-          className='w-full sm:rounded-xl hover:bg-primary-dark'
-        >
-          <span className='text-sm md:text-base'>로그인</span>
+        <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
+          <span>로그인</span>
         </ButtonDefault>
 
-        <ButtonDefault className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-primary'>
-          <span className='relative w-6 h-6 rounded-full'>
-            <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
-          </span>
-          <span className='text-gray-800 text-sm md:text-base'>카카오로 시작하기</span>
-        </ButtonDefault>
+        <KakaoLoginButton />
       </div>
 
       <div className='flex gap-3.5 text-sm md:text-base'>
         <span className='text-gray-500'>계정이 없으신가요?</span>
-        <Link href='/signup' className='text-primary underline underline-offset-4'>
+        <Link href='/signUp' className='text-primary underline underline-offset-4'>
           회원가입하기
         </Link>
       </div>
