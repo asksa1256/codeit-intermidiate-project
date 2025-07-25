@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
+import Spinner from '@/components/ui/Spinner';
+
 interface Item {
   id: number;
   name: string;
@@ -10,7 +12,7 @@ interface Item {
   region: string;
   avgRating: number;
   reviewCount: number;
-  // 필요한 props를 여기에 추가
+  // 필요한 props를 여기에 추가해 주세요.
 }
 
 const InfiniteScroll = () => {
@@ -21,7 +23,7 @@ const InfiniteScroll = () => {
 
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ 데이터 요청 함수
+  //  데이터 요청 함수
   const fetchItems = async () => {
     if (!hasMore || loading) return; // 중복 방지
     setLoading(true);
@@ -46,7 +48,7 @@ const InfiniteScroll = () => {
     }
   };
 
-  // ✅ IntersectionObserver로 스크롤 감지
+  // IntersectionObserver로 스크롤 감지
   useEffect(() => {
     if (!observerRef.current) return;
 
@@ -67,7 +69,7 @@ const InfiniteScroll = () => {
     };
   }, [observerRef.current, hasMore, loading]);
 
-  // ✅ 첫 로드
+  // 첫 로드
   useEffect(() => {
     fetchItems();
   }, []);
@@ -83,8 +85,12 @@ const InfiniteScroll = () => {
         </div>
       ))}
 
-      {/* 로딩 표시 */}
-      {loading && <p>로딩 중...</p>}
+      {/* 로딩 표시 스피너 */}
+      {loading && (
+        <div className='flex justify-center p-4'>
+          <Spinner />
+        </div>
+      )}
 
       {/* 더 불러올 데이터가 없을 때 */}
       {!hasMore && <p>모든 데이터를 불러왔습니다.</p>}
