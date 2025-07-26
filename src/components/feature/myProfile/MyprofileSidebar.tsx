@@ -1,6 +1,7 @@
 'use client';
 
 import { Input } from '@headlessui/react';
+import { AxiosError } from 'axios';
 import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
 
 import CameraIcon from '@/assets/icons/CameraIcon.svg';
@@ -33,12 +34,19 @@ const MyprofileSidebar = () => {
     try {
       const URL = `/${process.env.NEXT_PUBLIC_TEAM}/users/me`;
 
-      const { data } = await apiClient.patch(URL, updateUserData);
+      const res = await apiClient.patch(URL, updateUserData);
 
-      setUser(data);
+      setUser(res.data);
     } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.status === 400) {
+        alert('이미 사용중인 닉네임입니다.');
+        return;
+      }
+
       alert('프로필 수정에 실패하였습니다.');
-      console.error(error);
+      console.error();
     }
   };
 
