@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
+import Modal from '@/components/feature/Modal';
 import MyReviewItem from '@/components/feature/myProfile/MyReviewItem';
 import EmptyList from '@/components/ui/EmptyList';
 import { apiClient } from '@/lib/api/apiClient';
@@ -14,6 +15,8 @@ const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
 
 const MyReviewList = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentEditReview, setCurrentEditReview] = useState<MyReviewItemType | null>(null);
   const [reviewList, setReviewList] = useState<MyReviewItemType[]>([]);
   const [nextCursor, setNextCursor] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -56,6 +59,22 @@ const MyReviewList = () => {
     }
   };
 
+  // 리뷰 수정 모달 열기
+  const handleOpenModal = (review: MyReviewItemType) => {
+    setModalOpen(true);
+    setCurrentEditReview(review);
+  };
+
+  // 리뷰 수정 모달 닫기
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setCurrentEditReview(null);
+  };
+
+  // 나중에 사용할 상태값들입니다. 빌드시 에러가 뜨는거 같아서 임시로 추가해둘게요!
+  console.log(currentEditReview);
+  console.log(nextCursor);
+
   return (
     <>
       <span className='rounded-2xl absolute bottom-[calc(100%+16px)] right-0 text-xs text-primary leading-[26px] md:text-md md:leading-[32px] md:bottom-[calc(100%+22px)]'>
@@ -74,11 +93,19 @@ const MyReviewList = () => {
         ) : (
           <ul>
             {reviewList.map((review) => (
-              <MyReviewItem key={review.id} review={review} onDelete={handleDeleteReview} />
+              <MyReviewItem
+                key={review.id}
+                review={review}
+                onDelete={handleDeleteReview}
+                onEdit={handleOpenModal}
+              />
             ))}
           </ul>
         )}
       </div>
+      <Modal open={modalOpen} onClose={handleCloseModal} size='lg' title='수정하기'>
+        수정모달
+      </Modal>
     </>
   );
 };

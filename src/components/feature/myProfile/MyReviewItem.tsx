@@ -10,13 +10,18 @@ import { formatRelativeTime } from '@/utils/formatters';
 interface MyReviewItemProps {
   review: MyReviewItemType;
   onDelete: (id: number) => void;
+  onEdit: (review: MyReviewItemType) => void;
 }
 
-const MyReviewItem = ({ review, onDelete }: MyReviewItemProps) => {
+const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
   const { rating, content, updatedAt, wine } = review;
 
   const handleDeleteReview = () => {
     onDelete(review.id);
+  };
+
+  const handleEditReview = () => {
+    onEdit(review);
   };
 
   return (
@@ -39,7 +44,7 @@ const MyReviewItem = ({ review, onDelete }: MyReviewItemProps) => {
             />
           </Dropdown.Trigger>
           <Dropdown.List className='mt-2 lg:mt-4'>
-            <Dropdown.Item onClick={() => console.log('수정하기')}>수정하기</Dropdown.Item>
+            <Dropdown.Item onClick={handleEditReview}>수정하기</Dropdown.Item>
             <Dropdown.Item onClick={handleDeleteReview}>삭제하기</Dropdown.Item>
           </Dropdown.List>
         </Dropdown>
