@@ -23,16 +23,22 @@ const KeyboardsPage = () => {
     setLoading(true);
     try {
       const res = await axios.get<KeyboardListType>(
-        `https://winereview-api.vercel.app/16-3/wines?limit=10${cursor !== null ? `&cursor=${cursor}` : ''}`,
+        `https://winereview-api.vercel.app/16-3/wines?limit=5${cursor !== null ? `&cursor=${cursor}` : ''}`,
       );
 
       console.log('이번 요청에 보낸 cursor:', cursor);
       console.log('API 응답 nextCursor:', res.data.nextCursor);
       console.log('API 응답 전체', res.data);
 
+      //새로 받을 데이터 추가
       setItems((prev) => [...prev, ...res.data.list]);
-      setCursor(res.data.nextCursor);
-      if (!res.data.nextCursor) setHasMore(false);
+      // 다음 커서 세팅
+      if (res.data.nextCursor !== null) {
+        setCursor(res.data.nextCursor);
+      } else {
+        // 더 이상 불러올 데이터가 없으면
+        setHasMore(false);
+      }
     } catch (err) {
       console.error('데이터 호출 실패', err);
     } finally {
