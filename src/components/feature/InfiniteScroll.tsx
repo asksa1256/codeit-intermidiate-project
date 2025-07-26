@@ -48,5 +48,5 @@ const InfiniteScroll = <T,>({
     </div>
   );
 };
-// TODO 스피너 및 hasMore는 확장성을 위해 불 빼두자.
+// TODO 스피너는 확장성을 위해 불 빼두자.
 export default InfiniteScroll;

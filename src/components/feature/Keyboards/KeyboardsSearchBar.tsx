@@ -48,7 +48,7 @@ const KeyboardsSearchBar = () => {
       }
 
       const filtered = dataArray.filter((item: KeyboardItem) =>
-        item.name.toLowerCase().startsWith(cleanQuery),
+        item.name.toLowerCase().includes(cleanQuery),
       );
 
       setResults(filtered);
@@ -104,39 +104,3 @@ const KeyboardsSearchBar = () => {
 };
 
 export default KeyboardsSearchBar;
-// const SearchBar = () => {
-//   return (
-//     <div
-//       className='
-//         flex items-center
-//         w-full max-w-[343px] h-[38px]
-//         rounded-[50px]
-//         border border-gray-300
-//         bg-white
-//         px-[15px] py-[14px]
-//       '
-//     >
-//       {/* 돋보기 아이콘 */}
-//       <Image
-//         src='/images/SearchIcon.svg'
-//         width={40}
-//         height={40}
-//         alt='검색 아이콘'
-//         className='w-6 md:w-[26px]'
-//       />
-
-//       {/* 입력창 */}
-//       <input
-//         type='text'
-//         placeholder='와인을 검색해보세요'
-//         className='
-//           flex-1 text-sm
-//           placeholder:text-gray-400
-//           outline-none border-none bg-transparent
-//         '
-//       />
-//     </div>
-//   );
-// };
-
-// export default SearchBar;

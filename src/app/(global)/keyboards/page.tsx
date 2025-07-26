@@ -24,10 +24,10 @@ const KeyboardsPage = () => {
     setLoading(true);
     try {
       const res = await axios.get<KeyboardListType>(
-        `https://winereview-api.vercel.app/16-3/wines?limit=10${cursor !== null ? `&cursor=${cursor}` : ''}`,
+        `https://winereview-api.vercel.app/16-3/wines?limit=5${cursor !== null ? `&cursor=${cursor}` : ''}`,
       );
 
-      //응답 데이터 확인용 TODO 테스트 이후에 삭제하기
+      //TODO 테스트 완료되면 삭제하기
       console.log('이번 요청에 보낸 cursor:', cursor);
       console.log('API 응답 nextCursor:', res.data.nextCursor);
       console.log('API 응답 전체', res.data);
@@ -71,6 +71,7 @@ const KeyboardsPage = () => {
         )}
         className='grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'
       />
+      {!hasMore && <p className='text-sm text-gray-500 mt-4'>모든 데이터를 불러왔습니다.</p>}
     </div>
   );
 };
