@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-node@v2
         # 두 번째 단계: Node.js 환경을 설정합니다.
         with:
-          node-version: "22.16.0"
+          node-version: '22.16.0'
           # Node.js의 버전을 지정합니다.
           # 이 예시에서는 '20.10.0' 버전을 사용합니다.
 
@@ -57,6 +57,12 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Create .env file
+        run: |
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
+          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env
+          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env
+
       # Docker 빌드 레이어를 캐시하여 빌드 시간을 단축하는 단계
       - name: Cache docker layers
         uses: actions/cache@v4
@@ -70,12 +76,6 @@ jobs:
       # 에러부분 GIT_REPOSITORY_NAME 추가
       - name: Set Docker image
         run: echo "DOCKER_IMAGE=${{secrets.DOCKER_USERNAME}}/${{secrets.GIT_REPOSITORY_NAME}}" >> $GITHUB_ENV
-
-      # - name: Create .env file
-      #   run: |
-      #     echo "PG_HOST=${{ secrets.PG_HOST }}" >> .env
-      #     echo "NESTJS_STATUS=${{ secrets.NESTJS_STATUS }}" >> .env
-      #     echo "SALT=${{ secrets.SALT }}" >> .env
 
       # Docker Hub에 로그인하는 단계
       - name: Login to Docker Hub
@@ -130,4 +130,4 @@ jobs:
         run: docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
 
       - name: Docker run. Run nbpay_main_backend container
-        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev

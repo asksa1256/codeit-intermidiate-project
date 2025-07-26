@@ -163,3 +163,79 @@ export class AxiosApiAuth {
     tokenService.clearTokens();
   }
 }
+
+// Authorization이 포함되어야 하는 API 요청시 사용
+interface WithAuthRequestData<U> {
+  path: string;
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  headers?: HeadersInit;
+  body?: BodyInit | U;
+  cache?: 'string';
+}
+
+export class FetchApiWithAuth {
+  private BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${process.env.NEXT_PUBLIC_TEAM}`;
+
+  // fetch
+  async request<T, U = null>(requestData: WithAuthRequestData<U>): Promise<T> {
+    const accessToken = tokenService.getAccessToken();
+    const { path, method, headers, body } = requestData;
+
+    const fetchUrl = `${this.BASE_URL}${path}`;
+
+    const bodyIsFormData = body instanceof FormData;
+    const contentType = bodyIsFormData ? null : { 'Content-Type': 'application/json' };
+
+    const headersOption = {
+      Authorization: `Bearer ${accessToken}`,
+      ...contentType,
+      ...headers,
+    };
+
+    const fetchOption: RequestInit = {
+      method,
+      headers: headersOption,
+    };
+
+    if (method !== 'GET') {
+      // POST / PUT / PATCH / DELETE 일 때,
+      fetchOption.body = bodyIsFormData ? body : JSON.stringify(body);
+    }
+
+    try {
+      const res = await fetch(fetchUrl, fetchOption);
+
+      if (res.status === 401) {
+        // 액세스 토큰 만료시,
+        return await this.fetchWithTokenHandling(requestData);
+      }
+
+      if (!res.ok) throw new Error(res.statusText);
+
+      return await res.json();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  // 토큰 재발급 및 요청 재시도 함수
+  private async fetchWithTokenHandling<T, U>(requestData: WithAuthRequestData<U>): Promise<T> {
+    try {
+      // 액세스 토큰 재발급
+      const refreshTk = tokenService.getRefreshToken();
+
+      const auth = new AxiosApiAuth(); // 인스턴스 생성
+      const resetToken = await auth.refreshToken(refreshTk); // AxiosApiAuth의 refreshToken 함수 사용
+
+      // 로컬 스토리지 갱신
+      tokenService.setAccessToken(resetToken.accessToken);
+
+      // 요청 재시도
+      return this.request(requestData);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+}
