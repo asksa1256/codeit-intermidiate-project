@@ -14,3 +14,13 @@ export const fetchKeyboardsAPI = async (
 
   return { list: res.data.list, nextCursor: res.data.nextCursor };
 };
+
+// 페이지에서 사용법 예시
+//
+// 커스텀 훅 사용
+// const { items, loading, hasMore, fetchNext } =
+//  useInfiniteScrollFetcher<KeyboardItemType>(fetchKeyboardsAPI, 5); 불러오실 공통 타입과 한번에 불러온 리스트 값을 수정해주시면 됩니다.
+// 첫 페이지 로딩
+// useEffect(() => {
+//   fetchNext();
+// }, [fetchNext]);
