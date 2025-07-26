@@ -41,6 +41,10 @@ const RatingsInfo = ({ keyboardInfo }: Props) => {
     };
   }, [handleScroll]);
 
+  if (reviewCount === 0) {
+    return;
+  }
+
   return (
     <section
       ref={stickyRef}
