@@ -23,8 +23,8 @@ const EmptyList = ({ desc, children, className }: Props) => {
         height={136}
         className='w-[100px] h-auto md:w-[136px]'
       />
-      <p className='mt-8 mb-10 text-gray-500 text-center md:mt-6 md:mb-12 md:text-lg'>{desc}</p>
-      {children}
+      <p className='mt-8  text-gray-500 text-center md:mt-6 md:text-lg'>{desc}</p>
+      {children && <div className='mt-10 md:mt-12'>{children}</div>}
     </div>
   );
 };
