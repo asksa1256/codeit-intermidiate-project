@@ -21,7 +21,7 @@ const ReviewCard = ({ review }: Props) => {
   const [isReviewFolded, setIsReviewFolded] = useState(true);
   const {
     user,
-    isLiked,
+    // isLiked, 전역 상태관리 도입 후 사용 예정
     updatedAt,
     aroma,
     content,
