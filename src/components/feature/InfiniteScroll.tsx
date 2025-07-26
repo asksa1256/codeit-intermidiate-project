@@ -2,8 +2,6 @@
 import React from 'react';
 import { useEffect, useRef } from 'react';
 
-import Spinner from '@/components/ui/Spinner';
-
 interface InfiniteScrollProps<T> {
   items: T[];
   loading: boolean;
@@ -46,14 +44,6 @@ const InfiniteScroll = <T,>({
       {items.map((item, idx) => (
         <React.Fragment key={idx}>{renderItem(item)}</React.Fragment>
       ))}
-      {loading && (
-        <div className='flex justify-center p-4'>
-          <Spinner />
-        </div>
-      )}
-      {!hasMore && (
-        <p className='text-sm text-[var(--color-gray-500)]'>모든 데이터를 불러왔습니다.</p>
-      )}
       <div ref={observerRef} className='h-10 w-full'></div>
     </div>
   );
