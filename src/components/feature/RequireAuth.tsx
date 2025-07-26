@@ -8,6 +8,8 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { LOGIN_PAGE, SIGNUP_PAGE, KEYBOARD_LIST_PAGE, KAKAO_LOGIN_PAGE } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
+import useAuthStore from '@/stores/authStore';
+const { setTokens } = useAuthStore.getState();
 
 const RequireAuth = ({ children }: { children: ReactNode }) => {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -29,6 +31,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
       setIsRefreshing(true);
       const res = await auth.refreshToken(refreshToken);
       tokenService.setAccessToken(res.accessToken);
+      setTokens(res.accessToken, refreshToken);
       return true;
     } catch (err) {
       console.error('accessToken 재발급 실패:', err);
