@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 import MyReviewItem from '@/components/feature/myProfile/MyReviewItem';
@@ -13,7 +14,7 @@ const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
 
 const MyReviewList = () => {
-  const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
+  const [reviewList, setReviewList] = useState<MyReviewItemType[]>([]);
   const [nextCursor, setNextCursor] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
 
@@ -35,13 +36,33 @@ const MyReviewList = () => {
     getReviewList();
   }, []);
 
+  // 리뷰 삭제
+  const handleDeleteReview = async (reviewId: number) => {
+    try {
+      await apiClient.delete(`/${TEAM}/reviews/${reviewId}`);
+
+      setReviewList((prev) => prev.filter((review) => review.id !== reviewId));
+      setTotalCount((totalCount) => totalCount - 1);
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response?.status === 403) {
+        alert('본인이 작성한 리뷰만 삭제 가능합니다.');
+        return;
+      }
+
+      alert('리뷰 삭제에 실패 하였습니다.');
+      console.error(err.response?.statusText);
+    }
+  };
+
   return (
     <>
       <span className='rounded-2xl absolute bottom-[calc(100%+16px)] right-0 text-xs text-primary leading-[26px] md:text-md md:leading-[32px] md:bottom-[calc(100%+22px)]'>
         총 {totalCount}개
       </span>
       <div>
-        {!reviewList ? (
+        {reviewList.length === 0 ? (
           <EmptyList desc='작성된 리뷰가 없어요'>
             <Link
               href='/keyboards'
@@ -53,7 +74,7 @@ const MyReviewList = () => {
         ) : (
           <ul>
             {reviewList.map((review) => (
-              <MyReviewItem key={review.id} review={review} />
+              <MyReviewItem key={review.id} review={review} onDelete={handleDeleteReview} />
             ))}
           </ul>
         )}

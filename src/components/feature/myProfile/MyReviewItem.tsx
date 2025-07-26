@@ -9,10 +9,16 @@ import { formatRelativeTime } from '@/utils/formatters';
 
 interface MyReviewItemProps {
   review: MyReviewItemType;
+  onDelete: (id: number) => void;
 }
 
-const MyReviewItem = ({ review }: MyReviewItemProps) => {
+const MyReviewItem = ({ review, onDelete }: MyReviewItemProps) => {
   const { rating, content, updatedAt, wine } = review;
+
+  const handleDeleteReview = () => {
+    onDelete(review.id);
+  };
+
   return (
     <li className='border border-gray-300 py-4 px-5 bg-white rounded-2xl mb-4 md:py-6 md:px-10 lg:mb-2 lg:pb-7'>
       <div className='flex items-center gap-[15px] mb-[17px] md:mb-5'>
@@ -34,7 +40,7 @@ const MyReviewItem = ({ review }: MyReviewItemProps) => {
           </Dropdown.Trigger>
           <Dropdown.List className='mt-2 lg:mt-4'>
             <Dropdown.Item onClick={() => console.log('수정하기')}>수정하기</Dropdown.Item>
-            <Dropdown.Item onClick={() => console.log('삭제하기')}>삭제하기</Dropdown.Item>
+            <Dropdown.Item onClick={handleDeleteReview}>삭제하기</Dropdown.Item>
           </Dropdown.List>
         </Dropdown>
       </div>
