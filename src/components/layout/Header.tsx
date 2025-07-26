@@ -8,12 +8,12 @@ interface HeaderProps {
 
 const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) => {
   return (
-    <header className='mx-auto my-5 flex  items-center justify-between  text-white md:px-[79px] md:py-[25px]'>
+    <header className='mx-auto my-5 flex  items-center justify-between bg-black rounded-2xl	 text-white md:px-[79px] md:py-[25px] '>
       <Link href='/' className='font-bold text-xl'>
         tadak
       </Link>
       <div className='flex items-center gap-10 font-medium'>
-        {loginStatus ? <Link href='/login'>로그인</Link> : <UserThumbnail imgSrc={imgSrc} />}
+        {loginStatus ? <UserThumbnail imgSrc={imgSrc} /> : <Link href='/login'>로그인</Link>}
         <Link href='/signUp'>회원가입</Link>
       </div>
     </header>
