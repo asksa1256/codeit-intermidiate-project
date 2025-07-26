@@ -130,4 +130,4 @@ jobs:
         run: docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
 
       - name: Docker run. Run nbpay_main_backend container
-        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev

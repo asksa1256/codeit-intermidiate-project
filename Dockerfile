@@ -10,7 +10,7 @@ WORKDIR /frontend
 
 
 # 환경 변수 파일 먼저 복사 (중요)
-# COPY .env /frontend
+# COPY .env.local /frontend
 
 # package.json을 도커 이미지에 복사합니다.
 COPY package.json /frontend
@@ -31,4 +31,4 @@ RUN npm run build
 EXPOSE 3000
 
 # 도커 이미지를 이용하여 컨테이너를 생성시 nodejs 자동 실행
-CMD ["npm","run","start"]
+CMD ["npm","run","dev"]

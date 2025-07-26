@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Field } from '@headlessui/react';
 import { AxiosError } from 'axios';
@@ -26,6 +26,7 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const auth = new AxiosApiAuth();
   const signIn = useAuthStore((state) => state.signIn);
 
@@ -40,10 +41,23 @@ const LoginForm = () => {
     const { email, password } = formValues;
 
     try {
+<<<<<<< HEAD
       const res = await auth.signInByEmail(email, password);
       const { user, accessToken, refreshToken } = res;
       signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
       router.push('/');
+=======
+      await auth.signInByEmail(email, password);
+
+      // 쿼리 파라미터에서 redirect_url 가져오기 (로그인 후 리다이렉트 처리)
+      const redirectUrl = searchParams.get('redirect_url');
+
+      if (redirectUrl) {
+        router.replace(redirectUrl);
+      } else {
+        router.push('/');
+      }
+>>>>>>> 148ae26ca5db8a6e2fff5d69a4d2534dbe745ace
     } catch (error) {
       const err = error as AxiosError;
       if (err.response?.status === 400) {
