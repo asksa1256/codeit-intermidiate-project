@@ -7,6 +7,7 @@ import { ChangeEvent, FocusEvent, useRef, useState } from 'react';
 import CameraIcon from '@/assets/icons/CameraIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import UserThumbnail from '@/components/ui/UserThumbnail';
+import { DEFAULT_PROFILE_IMG_URL } from '@/constants';
 import useImageUpload from '@/hooks/useImageUpload';
 import { apiClient } from '@/lib/api/apiClient';
 import useAuthStore from '@/stores/authStore';
@@ -26,7 +27,7 @@ const MyprofileSidebar = () => {
 
     const currentUserData = {
       nickname: user.nickname,
-      image: user.image,
+      image: user.image ?? DEFAULT_PROFILE_IMG_URL,
     };
 
     const updateUserData = {
