@@ -32,15 +32,22 @@ const KeyboardsPage = () => {
       console.log('API 응답 nextCursor:', res.data.nextCursor);
       console.log('API 응답 전체', res.data);
 
+      // 새로 받은 데이터 추가
       setItems((prev) => [...prev, ...res.data.list]);
-      setCursor(res.data.nextCursor);
-      if (!res.data.nextCursor) setHasMore(false);
+
+      // 다음 커서 세팅
+      if (res.data.nextCursor !== null) {
+        setCursor(res.data.nextCursor);
+      } else {
+        // 더 이상 불러올 데이터가 없으면
+        setHasMore(false);
+      }
     } catch (err) {
       console.error('데이터 호출 실패', err);
     } finally {
       setLoading(false);
     }
-  }, [cursor, hasMore, loading]);
+  }, [cursor, loading, hasMore]);
 
   // 첫 로딩. 페이지가 마운팅 될 때 한 번만 실행
   useEffect(() => {
