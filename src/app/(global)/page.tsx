@@ -1,6 +1,9 @@
+import HeaderComponent from "@/components/layout/Header";
+
 const Home = () => {
   return (
     <main>
+      <HeaderComponent />
       <div className='xs:bg-purple-400 sm:bg-amber-500 lg:bg-blue-400 xl:bg-pink-300'>
         반응형 테스트
       </div>
