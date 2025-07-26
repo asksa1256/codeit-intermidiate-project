@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 import InfiniteScroll from '@/components/feature/InfiniteScroll';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
+import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 
 import type { KeyboardItemType, KeyboardListType } from '@/types/keyboardTypes';
 
@@ -26,6 +27,7 @@ const KeyboardsPage = () => {
         `https://winereview-api.vercel.app/16-3/wines?limit=10${cursor !== null ? `&cursor=${cursor}` : ''}`,
       );
 
+      //응답 데이터 확인용 TODO 테스트 이후에 삭제하기
       console.log('이번 요청에 보낸 cursor:', cursor);
       console.log('API 응답 nextCursor:', res.data.nextCursor);
       console.log('API 응답 전체', res.data);
@@ -48,6 +50,7 @@ const KeyboardsPage = () => {
   return (
     <div className='p-4'>
       <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
+      <KeyboardsSearchBar />
 
       <InfiniteScroll<KeyboardItemType>
         items={items}
