@@ -10,7 +10,6 @@ interface InfiniteScrollProps<T> {
   hasMore: boolean;
   fetchNext: () => void;
   renderItem: (item: T) => React.ReactNode;
-  className?: string;
 }
 
 //제네릭 타입으로 여러 페이지에서 쓰기 편하게 해보기 items 부분에 사용하실 공통 타입을 넣어주시면 됩니다.
@@ -57,5 +56,5 @@ const InfiniteScroll = <T,>({
     </div>
   );
 };
-
+// TODO 스피너 및 hasMore는 확장성을 위해 불 빼두자.
 export default InfiniteScroll;

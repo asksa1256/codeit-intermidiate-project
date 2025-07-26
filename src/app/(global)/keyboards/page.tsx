@@ -1,21 +1,48 @@
 // 키보드 목록 페이지
 'use client';
 
-import { useEffect } from 'react';
+import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
 
 import InfiniteScroll from '@/components/feature/InfiniteScroll';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll'; //  커스텀 훅
-import { fetchKeyboardsAPI } from '@/utils/api/fetchKeyboardApi'; //  API fetcher
 
-import type { KeyboardItemType } from '@/types/keyboardTypes';
+import type { KeyboardItemType, KeyboardListType } from '@/types/keyboardTypes';
 
 const KeyboardsPage = () => {
-  const { items, loading, hasMore, fetchNext } =
-    useInfiniteScroll<KeyboardItemType>(fetchKeyboardsAPI);
+  // 상태 관리
+  const [items, setItems] = useState<KeyboardItemType[]>([]);
+  const [cursor, setCursor] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
+  // 데이터 가져오기
+  const fetchNext = useCallback(async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    try {
+      const res = await axios.get<KeyboardListType>(
+        `https://winereview-api.vercel.app/16-3/wines?limit=10${cursor !== null ? `&cursor=${cursor}` : ''}`,
+      );
+
+      console.log('이번 요청에 보낸 cursor:', cursor);
+      console.log('API 응답 nextCursor:', res.data.nextCursor);
+      console.log('API 응답 전체', res.data);
+
+      setItems((prev) => [...prev, ...res.data.list]);
+      setCursor(res.data.nextCursor);
+      if (!res.data.nextCursor) setHasMore(false);
+    } catch (err) {
+      console.error('데이터 호출 실패', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [cursor, hasMore, loading]);
+
+  // 첫 로딩. 페이지가 마운팅 될 때 한 번만 실행
   useEffect(() => {
-    fetchNext(); // 첫 페이지 로딩
+    fetchNext();
   }, [fetchNext]);
 
   return (
