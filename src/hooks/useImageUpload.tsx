@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 
 import { apiClient } from '@/lib/api/apiClient';
 
@@ -27,9 +27,9 @@ const useImageUpload = () => {
 
       return data.url;
     } catch (error) {
-      console.error(error);
+      setUploadImage(null); // 업로드 실패시 프리뷰용 파일 객체 제거
+      throw error;
     } finally {
-      // setIsUploading(false);
       setIsUploading(() => false);
     }
   };
@@ -42,6 +42,7 @@ const useImageUpload = () => {
     if (!e.target.files.length) return; // 이미지 업로드 취소시
 
     const file = e.target.files[0];
+    e.target.value = ''; // 중복 파일 업로드를 위한 초기화
 
     // 이미지 용량 검증
     if (file.size > MAX_SIZE) {
@@ -51,13 +52,9 @@ const useImageUpload = () => {
 
     setUploadImage(file);
     setIsUploading(() => true);
+
     return fetchImage(file);
   };
-
-  useEffect(() => {
-    // 인풋 초기화
-    if (fileRef.current?.value) fileRef.current.value = '';
-  }, [uploadImage]);
 
   return { uploadImage, handleChangeImage, fileRef, isUploading };
 };
