@@ -13,8 +13,15 @@ const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) =>
         tadak
       </Link>
       <div className='flex items-center gap-10 font-medium'>
-        {loginStatus ? <UserThumbnail imgSrc={imgSrc} /> : <Link href='/login'>로그인</Link>}
-        <Link href='/signUp'>회원가입</Link>
+        {loginStatus ? (
+          <UserThumbnail imgSrc={imgSrc} />
+        ) : (
+          <>
+            {' '}
+            <Link href='/login'>로그인</Link>
+            <Link href='/signUp'>회원가입</Link>
+          </>
+        )}
       </div>
     </header>
   );
