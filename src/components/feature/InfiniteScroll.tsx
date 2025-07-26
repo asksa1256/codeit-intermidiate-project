@@ -13,13 +13,14 @@ interface InfiniteScrollProps<T> {
   className?: string;
 }
 
-//제네릭 타입으로 여러 페이지에서 쓰기 편하게 해보기 items 부분에 사용하실 공통 타입을 넣어주시면 됩니다.
+//제네릭 타입으로 여러 페이지에서 쓰기 편하게 해보기 items 부분에 사용하실 공통 타입을 넣어주시면 됩니다. className prpops를 통해 원하시는 gap 등을 설정하시면 됩니다.
 const InfiniteScroll = <T,>({
   items,
   loading,
   hasMore,
   fetchNext,
   renderItem,
+  className,
 }: InfiniteScrollProps<T>) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -41,7 +42,7 @@ const InfiniteScroll = <T,>({
   }, [hasMore, loading, fetchNext]);
 
   return (
-    <div className='w-full flex flex-col items-center'>
+    <div className={className}>
       {items.map((item, idx) => (
         <React.Fragment key={idx}>{renderItem(item)}</React.Fragment>
       ))}
@@ -57,5 +58,5 @@ const InfiniteScroll = <T,>({
     </div>
   );
 };
-
+// TODO 스피너 및 hasMore는 확장성을 위해 불 빼두자.
 export default InfiniteScroll;
