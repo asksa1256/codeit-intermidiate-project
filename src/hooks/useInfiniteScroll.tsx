@@ -6,9 +6,10 @@ interface FetcherResponse<T> {
   nextCursor: number | null;
 }
 
-type Fetcher<T> = (cursor: number | null) => Promise<FetcherResponse<T>>;
+// fetcher는 limit과 cursor를 받아서 데이터를 반환하도록 타입을 정의
+type Fetcher<T> = (cursor: number | null, limit: number) => Promise<FetcherResponse<T>>;
 
-const useInfiniteScroll = <T,>(fetcher: Fetcher<T>) => {
+export const useInfiniteScrollFetcher = <T,>(fetcher: Fetcher<T>, limit = 5) => {
   const [items, setItems] = useState<T[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -17,17 +18,21 @@ const useInfiniteScroll = <T,>(fetcher: Fetcher<T>) => {
   const fetchNext = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
+
     try {
-      const res = await fetcher(cursor);
+      // limit을 fetcher로 넘김
+      const res = await fetcher(cursor, limit);
+
       setItems((prev) => [...prev, ...res.list]);
       setCursor(res.nextCursor);
-      if (!res.nextCursor) setHasMore(false);
+
+      if (res.nextCursor === null) {
+        setHasMore(false);
+      }
     } finally {
       setLoading(false);
     }
-  }, [cursor, hasMore, loading, fetcher]);
+  }, [fetcher, cursor, limit, hasMore, loading]);
 
   return { items, loading, hasMore, fetchNext };
 };
-
-export default useInfiniteScroll;
