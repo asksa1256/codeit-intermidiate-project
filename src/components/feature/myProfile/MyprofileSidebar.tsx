@@ -14,7 +14,7 @@ const MyprofileSidebar = () => {
   const nicknameRef = useRef<HTMLInputElement | null>(null);
   const [isSameNickname, setIsSameNickname] = useState(true);
   const [user, setUser] = useState<UserType | null>(null);
-  const { handleChangeImage, fileRef } = useImageUpload();
+  const { handleChangeImage, fileRef, isUploading } = useImageUpload();
 
   // 유저 프로필 업데이트 함수
   const handleUserUpdate = async (updateData: Partial<Pick<UserType, 'nickname' | 'image'>>) => {
@@ -37,14 +37,22 @@ const MyprofileSidebar = () => {
 
       setUser(data);
     } catch (error) {
+      alert('프로필 수정에 실패하였습니다.');
       console.error(error);
     }
   };
 
   // 유저 썸네일 변경시 이미지 업로드후 patch
   const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
-    const url = await handleChangeImage(e);
-    await handleUserUpdate({ image: url });
+    try {
+      const url = await handleChangeImage(e);
+
+      if (url) await handleUserUpdate({ image: url });
+    } catch (error) {
+      alert('이미지 업로드에 실패하였습니다.');
+      console.error(error);
+      return;
+    }
   };
 
   const handleUpdateNickname = async () => {
@@ -110,6 +118,11 @@ const MyprofileSidebar = () => {
           >
             <CameraIcon className='text-white w-[100%] h-[100%] lg:w-10 lg:h-10' />
           </label>
+          {isUploading && (
+            <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
+              <div className=' w-8 h-8 border-4 mb-4 border-gray-300 border-t-primary rounded-full animate-spin' />
+            </div>
+          )}
         </div>
         <span className='grow text-xl font-bold text-center md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px]'>
           {nickname}
