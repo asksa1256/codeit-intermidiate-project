@@ -69,10 +69,11 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
         setIsAuthChecked(true);
         return;
       } else {
-        // 그외 권한 필요 페이지 (키보드 상세, 프로필 페이지)
+        // 그외 권한 필요 페이지 (키보드 상세, 프로필 페이지): 로그인 후 해당 페이지로 리다이렉트
         if (!accessToken) {
           if (!refreshToken) {
-            router.replace(LOGIN_PAGE);
+            const url = `${LOGIN_PAGE}?redirect_url=${encodeURIComponent(pathname)}`;
+            router.replace(url);
             return;
           }
 
