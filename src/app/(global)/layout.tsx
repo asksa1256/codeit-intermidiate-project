@@ -1,3 +1,5 @@
+import HeaderComponent from '@/components/layout/Header';
+
 export default function Layout({
   children,
 }: Readonly<{
@@ -5,7 +7,7 @@ export default function Layout({
 }>) {
   return (
     <>
-      <header>헤더</header>
+      <HeaderComponent />
       <main>{children}</main>
     </>
   );
