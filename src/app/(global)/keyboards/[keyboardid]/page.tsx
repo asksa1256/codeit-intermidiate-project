@@ -35,9 +35,9 @@ const KeyboardDetailsPage = () => {
   }
 
   return (
-    <main className='max-w-285 px-4 pt-[30px] pb-10 md:px-5 md:pt-10 md:pb-20 lg:pt-10 lg:mx-auto'>
+    <main className='max-w-285 px-4 pt-[30px] pb-10 md:px-5 lg:px-0 md:pt-10 md:pb-20 lg:pt-10 lg:mx-auto'>
       <KeyboardInfoCard keyboardInfo={keyboardInfo} />
-      <div className='lg:flex lg:items-start'>
+      <div className='lg:flex lg:items-start lg:gap-15 lg:justify-between'>
         <RatingsInfo keyboardInfo={keyboardInfo} />
         <ReviewList reviewList={keyboardInfo['reviews']} />
       </div>

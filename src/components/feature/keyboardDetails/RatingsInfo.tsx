@@ -55,7 +55,7 @@ const RatingsInfo = ({ keyboardInfo }: Props) => {
         },
       )}
     >
-      <div className='flex flex-col md:flex-row lg:flex-col lg:items-start md:items-center md:justify-between gap-6 lg:gap-[20px] md:max-w-200 md:px-21 md:mx-auto'>
+      <div className='flex flex-col md:flex-row lg:flex-col lg:items-start md:items-center md:justify-between gap-6 lg:gap-[20px] md:max-w-200 md:px-21 lg:px-0 md:mx-auto'>
         <div className='flex justify-between items-center md:flex-wrap md:gap-y-5'>
           <div className='flex items-center gap-4 md:gap-5 md:grow-1 md:basis-[300px]'>
             <div className='text-4xl md:text-[54px] leading-[100%] font-extrabold'>
