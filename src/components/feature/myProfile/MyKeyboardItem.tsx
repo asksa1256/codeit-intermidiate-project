@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 import ConfirmModal from '@/components/feature/ConfirmModal';
+import Modal from '@/components/feature/Modal';
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
@@ -17,33 +18,30 @@ interface MyKeyboardItemProps {
 
 const MyKeyboardItem = ({ keyboard, onDelete }: MyKeyboardItemProps) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { id, name, region, price } = keyboard;
+  const [isEditModal, setIsEditModal] = useState(false);
 
-  const imageSlice = keyboard.image.split('/');
-  const lastImageURL = keyboard.image.split('/')[imageSlice.length - 1];
-  const image = encodeURIComponent(lastImageURL);
-  const newImageSrc = keyboard.image.replace(lastImageURL, image);
+  const { id, name, image, region, price } = keyboard;
 
   // 리뷰 삭제
   const handleDelete = () => {
     onDelete(id);
     setIsConfirmOpen(false);
   };
-
-  // 모달 열기
+  // 삭제 모달 열기
   const handleDeleteConfirmOpen = () => setIsConfirmOpen(true);
-  // 모달 닫기
+  // 삭제 모달 닫기
   const handleDeleteConfirmClose = () => setIsConfirmOpen(false);
+
+  // 수정 모달 열기
+  const handleEditOpen = () => setIsEditModal(true);
+  // 수정 모달 닫기
+  const handleEditClose = () => setIsEditModal(false);
 
   return (
     <>
       <li className='flex mb-[10px] border border-gray-300 rounded-xl'>
         <div className='relative shrink-0 w-[108px] px-[14px] md:w-[176px] md:px-5 self-center md:self-end'>
-          <KeyboardThumbnail
-            imgSrc={newImageSrc}
-            keyboardName={name}
-            className='md:w-[70%] md:mx-auto'
-          />
+          <KeyboardThumbnail imgSrc={image} keyboardName={name} className='md:w-[70%] md:mx-auto' />
         </div>
 
         <div className='relative grow pt-[25px] pr-12 pb-6 md:py-[30px] md:pr-[86px] lg:pr-[124px]'>
@@ -63,18 +61,23 @@ const MyKeyboardItem = ({ keyboard, onDelete }: MyKeyboardItemProps) => {
               />
             </Dropdown.Trigger>
             <Dropdown.List className='mt-2 lg:mt-4'>
-              <Dropdown.Item onClick={() => console.log('수정하기')}>수정하기</Dropdown.Item>
+              <Dropdown.Item onClick={handleEditOpen}>수정하기</Dropdown.Item>
               <Dropdown.Item onClick={handleDeleteConfirmOpen}>삭제하기</Dropdown.Item>
             </Dropdown.List>
           </Dropdown>
         </div>
       </li>
       {/* portal에 생성됨 */}
+      {/* 삭제 확인 모달 */}
       <ConfirmModal
         open={isConfirmOpen}
         onConfirm={handleDelete}
         onCancel={handleDeleteConfirmClose}
       />
+      {/* 수정 모달 */}
+      <Modal open={isEditModal} onClose={handleEditClose} title='내가 등록한 와인'>
+        여기에 상달님이 만들어준 모달을 넣어주거나, 폼을 넣어줄거 같음.
+      </Modal>
     </>
   );
 };
