@@ -6,8 +6,6 @@ import Image from 'next/image';
 import axios from 'axios';
 import { useState } from 'react';
 
-import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
-
 import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
 
 interface KeyboardItem {
@@ -21,35 +19,38 @@ interface KeyboardItem {
   recentReview: KeyboardItemRecentReview | null;
 }
 
-const KeyboardsSearchBar = () => {
+// ✅ 부모에게 결과를 전달하기 위한 props 타입
+interface KeyboardsSearchBarProps {
+  onSearchResults: (results: KeyboardItem[]) => void;
+}
+
+const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<KeyboardItem[]>([]);
 
   const handleSearch = async () => {
     const cleanQuery = query.trim().toLowerCase();
     if (!cleanQuery) {
-      setResults([]);
+      onSearchResults([]); // 검색어 없으면 빈 배열 전달
       return;
     }
 
     try {
+      // 서버가 name 파라미터로 필터링
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-        params: { search: cleanQuery, limit: 100 },
+        params: { limit: 20 },
       });
 
       const dataArray: KeyboardItem[] = res.data.list || [];
 
-      // 1) 필터링
-      const filtered = dataArray.filter((item) => item.name.toLowerCase().includes(cleanQuery));
-
-      // 2) indexOf 문자가 먼저 포함된 아이템부터 정렬
-      filtered.sort((a, b) => {
+      // 🔥 name 필드의 indexOf 순서로 정렬
+      const sorted = [...dataArray].sort((a, b) => {
         const aPos = a.name.toLowerCase().indexOf(cleanQuery);
         const bPos = b.name.toLowerCase().indexOf(cleanQuery);
         return aPos - bPos;
       });
 
-      setResults(filtered);
+      // ✅ 결과를 페이지에 전달
+      onSearchResults(sorted);
     } catch (err) {
       console.error('검색 중 오류 발생:', err);
     }
@@ -59,13 +60,13 @@ const KeyboardsSearchBar = () => {
     <div className='p-4'>
       {/* 검색바 */}
       <section
-        className='className="
-            flex items-center
-            w-[343px] h-[38px]
-            md:w-[704px] md:h-[48px]
-            lg:w-[400px] lg:h-[48px]
-            rounded-full border border-gray-300 bg-white px-[15px]
-          "'
+        className='
+          flex items-center
+          w-[343px] h-[38px]
+          md:w-[704px] md:h-[48px]
+          lg:w-[400px] lg:h-[48px]
+          rounded-full border border-gray-300 bg-white px-[15px]
+        '
       >
         <input
           type='text'
@@ -84,27 +85,6 @@ const KeyboardsSearchBar = () => {
           onClick={handleSearch}
         />
       </section>
-
-      {/* 검색 결과 */}
-      <div className='mt-4 flex flex-col gap-4'>
-        {results.map((item) => (
-          <IndexKeyboardsCard
-            key={item.id}
-            name={item.name}
-            region={item.region}
-            image={item.image}
-            price={item.price}
-            avgRating={item.avgRating}
-            reviewCount={item.reviewCount}
-            recentReview={item.recentReview}
-          />
-        ))}
-      </div>
-
-      {/* 결과 없음 */}
-      {query.trim() !== '' && results.length === 0 && (
-        <p className='mt-4 text-gray-400'>검색 결과가 없습니다.</p>
-      )}
     </div>
   );
 };

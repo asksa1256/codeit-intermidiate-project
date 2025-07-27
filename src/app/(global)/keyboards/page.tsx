@@ -2,83 +2,86 @@
 'use client';
 
 import axios from 'axios';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 
-import InfiniteScroll from '@/components/feature/InfiniteScroll';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 
-import type { KeyboardItemType, KeyboardListType } from '@/types/keyboardTypes';
+import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
+
+interface KeyboardItem {
+  id: string;
+  name: string;
+  region: string;
+  image: string;
+  price: number;
+  avgRating: number;
+  reviewCount: number;
+  recentReview: KeyboardItemRecentReview | null;
+}
+
+interface FetchParams {
+  limit: number;
+  cursor?: number;
+}
 
 const KeyboardsPage = () => {
-  // 상태 관리
-  const [items, setItems] = useState<KeyboardItemType[]>([]);
-  const [cursor, setCursor] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [items, setItems] = useState<KeyboardItem[]>([]);
+  const [searchResults, setSearchResults] = useState<KeyboardItem[] | null>(null);
 
-  // 데이터 가져오기
-  const fetchNext = useCallback(async () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
-    try {
-      const res = await axios.get<KeyboardListType>(
-        `https://winereview-api.vercel.app/16-3/wines?limit=5${cursor !== null ? `&cursor=${cursor}` : ''}`,
-      );
-
-      //TODO 테스트 완료되면 삭제하기
-      console.log('이번 요청에 보낸 cursor:', cursor);
-      console.log('API 응답 nextCursor:', res.data.nextCursor);
-      console.log('API 응답 전체', res.data);
-
-      // 새로 받은 데이터 추가
-      setItems((prev) => [...prev, ...res.data.list]);
-
-      // 다음 커서 세팅
-      if (res.data.nextCursor !== null) {
-        setCursor(res.data.nextCursor);
-      } else {
-        // 더 이상 불러올 데이터가 없으면
-        setHasMore(false);
-      }
-    } catch (err) {
-      console.error('데이터 호출 실패', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [cursor, loading, hasMore]);
-
-  // 첫 로딩. 페이지가 마운팅 될 때 한 번만 실행
+  // 커서를 돌리며 전체 데이터 불러오기
   useEffect(() => {
-    fetchNext();
-  }, [fetchNext]);
+    const fetchAllItems = async () => {
+      try {
+        let cursor: number | null = null;
+        let allItems: KeyboardItem[] = [];
+
+        while (true) {
+          const params: FetchParams = { limit: 20 };
+          if (cursor !== null) params.cursor = cursor;
+
+          const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', { params });
+
+          const dataArray: KeyboardItem[] = res.data.list || [];
+          allItems = [...allItems, ...dataArray];
+
+          // nextCursor가 없으면 끝
+          if (res.data.nextCursor == null) break;
+          cursor = res.data.nextCursor;
+        }
+
+        setItems(allItems);
+      } catch (err) {
+        console.error('기본 데이터 호출 실패:', err);
+      }
+    };
+
+    fetchAllItems();
+  }, []);
+
+  // 검색 결과가 있으면 그걸 렌더링, 없으면 기본 아이템 렌더링
+  const dataToRender = searchResults !== null ? searchResults : items;
 
   return (
     <div className='p-4'>
       <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
-      <KeyboardsSearchBar />
+      {/* 검색창: 검색 결과를 setSearchResults로 전달 */}
+      <KeyboardsSearchBar onSearchResults={setSearchResults} />
 
-      <InfiniteScroll<KeyboardItemType>
-        items={items}
-        loading={loading}
-        hasMore={hasMore}
-        fetchNext={fetchNext}
-        renderItem={(keyboard) => (
+      <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8'>
+        {dataToRender.map((item) => (
           <IndexKeyboardsCard
-            key={keyboard.id}
-            name={keyboard.name}
-            region={keyboard.region}
-            price={keyboard.price}
-            avgRating={keyboard.avgRating}
-            image={keyboard.image}
-            reviewCount={keyboard.reviewCount}
-            recentReview={keyboard.recentReview || null}
+            key={item.id}
+            name={item.name}
+            region={item.region}
+            image={item.image}
+            price={item.price}
+            avgRating={item.avgRating}
+            reviewCount={item.reviewCount}
+            recentReview={item.recentReview}
           />
-        )}
-        className='grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'
-      />
-      {!hasMore && <p className='text-sm text-gray-500 mt-4'>모든 데이터를 불러왔습니다.</p>}
+        ))}
+      </div>
     </div>
   );
 };
