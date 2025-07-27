@@ -2,7 +2,7 @@ import { Input, Label } from '@headlessui/react';
 import { forwardRef } from 'react';
 
 interface InputProps {
-  type: string;
+  type?: string;
   placeholder: string;
   label?: string;
   inputLabelGap?: number;
