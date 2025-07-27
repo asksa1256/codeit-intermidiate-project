@@ -18,6 +18,8 @@ export interface UserData {
 // 로그인 성공 시 서버 응답 인터페이스
 export interface AuthResponseData {
   user: UserData;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 // authStore 상태 인터페이스
