@@ -2,19 +2,14 @@ import Image from 'next/image';
 
 import { Input } from '@headlessui/react';
 
-const DropdownSelectButton = ({
-  placeholder,
-  error,
-}: {
-  placeholder: string;
-  error?: string | null;
-}) => {
+const DropdownSelectButton = ({ value, error }: { value: string; error?: string | null }) => {
   return (
     <>
       <div className='w-full relative'>
         <Input
-          placeholder={placeholder}
+          value={value}
           className={`input ${error ? 'border-red-500' : 'border-gray-300'} cursor-pointer`}
+          disabled={true}
         />
         <Image
           src='/images/ArrowDownIcon.svg'

@@ -1,6 +1,7 @@
 'use client';
 
 import { Field, Label } from '@headlessui/react';
+import { MouseEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import ImageUploadButton from '@/components/feature/ImageUploadButton';
@@ -26,6 +27,12 @@ const AddKeyboardForm = () => {
     watch,
     trigger,
   } = useForm<FormValues>({ mode: 'onBlur' });
+
+  const [dropdownValue, setDropdownValue] = useState<string>('기계식');
+
+  const handleDropdownValue = (value: string) => {
+    setDropdownValue(value ?? '기타');
+  };
 
   const onSubmit = async (formValues: FormValues) => {
     console.log(formValues);
@@ -81,12 +88,16 @@ const AddKeyboardForm = () => {
           <Label className='block mb-4 font-medium text-sm md:text-base'>타입</Label>
           <Dropdown size='md' wide>
             <DropdownTrigger className='w-full text-left'>
-              <DropdownSelectButton placeholder='기계식' />
+              <DropdownSelectButton value={dropdownValue} />
             </DropdownTrigger>
             <Dropdown.List>
-              <Dropdown.Item onClick={() => alert('클릭!')}>기계식</Dropdown.Item>
-              <Dropdown.Item onClick={() => alert('클릭!')}>멤브레인</Dropdown.Item>
-              <Dropdown.Item onClick={() => alert('클릭!')}>펜타그래프</Dropdown.Item>
+              <Dropdown.Item onClick={() => handleDropdownValue('기계식')}>기계식</Dropdown.Item>
+              <Dropdown.Item onClick={() => handleDropdownValue('멤브레인')}>
+                멤브레인
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleDropdownValue('펜타그래프')}>
+                펜타그래프
+              </Dropdown.Item>
             </Dropdown.List>
           </Dropdown>
         </Field>
