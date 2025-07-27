@@ -34,24 +34,20 @@ const KeyboardsSearchBar = () => {
 
     try {
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-        params: { search: cleanQuery, limit: 20 },
+        params: { search: cleanQuery, limit: 100 },
       });
 
-      // 응답 구조 확인
-      console.log('API 응답:', res.data);
+      const dataArray: KeyboardItem[] = res.data.list || [];
 
-      const dataArray = res.data.list; // 여기서 list로 접근
-      if (!Array.isArray(dataArray)) {
-        console.error('API 응답 형식이 예상과 다릅니다.', res.data);
-        setResults([]);
-        return;
-      }
+      // 1) 필터링
+      const filtered = dataArray.filter((item) => item.name.toLowerCase().includes(cleanQuery));
 
-      const filtered = dataArray.filter(
-        (item: KeyboardItem) =>
-          item.name.toLowerCase().includes(cleanQuery) ||
-          item.region.toLowerCase().includes(cleanQuery),
-      );
+      // 2) indexOf 문자가 먼저 포함된 아이템부터 정렬
+      filtered.sort((a, b) => {
+        const aPos = a.name.toLowerCase().indexOf(cleanQuery);
+        const bPos = b.name.toLowerCase().indexOf(cleanQuery);
+        return aPos - bPos;
+      });
 
       setResults(filtered);
     } catch (err) {
@@ -62,7 +58,15 @@ const KeyboardsSearchBar = () => {
   return (
     <div className='p-4'>
       {/* 검색바 */}
-      <div className='flex items-center w-full max-w-[343px] h-[38px] rounded-full border border-gray-300 bg-white px-[15px]'>
+      <section
+        className='className="
+            flex items-center
+            w-[343px] h-[38px]
+            md:w-[704px] md:h-[48px]
+            lg:w-[400px] lg:h-[48px]
+            rounded-full border border-gray-300 bg-white px-[15px]
+          "'
+      >
         <input
           type='text'
           value={query}
@@ -79,7 +83,7 @@ const KeyboardsSearchBar = () => {
           className='w-6 md:w-[26px] cursor-pointer'
           onClick={handleSearch}
         />
-      </div>
+      </section>
 
       {/* 검색 결과 */}
       <div className='mt-4 flex flex-col gap-4'>
