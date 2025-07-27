@@ -41,6 +41,29 @@
   --shadow-primary: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
 }
 
+@layer utilities {
+  .fade-up {
+    opacity: 0;
+    transform: translateY(1rem);
+    animation: fadeUp 0.5s ease-out forwards;
+  }
+
+  .fade-up-delay-1 {
+    animation-delay: 0.2s;
+  }
+
+  .fade-up-delay-2 {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 @layer components {
   .input {
     @apply w-full px-5 pr-12 border py-2.5 text-md sm:rounded-xl

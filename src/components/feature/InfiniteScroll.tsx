@@ -11,7 +11,7 @@ interface InfiniteScrollProps<T> {
   className?: string;
 }
 
-//제네릭 타입으로 여러 페이지에서 쓰기 편하게 해보기 items 부분에 사용하실 공통 타입을 넣어주시면 됩니다. className prpops를 통해 원하시는 gap 등을 설정하시면 됩니다.
+//제네릭 타입으로 여러 페이지에서 쓰기 편하게 해보기 items 부분에 사용하실 공통 타입을 넣어주시면 됩니다. className 프롭스를 통해 gap등을 설정해주시면 됩니다.
 const InfiniteScroll = <T,>({
   items,
   loading,
@@ -24,6 +24,8 @@ const InfiniteScroll = <T,>({
   useEffect(() => {
     if (!observerRef.current) return;
 
+    const target = observerRef.current;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
@@ -33,9 +35,9 @@ const InfiniteScroll = <T,>({
       { threshold: 0.5 },
     );
 
-    observer.observe(observerRef.current);
+    observer.observe(target);
     return () => {
-      if (observerRef.current) observer.unobserve(observerRef.current);
+      if (target) observer.unobserve(target);
     };
   }, [hasMore, loading, fetchNext]);
 
@@ -44,9 +46,8 @@ const InfiniteScroll = <T,>({
       {items.map((item, idx) => (
         <React.Fragment key={idx}>{renderItem(item)}</React.Fragment>
       ))}
-      <div ref={observerRef} className='h-10 w-full'></div>
     </div>
   );
 };
-// TODO 스피너는 확장성을 위해 불 빼두자.
+
 export default InfiniteScroll;
