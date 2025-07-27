@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
+import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
 import { apiClient } from '@/lib/api/apiClient';
@@ -34,13 +35,8 @@ const MyKeyboardArea = () => {
     getReviewList();
   }, []);
 
-  if (keyboardList === null) {
-    return (
-      <div className='flex items-center justify-center h-[50vh]'>
-        <div className=' w-8 h-8 border-4 mb-4 border-gray-300 border-t-primary rounded-full animate-spin' />
-      </div>
-    );
-  }
+  // 데이터 로딩시
+  if (keyboardList === null) return <MyListLoading />;
 
   const isListEmpty = keyboardList.length === 0;
 
