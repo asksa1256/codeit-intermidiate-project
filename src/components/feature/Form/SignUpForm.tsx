@@ -13,7 +13,7 @@ import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import { AxiosApiAuth } from '@/lib/api/axios';
 
-import PasswordInputField from './PasswordInputField';
+import PasswordInputField from '../PasswordInputField';
 
 interface FormValues {
   email: string;
