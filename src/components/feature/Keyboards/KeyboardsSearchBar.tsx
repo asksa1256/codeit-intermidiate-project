@@ -57,7 +57,7 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
   };
 
   return (
-    <div className='p-4'>
+    <div className='flex justify-center'>
       {/* 검색바 */}
       <section
         className='

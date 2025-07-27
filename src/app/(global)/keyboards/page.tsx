@@ -60,7 +60,7 @@ const KeyboardsPage = () => {
   }, []);
 
   // 검색 결과가 있으면 그걸 렌더링, 없으면 기본 아이템 렌더링
-  const dataToRender = searchResults !== null ? searchResults : items;
+  const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
 
   return (
     <div className='p-4'>
@@ -68,7 +68,7 @@ const KeyboardsPage = () => {
       {/* 검색창: 검색 결과를 setSearchResults로 전달 */}
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
 
-      <div className='mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8'>
+      <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
         {dataToRender.map((item) => (
           <IndexKeyboardsCard
             key={item.id}
