@@ -4,12 +4,11 @@ import { useState } from 'react';
 
 import Modal from '@/components/feature/Modal';
 import MyReviewItem from '@/components/feature/myProfile/MyReviewItem';
-import ReviewForm from '@/components/feature/ReviewForm';
 import { MyReviewItemType } from '@/types/reviewTypes';
 
 interface Props {
   reviewList: MyReviewItemType[];
-  onReviewDelete: (valud: number) => void;
+  onReviewDelete: (value: number) => void;
 }
 
 const MyReviewList = ({ reviewList, onReviewDelete }: Props) => {
@@ -41,7 +40,7 @@ const MyReviewList = ({ reviewList, onReviewDelete }: Props) => {
         ))}
       </ul>
       <Modal open={modalOpen} onClose={handleCloseModal} title='수정하기'>
-        <ReviewForm review={currentReview} />
+        여기 폼이 들어감
       </Modal>
     </>
   );
