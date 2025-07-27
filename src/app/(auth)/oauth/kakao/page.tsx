@@ -9,13 +9,16 @@ import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
 
 const KakaoOAuthPage = () => {
+  // routing
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const isProcessedRef = useRef(false); // 인가 코드 요청 중복 실행 방지
-  const [code, setCode] = useState<string | null>(null); // 인가 요청 1회 완료 시 ref 업데이트 트리거
+  // authStore
+  const signIn = useAuthStore((state) => state.signIn);
 
-  const { signIn } = useAuthStore();
+  // 인가 코드 요청 중복 실행 방지
+  const isProcessedRef = useRef(false);
+  const [code, setCode] = useState<string | null>(null); // 인가 요청 1회 완료 시 ref 업데이트 트리거
 
   // 인가 코드 먼저 받기
   useEffect(() => {

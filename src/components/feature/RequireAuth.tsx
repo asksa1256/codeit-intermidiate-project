@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 
 import { ReactNode, useEffect, useState, useCallback } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { LOGIN_PAGE, SIGNUP_PAGE, KEYBOARD_LIST_PAGE, KAKAO_LOGIN_PAGE } from '@/constants';
@@ -17,7 +18,12 @@ const AUTH_PATHS = [LOGIN_PAGE, SIGNUP_PAGE, KAKAO_LOGIN_PAGE];
 const RequireAuth = ({ children }: { children: ReactNode }) => {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const { user, updateUser } = useAuthStore();
+  const { user, updateUser } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      updateUser: state.updateUser,
+    })),
+  );
 
   const router = useRouter();
   const pathname = usePathname();

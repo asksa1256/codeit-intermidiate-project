@@ -3,6 +3,7 @@
 import { Input } from '@headlessui/react';
 import { AxiosError } from 'axios';
 import { ChangeEvent, FocusEvent, useRef, useState } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import CameraIcon from '@/assets/icons/CameraIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
@@ -11,7 +12,7 @@ import { DEFAULT_PROFILE_IMG_URL } from '@/constants';
 import useImageUpload from '@/hooks/useImageUpload';
 import { apiClient } from '@/lib/api/apiClient';
 import useAuthStore from '@/stores/authStore';
-import { UserType, AuthStore } from '@/types/userTypes';
+import { UserType } from '@/types/userTypes';
 
 const MyprofileSidebar = () => {
   const nicknameRef = useRef<HTMLInputElement | null>(null);
@@ -19,7 +20,12 @@ const MyprofileSidebar = () => {
   const { handleChangeImage, fileRef, isUploading } = useImageUpload();
 
   // 유저 전역 상태 가져오기
-  const { user, updateUser } = useAuthStore<AuthStore>((state) => state);
+  const { user, updateUser } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      updateUser: state.updateUser,
+    })),
+  );
 
   // 유저 프로필 업데이트 함수
   const handleUserUpdate = async (updateData: Partial<Pick<UserType, 'nickname' | 'image'>>) => {
