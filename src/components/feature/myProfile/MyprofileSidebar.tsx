@@ -132,7 +132,7 @@ const MyprofileSidebar = () => {
             </div>
           )}
         </div>
-        <span className='grow text-xl font-bold text-center md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px]'>
+        <span className='grow text-xl font-bold md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px] lg:text-center'>
           {nickname}
         </span>
       </div>
