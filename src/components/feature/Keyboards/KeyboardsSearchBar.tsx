@@ -33,8 +33,8 @@ const KeyboardsSearchBar = () => {
     }
 
     try {
-      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines?limit=10', {
-        params: { search: cleanQuery },
+      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+        params: { search: cleanQuery, limit: 20 },
       });
 
       // 응답 구조 확인
@@ -47,8 +47,10 @@ const KeyboardsSearchBar = () => {
         return;
       }
 
-      const filtered = dataArray.filter((item: KeyboardItem) =>
-        item.name.toLowerCase().includes(cleanQuery),
+      const filtered = dataArray.filter(
+        (item: KeyboardItem) =>
+          item.name.toLowerCase().includes(cleanQuery) ||
+          item.region.toLowerCase().includes(cleanQuery),
       );
 
       setResults(filtered);
