@@ -48,6 +48,7 @@ const StarRatingInput = ({ className, updater }: Props) => {
             alt={rateStar(star) === FILLED_STAR_URL ? '채워진 별 아이콘' : '빈 별 아이콘'}
             width={32}
             height={32}
+            className='w-6 md:w-8'
           />
         </Button>
       ))}
