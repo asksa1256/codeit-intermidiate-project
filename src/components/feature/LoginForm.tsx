@@ -80,6 +80,7 @@ const LoginForm = () => {
                 value: emailRegex,
                 message: '이메일 형식으로 작성해주세요.',
               },
+              setValueAs: (v) => v.trim(),
             })}
             error={errors.email?.message}
           />
@@ -97,6 +98,7 @@ const LoginForm = () => {
                 value: 8,
                 message: '비밀번호를 8자 이상 입력해주세요.',
               },
+              setValueAs: (v) => v.trim(),
             })}
             error={errors.password?.message}
           />
