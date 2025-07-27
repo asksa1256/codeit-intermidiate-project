@@ -14,10 +14,9 @@ const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
 
 const MyReviewArea = () => {
-  const [reviewList, setReviewList] = useState<MyReviewItemType[]>([]);
+  const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
   const [nextCursor, setNextCursor] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const isListEmpty = reviewList.length === 0;
 
   useEffect(() => {
     const getReviewList = async () => {
@@ -42,7 +41,10 @@ const MyReviewArea = () => {
     try {
       await apiClient.delete(`/${TEAM}/reviews/${reviewId}`);
 
-      setReviewList((prev) => prev.filter((review) => review.id !== reviewId));
+      setReviewList((prev) => {
+        if (prev === null) return prev;
+        return prev.filter((review) => review.id !== reviewId);
+      });
       setTotalCount((totalCount) => totalCount - 1);
     } catch (error) {
       const err = error as AxiosError;
@@ -59,6 +61,17 @@ const MyReviewArea = () => {
 
   // 나중에 사용할 상태값들입니다. 빌드시 에러가 뜨는거 같아서 임시로 추가해둘게요!
   console.log(nextCursor);
+
+  // 데이터 로딩시
+  if (reviewList === null) {
+    return (
+      <div className='flex items-center justify-center h-[50vh]'>
+        <div className=' w-8 h-8 border-4 mb-4 border-gray-300 border-t-primary rounded-full animate-spin' />
+      </div>
+    );
+  }
+
+  const isListEmpty = reviewList.length === 0;
 
   return (
     <>
