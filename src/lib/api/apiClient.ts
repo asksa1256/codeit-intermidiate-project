@@ -10,7 +10,7 @@ export const apiClient: AxiosInstance = axios.create({
 });
 
 const auth = new AxiosApiAuth();
-const { refreshToken, setTokens, signOut } = useAuthStore.getState();
+const { signOut } = useAuthStore.getState();
 
 // 요청 헤더에 accessToken 추가
 apiClient.interceptors.request.use((config) => {
@@ -27,6 +27,7 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const status = error?.status || error?.response?.status;
+    const refreshToken = tokenService.getRefreshToken();
 
     if (status === 401 && !originalRequest._retry) {
       originalRequest._retry = true; // 요청 무한 루프 방지
@@ -34,7 +35,6 @@ apiClient.interceptors.response.use(
       if (refreshToken) {
         try {
           const { accessToken } = await auth.refreshToken(refreshToken);
-          setTokens(accessToken, refreshToken);
           tokenService.setAccessToken(accessToken); // 이미 유저 전역에서 관리되지만, 추후 쿠키 토큰용으로 사용할 수도 있어서 임시 보류
 
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
