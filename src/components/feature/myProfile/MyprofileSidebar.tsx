@@ -40,7 +40,7 @@ const MyprofileSidebar = () => {
     } catch (error) {
       const err = error as AxiosError;
 
-      if (err.status === 400) {
+      if (err.response?.status === 400) {
         alert('이미 사용중인 닉네임입니다.');
         return;
       }
@@ -132,7 +132,7 @@ const MyprofileSidebar = () => {
             </div>
           )}
         </div>
-        <span className='grow text-xl font-bold text-center md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px]'>
+        <span className='grow text-xl font-bold md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px] lg:text-center'>
           {nickname}
         </span>
       </div>
