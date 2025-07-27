@@ -35,21 +35,23 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
     }
 
     try {
-      // 서버가 name 파라미터로 필터링
+      // limit 값대로 불러와서 필터링
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
         params: { limit: 20 },
       });
 
       const dataArray: KeyboardItem[] = res.data.list || [];
 
-      // 🔥 name 필드의 indexOf 순서로 정렬
-      const sorted = [...dataArray].sort((a, b) => {
+      const filtered = dataArray.filter((item) => item.name.toLowerCase().includes(cleanQuery));
+
+      // name 필드의 indexOf 순서로 정렬
+      const sorted = [...filtered].sort((a, b) => {
         const aPos = a.name.toLowerCase().indexOf(cleanQuery);
         const bPos = b.name.toLowerCase().indexOf(cleanQuery);
         return aPos - bPos;
       });
 
-      // ✅ 결과를 페이지에 전달
+      // 결과를 페이지에 전달
       onSearchResults(sorted);
     } catch (err) {
       console.error('검색 중 오류 발생:', err);
