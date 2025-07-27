@@ -3,14 +3,15 @@ import { MyKeyboardItemType } from '@/types/keyboardTypes';
 
 interface Props {
   keyboardList: MyKeyboardItemType[];
+  onDelete: (value: number) => void;
 }
 
-const MyKeyboardList = ({ keyboardList }: Props) => {
+const MyKeyboardList = ({ keyboardList, onDelete }: Props) => {
   return (
     <>
       <ul>
         {keyboardList.map((keyboard) => (
-          <MyKeyboardItem key={keyboard.id} keyboard={keyboard} />
+          <MyKeyboardItem key={keyboard.id} keyboard={keyboard} onDelete={onDelete} />
         ))}
       </ul>
     </>

@@ -1,5 +1,6 @@
 'use client';
 
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
@@ -35,6 +36,30 @@ const MyKeyboardArea = () => {
     getReviewList();
   }, []);
 
+  const handleDeleteKeyboard = async (keyboardId: number) => {
+    try {
+      await apiClient.delete(`/${TEAM}/wines/${keyboardId}`);
+
+      setKeyboardList((prev) => {
+        if (prev === null) return prev;
+        return prev.filter((keyboard) => keyboard.id !== keyboardId);
+      });
+      setTotalCount((totalCount) => totalCount - 1);
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response?.status === 403) {
+        alert('삭제 권한이 없습니다.');
+        return;
+      }
+
+      alert('키보드 삭제에 실패 하였습니다.');
+      console.error(err);
+    }
+  };
+
+  console.log(nextCursor);
+
   // 데이터 로딩시
   if (keyboardList === null) return <MyListLoading />;
 
@@ -53,7 +78,7 @@ const MyKeyboardArea = () => {
           </ButtonDefault>
         </EmptyList>
       ) : (
-        <MyKeyboardList keyboardList={keyboardList} />
+        <MyKeyboardList keyboardList={keyboardList} onDelete={handleDeleteKeyboard} />
       )}
     </>
   );
