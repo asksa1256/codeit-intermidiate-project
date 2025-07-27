@@ -1,7 +1,7 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
-import MyReviewArea from '@/components/feature/myProfile/MyReviewArea';
 import MyKeyboardArea from '@/components/feature/myProfile/MyKeyboardArea';
+import MyReviewArea from '@/components/feature/myProfile/MyReviewArea';
 
 const MYPAGE_MENUS = [
   { title: '내가 쓴 후기', component: MyReviewArea },
