@@ -8,7 +8,7 @@ interface HeaderProps {
 
 const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) => {
   return (
-    <header className='mx-auto my-5 flex  items-center justify-between bg-black rounded-2xl	 text-white md:px-[79px] md:py-[25px] '>
+    <header className='mx-auto my-5 flex  items-center justify-between bg-black rounded-2xl	 text-white px-[79px] py-[25px] '>
       <Link href='/' className='font-bold text-xl'>
         tadak
       </Link>
