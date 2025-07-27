@@ -1,10 +1,10 @@
 'use client';
 
 import { Field, Label } from '@headlessui/react';
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import ImageUploadButton from '@/components/feature/ImageUploadButton';
+import ImageUploader from '@/components/feature/ImageUpload/ImageUploader';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import DropdownSelectButton from '@/components/ui/Dropdown/DropdownSelectButton';
@@ -86,7 +86,7 @@ const AddKeyboardForm = () => {
 
         <Field>
           <Label className='block mb-4 font-medium text-sm md:text-base'>타입</Label>
-          <Dropdown size='md' wide>
+          <Dropdown size='md' wide className='z-10'>
             <DropdownTrigger className='w-full text-left'>
               <DropdownSelectButton value={dropdownValue} />
             </DropdownTrigger>
@@ -103,8 +103,8 @@ const AddKeyboardForm = () => {
         </Field>
 
         <Field>
-          <Label className='block mb-4 font-medium text-sm md:text-base'>와인 사진</Label>
-          <ImageUploadButton />
+          <Label className='block mb-4 font-medium text-sm md:text-base'>키보드 사진</Label>
+          <ImageUploader />
         </Field>
       </div>
 
