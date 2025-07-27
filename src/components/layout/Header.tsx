@@ -13,7 +13,7 @@ const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) =>
       <Link href='/' className='font-bold text-xl'>
         tadak
       </Link>
-      <div className='flex items-center gap-5 md:gap-10 font-medium'>
+      <div className='flex items-center gap-5 md:gap-10 font-medium text-md md:text-base'>
         {loginStatus ? (
           <UserThumbnail imgSrc={imgSrc} />
         ) : (
