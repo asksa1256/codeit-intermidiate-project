@@ -17,7 +17,6 @@ const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) =>
           <UserThumbnail imgSrc={imgSrc} />
         ) : (
           <>
-            {' '}
             <Link href='/login'>로그인</Link>
             <Link href='/signUp'>회원가입</Link>
           </>
