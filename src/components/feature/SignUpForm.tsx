@@ -93,6 +93,7 @@ const SignInForm = () => {
                 value: emailRegex,
                 message: '이메일 형식으로 작성해주세요.',
               },
+              setValueAs: (v) => v.trim(),
             })}
             error={errors.email?.message}
           />
@@ -110,6 +111,7 @@ const SignInForm = () => {
                 value: 20,
                 message: '닉네임은 최대 20자까지 가능합니다.',
               },
+              setValueAs: (v) => v.trim(),
             })}
             error={errors.nickname?.message}
           />
@@ -131,6 +133,7 @@ const SignInForm = () => {
                 value: passwordRegex,
                 message: '비밀번호는 숫자, 영문, 일부 특수문자(!@#$%^&*)로만 가능합니다.',
               },
+              setValueAs: (v) => v.trim(),
             })}
             error={errors.password?.message}
           />
@@ -155,6 +158,7 @@ const SignInForm = () => {
                   return true; // 비밀번호 입력값 서로 다를 시, 비밀번호 '확인' 필드에만 에러 표시
                 }
               },
+              setValueAs: (v) => v.trim(),
             })}
             error={errors.passwordCheck?.message}
           />
