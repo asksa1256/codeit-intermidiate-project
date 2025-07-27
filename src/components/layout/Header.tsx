@@ -8,11 +8,12 @@ interface HeaderProps {
 
 const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) => {
   return (
-    <header className='mx-auto my-5 flex  items-center justify-between bg-black rounded-2xl	 text-white px-[79px] py-[25px] '>
+    // <header className='mx-auto my-5 flex  items-center justify-between bg-black rounded-2xl	 text-white px-[79px] py-[25px] '>
+    <header className='mx-4 lg:mx-auto my-5 flex lg:max-w-[1140px] items-center justify-between bg-black rounded-2xl text-white px-5 py-4 md:py-[25px] md:px-[60px]'>
       <Link href='/' className='font-bold text-xl'>
         tadak
       </Link>
-      <div className='flex items-center gap-10 font-medium'>
+      <div className='flex items-center gap-5 md:gap-10 font-medium'>
         {loginStatus ? (
           <UserThumbnail imgSrc={imgSrc} />
         ) : (
