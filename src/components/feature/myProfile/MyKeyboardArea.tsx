@@ -1,137 +1,64 @@
-import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
-import { MyKeyboardListType } from '@/types/keyboardTypes';
+'use client';
 
-const keyboadsData: MyKeyboardListType = {
-  list: [
-    {
-      id: 1345,
-      name: '키크론 V10 MAX 유무선 앨리스 키보드',
-      region: '키크론',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074281491/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C0_%C3%AD%C2%82%C2%A4%C3%AD%C2%81%C2%AC%C3%AB%C2%A1%C2%A0%C3%AC%C2%95%C2%A8%C3%AB%C2%A6%C2%AC%C3%AC%C2%8A%C2%A4.png',
-      price: 169000,
-      type: 'RED',
-      avgRating: 3.83,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1346,
-      name: '지클릭커 오피스프로 사일런스 M RGB 유선 키보드 Greenwich',
-      region: '키크론',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074356585/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C1_%C3%AC%C2%A7%C2%80%C3%AD%C2%81%C2%B4%C3%AB%C2%A6%C2%AD%C3%AC%C2%BB%C2%A4_greenwich.png',
-      price: 139000,
-      type: 'RED',
-      avgRating: 0,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1347,
-      name: '지클릭커 오피스프로 사일런스 M RGB 유선 키보드 Skycity',
-      region: '지클릭커',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074366356/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C2_%C3%AC%C2%A7%C2%80%C3%AD%C2%81%C2%B4%C3%AB%C2%A6%C2%AD%C3%AC%C2%BB%C2%A4_skycity.png',
-      price: 21400,
-      type: 'WHITE',
-      avgRating: 0,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1348,
-      name: '지클릭커 오피스프로 사일런스 M RGB 유선 키보드 Gundam',
-      region: '지클릭커',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074378920/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C3_%C3%AC%C2%A7%C2%80%C3%AD%C2%81%C2%B4%C3%AB%C2%A6%C2%AD%C3%AC%C2%BB%C2%A4_gundam.png',
-      price: 21400,
-      type: 'WHITE',
-      avgRating: 0,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1351,
-      name: '지클릭커 오피스프로 사일런스 M RGB 유선 키보드 Poker',
-      region: '지클릭커',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074419585/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C4_%C3%AC%C2%A7%C2%80%C3%AD%C2%81%C2%B4%C3%AB%C2%A6%C2%AD%C3%AC%C2%BB%C2%A4_poker.png',
-      price: 21400,
-      type: 'WHITE',
-      avgRating: 4,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1352,
-      name: '지클릭커 오피스프로 사일런스 M RGB 유선 키보드 Pink',
-      region: '지클릭커',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074430743/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C5_%C3%AC%C2%A7%C2%80%C3%AD%C2%81%C2%B4%C3%AB%C2%A6%C2%AD%C3%AC%C2%BB%C2%A4_pink.png',
-      price: 21400,
-      type: 'WHITE',
-      avgRating: 0,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1353,
-      name: '로지텍 무선키보드 마우스 세트',
-      region: '로지텍',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074468525/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C9_%C3%AB%C2%A1%C2%9C%C3%AC%C2%A7%C2%80%C3%AD%C2%85%C2%8D%C3%AB%C2%AC%C2%B4%C3%AC%C2%84%C2%A0.png',
-      price: 21400,
-      type: 'SPARKLING',
-      avgRating: 3.25,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1354,
-      name: '키크론 K10 Pro SE2 RGB 기계식 핫스왑 유무선 일반형 키보드',
-      region: '키크론',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074480746/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C10_%C3%AD%C2%82%C2%A4%C3%AD%C2%81%C2%AC%C3%AB%C2%A1%C2%A0K10.png',
-      price: 139000,
-      type: 'RED',
-      avgRating: 0,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-    {
-      id: 1355,
-      name: '키크론 C2 Pro 8K RGB 핫스왑 유선 기계식 키보드',
-      region: '키크론',
-      image:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1642/1753074489256/%C3%AD%C2%82%C2%A4%C3%AB%C2%B3%C2%B4%C3%AB%C2%93%C2%9C11_%C3%AD%C2%82%C2%A4%C3%AD%C2%81%C2%AC%C3%AB%C2%A1%C2%A0C2.png',
-      price: 89000,
-      type: 'RED',
-      avgRating: 0,
-      reviewCount: 0,
-      recentReview: null,
-      userId: 1642,
-    },
-  ],
-  totalCount: 9,
-  nextCursor: null,
-};
+import { useEffect, useState } from 'react';
+
+import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
+import ButtonDefault from '@/components/ui/ButtonDefault';
+import EmptyList from '@/components/ui/EmptyList';
+import { apiClient } from '@/lib/api/apiClient';
+import { MyKeyboardItemType, MyKeyboardListType } from '@/types/keyboardTypes';
+
+const TEAM = process.env.NEXT_PUBLIC_TEAM;
+const DEFAULT_LIMIT = 10;
 
 const MyKeyboardArea = () => {
+  const [keyboardList, setKeyboardList] = useState<MyKeyboardItemType[] | null>(null);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [nextCursor, setNextCursor] = useState<number | null>(null);
+
+  useEffect(() => {
+    const getReviewList = async () => {
+      try {
+        const res = await apiClient.get(`/${TEAM}/users/me/wines?limit=${DEFAULT_LIMIT}`);
+        const data: MyKeyboardListType = res.data;
+        const { list, nextCursor, totalCount } = data;
+
+        setKeyboardList(list);
+        setTotalCount(totalCount);
+        setNextCursor(nextCursor);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getReviewList();
+  }, []);
+
+  if (keyboardList === null) {
+    return (
+      <div className='flex items-center justify-center h-[50vh]'>
+        <div className=' w-8 h-8 border-4 mb-4 border-gray-300 border-t-primary rounded-full animate-spin' />
+      </div>
+    );
+  }
+
+  const isListEmpty = keyboardList.length === 0;
+
   return (
     <>
       <span className='absolute bottom-[calc(100%+16px)] right-0 text-xs text-primary leading-[26px] md:text-md md:leading-[32px] md:bottom-[calc(100%+22px)]'>
-        총 {keyboadsData.totalCount}개
+        총 {totalCount}개
       </span>
-      <MyKeyboardList keyboardList={keyboadsData.list} />
+      {isListEmpty ? (
+        <EmptyList desc='등록된 키보드가 없어요.'>
+          {/* [ ] onClick시 키보드 등록 모달 열기 */}
+          <ButtonDefault className='inline-flex items-center justify-center px-[15px] w-auto h-[48px] font-semibold text-white bg-primary rounded-xl md:px-[24px]'>
+            키보드 등록 하기
+          </ButtonDefault>
+        </EmptyList>
+      ) : (
+        <MyKeyboardList keyboardList={keyboardList} />
+      )}
     </>
   );
 };
