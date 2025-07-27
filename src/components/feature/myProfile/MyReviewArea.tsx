@@ -18,7 +18,6 @@ const MyReviewArea = () => {
   const [nextCursor, setNextCursor] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
   const isListEmpty = reviewList.length === 0;
-  console.log(isListEmpty);
 
   useEffect(() => {
     const getReviewList = async () => {
@@ -67,7 +66,7 @@ const MyReviewArea = () => {
         총 {totalCount}개
       </span>
       <div>
-        {reviewList.length === 0 ? (
+        {isListEmpty ? (
           <EmptyList desc='작성된 리뷰가 없어요'>
             <Link
               href='/keyboards'

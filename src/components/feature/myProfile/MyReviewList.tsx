@@ -28,9 +28,6 @@ const MyReviewList = ({ reviewList, onReviewDelete }: Props) => {
     setCurrentReview(null);
   };
 
-  // 나중에 사용할 상태값들입니다. 빌드시 에러가 뜨는거 같아서 임시로 추가해둘게요!
-  console.log(currentReview);
-
   return (
     <>
       <ul>
@@ -43,8 +40,7 @@ const MyReviewList = ({ reviewList, onReviewDelete }: Props) => {
           />
         ))}
       </ul>
-      {/* open={modalOpen} */}
-      <Modal open={true} onClose={handleCloseModal} title='수정하기'>
+      <Modal open={modalOpen} onClose={handleCloseModal} title='수정하기'>
         <ReviewForm review={currentReview} />
       </Modal>
     </>
