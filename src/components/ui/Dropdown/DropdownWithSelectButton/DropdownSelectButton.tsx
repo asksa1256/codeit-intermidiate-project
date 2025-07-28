@@ -7,7 +7,7 @@ const DropdownSelectButton = ({ value }: { value: string }) => {
     <>
       <div className='w-full relative'>
         <Input
-          value={value}
+          value={value ?? ''}
           className={`input border-gray-300 cursor-pointer outline-none focus:ring-2 focus:primary hover:border-primary`}
           readOnly
         />

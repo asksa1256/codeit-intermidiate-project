@@ -1,7 +1,6 @@
 'use client';
 
 import { Field, Label } from '@headlessui/react';
-import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import InfoIcon from '@/assets/icons/InfoIcon.svg';
@@ -9,7 +8,8 @@ import ImageUploader from '@/components/feature/ImageUpload/ImageUploader';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
 import InputField from '@/components/ui/Input';
-import { KEYBOARD_TYPES } from '@/constants';
+import { KEYBOARD_TYPES_MAP } from '@/constants';
+import convertToTypeArray from '@/utils/convertToTypeArray';
 import { formatPrice } from '@/utils/formatters';
 
 import PriceInputField from '../InputField/PriceInputField';
@@ -18,30 +18,31 @@ interface FormValues {
   name: string;
   price: string; // 1,000 단위 포맷팅을 위해 string으로 받음
   company: string;
-  type: '기계식' | '멤브레인' | '펜타그래프';
+  type: string;
   image: string;
 }
 
-const AddKeyboardForm = () => {
+const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
   const {
     register,
     handleSubmit,
-    // formState: { errors, isSubmitting, isValid },
-    // setError,
     watch,
     control,
-    // trigger,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<FormValues>({ mode: 'onBlur' });
-
-  const [type, setType] = useState('');
-
-  const handleChangeType = (value: string) => {
-    setType(value);
-  };
+  } = useForm<FormValues>({
+    mode: 'onBlur',
+    defaultValues: {
+      type: KEYBOARD_TYPES_MAP[0].value,
+    },
+  });
 
   const onSubmit = async (formValues: FormValues) => {
-    console.log(formValues, type);
+    const formData = {
+      ...formValues,
+      type: convertToTypeArray(formValues.type),
+    };
+
+    console.log(formData);
   };
 
   return (
@@ -68,9 +69,12 @@ const AddKeyboardForm = () => {
             placeholder='가격 입력'
             {...register('price', {
               required: '가격을 입력해주세요.',
-              maxLength: {
-                value: 20,
-                message: '가격은 0원 이상이어야 합니다.',
+              validate: {
+                isNonNegative: (v) => {
+                  const num = Number(v);
+                  if (num < 0) return '가격은 0원 이상이어야 합니다.';
+                  return true;
+                },
               },
               setValueAs: (v) => v.trim().replace(/[^\d]/g, ''), // 숫자만 저장
             })}
@@ -93,11 +97,18 @@ const AddKeyboardForm = () => {
 
         <Field>
           <Label className='block mb-4 font-medium text-sm md:text-base'>타입</Label>
-          <DropdownWithSelectButton
-            size='md'
-            wide
-            items={KEYBOARD_TYPES}
-            onChange={handleChangeType}
+          <Controller
+            name='type'
+            control={control}
+            render={({ field }) => (
+              <DropdownWithSelectButton
+                items={KEYBOARD_TYPES_MAP}
+                size='md'
+                wide
+                value={field.value}
+                onChange={(v) => field.onChange(v)}
+              />
+            )}
           />
         </Field>
 
@@ -133,7 +144,12 @@ const AddKeyboardForm = () => {
       </div>
 
       <div className='form-btm-actions flex-row'>
-        <ButtonDefault type='submit' disabled={false} className='btn-secondary w-[108px]'>
+        <ButtonDefault
+          type='button'
+          disabled={false}
+          className='btn-secondary w-[108px]'
+          onClick={onClose}
+        >
           취소
         </ButtonDefault>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
