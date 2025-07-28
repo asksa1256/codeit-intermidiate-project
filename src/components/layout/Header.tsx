@@ -1,8 +1,12 @@
 'use client';
 import Link from 'next/link';
 
+import { useShallow } from 'zustand/shallow';
+
+import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import UserThumbnail from '@/components/ui/UserThumbnail';
 import useSticky from '@/hooks/useSticky';
+import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
 import { cn } from '@/utils/style';
 
@@ -14,7 +18,17 @@ const STICKY_TOP = 0;
 
 const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
   const { isFixedOnTop, stickyRef } = useSticky(STICKY_TOP);
-  const user = useAuthStore((state) => state.user);
+  const { user, signOut } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      signOut: state.signOut,
+    })),
+  );
+
+  const handleSignOut = () => {
+    signOut(); // user 전역 상태 초기화
+    tokenService.clearTokens(); // 토큰 제거
+  };
 
   return (
     <header
@@ -30,19 +44,29 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
         <Link href='/' className='font-bold text-xl'>
           tadak
         </Link>
-        <Link
-          href='/myprofile'
-          className='flex items-center gap-5 md:gap-10 font-medium text-md md:text-base'
-        >
+        <div className='flex items-center gap-5 md:gap-10 font-medium text-md md:text-base'>
           {user ? (
-            <UserThumbnail imgSrc={user.image ?? imgSrc} className='w-11 h-11 border-0' />
+            <Dropdown className='flex'>
+              <Dropdown.Trigger>
+                <UserThumbnail
+                  imgSrc={user.image ?? imgSrc}
+                  className='w-6 h-6 md:w-11 md:h-11 border-0'
+                />
+              </Dropdown.Trigger>
+              <Dropdown.List className='mt-10 md:mt-13'>
+                <Dropdown.Item variant='link' href='/myprofile'>
+                  마이페이지
+                </Dropdown.Item>
+                <Dropdown.Item onClick={handleSignOut}>로그아웃</Dropdown.Item>
+              </Dropdown.List>
+            </Dropdown>
           ) : (
             <>
               <Link href='/login'>로그인</Link>
               <Link href='/signUp'>회원가입</Link>
             </>
           )}
-        </Link>
+        </div>
       </div>
     </header>
   );
