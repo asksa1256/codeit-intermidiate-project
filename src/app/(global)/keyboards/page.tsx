@@ -9,7 +9,10 @@ import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenBu
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 import Modal from '@/components/feature/Modal';
+import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
+import FilterRating from '@/components/ui/FilterRating';
+// import MultihandleSlider from '@/components/ui/RangeSlider/MultihandleSlider';
 
 import type { KeyboardItemType } from '@/types/keyboardTypes';
 
@@ -60,7 +63,7 @@ const KeyboardsPage = () => {
       {/* 검색창 */}
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
 
-      {/* 필터 버튼 - 모바일/태블릿에서만 */}
+      {/* 필터 열기 버튼 - 모바일/태블릿에서만 */}
       <div className='block lg:hidden'>
         <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
       </div>
@@ -68,13 +71,51 @@ const KeyboardsPage = () => {
       {/* 필터 모달 */}
       <Modal open={isFilterOpen} onClose={() => setIsFilterOpen(false)} title='필터'>
         <div className='p-4 text-gray-700'>{/* 필터 UI 영역 (예: <FilterSidebar />) */}</div>
+        <div className='p-4 flex flex-col gap-y-6 text-gray-800'>
+          {/* 키보드 타입 필터 */}
+          <section>
+            <h3 className='text-[16px] leading-[26px] font-semibold text-gray-800'>
+              KEYBOARD TYPES
+            </h3>
+            <div className='flex gap-[10px] mt-[44px]'>
+              <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-primary text-white'>
+                멤브레인
+              </ButtonDefault>
+
+              <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-white text-primary border border-primary'>
+                기계식
+              </ButtonDefault>
+
+              <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-white text-primary border border-primary'>
+                펜타그래프
+              </ButtonDefault>
+            </div>
+          </section>
+
+          {/* 가격  필터*/}
+          <section>
+            <h3 className='text-xl font-semibold mb-2'>PRICE</h3>
+            <div className='h-10 bg-gray-200 rounded-md'></div>
+            <div className='flex justify-between text-xs text-gray-500 mt-1'>
+              {/* <MultihandleSlider /> */}
+            </div>
+          </section>
+
+          {/* 평점 필터 */}
+          <section>
+            <h3 className='text-sm font-semibold mb-2'>RATING</h3>
+            <div className='flex flex-col gap-1 text-sm'>
+              <FilterRating />
+            </div>
+          </section>
+        </div>
 
         <div className='px-4 pb-4'>
           <FilterFooterButton onReset={handleResetFilters} onApply={handleApplyFilters} />
         </div>
       </Modal>
 
-      {/* 콘텐츠 */}
+      {/* 검색 결과 */}
       {isSearchEmpty ? (
         <EmptyList desc='검색 결과가 없습니다.' />
       ) : (

@@ -1,4 +1,4 @@
-// 목록 페이지 필터 모달 푸터 버튼
+// 목록 페이지 필터 모달 푸터 초기화, 적용 버튼
 import ButtonDefault from '@/components/ui/ButtonDefault';
 
 interface FilterFooterButtonProps {
