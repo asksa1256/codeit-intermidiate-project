@@ -121,12 +121,12 @@
 
   /* 안내 문구 */
   .hint-text {
-    @apply flex items-center text-md text-gray-500;
+    @apply flex text-md text-gray-500;
   }
 
   /* info icon */
   .info-icon {
-    @apply w-4 h-4 shrink-0 mr-1;
+    @apply w-4 h-4 shrink-0 mt-1 mr-1;
   }
 }
 

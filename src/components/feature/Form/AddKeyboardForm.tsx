@@ -5,14 +5,14 @@ import { useForm, Controller } from 'react-hook-form';
 
 import InfoIcon from '@/assets/icons/InfoIcon.svg';
 import ImageUploader from '@/components/feature/ImageUpload/ImageUploader';
+import PriceInputField from '@/components/feature/InputField/PriceInputField';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
 import InputField from '@/components/ui/Input';
 import { KEYBOARD_TYPES_MAP } from '@/constants';
+import useWindowWidth from '@/hooks/useWindowWidth';
 import convertToTypeArray from '@/utils/convertToTypeArray';
 import { formatPrice } from '@/utils/formatters';
-
-import PriceInputField from '../InputField/PriceInputField';
 
 interface FormValues {
   name: string;
@@ -36,6 +36,9 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
     },
   });
 
+  const innerWidth = useWindowWidth();
+  const isMobile = innerWidth < 640;
+
   const onSubmit = async (formValues: FormValues) => {
     const formData = {
       ...formValues,
@@ -47,11 +50,11 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='flex flex-col w-full gap-2.5'>
+      <div className='flex flex-col w-full md:gap-2.5'>
         <Field>
           <InputField
             label='키보드 이름'
-            inputLabelGap={16}
+            inputLabelGap={isMobile ? 8 : 16}
             placeholder='키보드 이름 입력'
             {...register('name', {
               required: '키보드 이름을 입력해주세요.',
@@ -64,7 +67,7 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
         <Field>
           <PriceInputField
             label='가격'
-            inputLabelGap={16}
+            inputLabelGap={isMobile ? 8 : 16}
             value={formatPrice(watch('price') || '')} // or 조건: watch('price')가 undefined일 경우 replace 오류 방지 (항상 문자열 보장)
             placeholder='가격 입력'
             {...register('price', {
@@ -85,7 +88,7 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
         <Field>
           <InputField
             label='제조사'
-            inputLabelGap={16}
+            inputLabelGap={isMobile ? 8 : 16}
             placeholder='제조사 입력'
             {...register('company', {
               required: '제조사를 입력해주세요.',
@@ -96,7 +99,7 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
         </Field>
 
         <Field>
-          <Label className='block mb-4 font-medium text-sm md:text-base'>타입</Label>
+          <Label className='block mb-2 md:mb-4 font-medium text-sm md:text-base'>타입</Label>
           <Controller
             name='type'
             control={control}
@@ -113,7 +116,7 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
         </Field>
 
         <Field>
-          <Label className='block mb-4 font-medium text-sm md:text-base'>키보드 사진</Label>
+          <Label className='block mb-2 md:mb-4 font-medium text-sm md:text-base'>키보드 사진</Label>
           <Controller
             name='image'
             control={control}
