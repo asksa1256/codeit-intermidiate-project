@@ -61,7 +61,7 @@ const KeyboardsPage = () => {
           const dataArray: KeyboardItem[] = res.data.list || [];
           allItems = [...allItems, ...dataArray];
 
-          // nextCursor가 없으면 끝
+          // nextCursor가 없으면 끝내기
           if (res.data.nextCursor == null) break;
           cursor = res.data.nextCursor;
         }
@@ -88,16 +88,18 @@ const KeyboardsPage = () => {
       <div className='block lg:hidden'>
         <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
       </div>
-
       {/* 필터 모달 */}
-      <Modal
-        open={isFilterOpen}
-        onClose={() => setIsFilterOpen(false)}
-        title='필터'
-        footer={<FilterFooterButton onReset={handleResetFilters} onApply={handleApplyFilters} />}
-      >
-        {/* 모달 본문 (일단 비워둠) */}
-        <div className='p-4 text-gray-500'>{/* 나중에 필터 UI가 들어갈 영역 */}</div>
+      <Modal open={isFilterOpen} onClose={() => setIsFilterOpen(false)} title='필터'>
+        {/* 필터 내용 - 나중에 이 안에 필터 UI가 들어감 */}
+        <div className='p-4 text-gray-700'>
+          {/* 필터 항목들: 와인 타입, 가격 슬라이더, 평점 필터 등 */}
+          {/* 예: <FilterSidebar /> */}
+        </div>
+
+        {/* 초기화, 필터 적용 버튼 */}
+        <div className='px-4 pb-4'>
+          <FilterFooterButton onReset={handleResetFilters} onApply={handleApplyFilters} />
+        </div>
       </Modal>
 
       <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
