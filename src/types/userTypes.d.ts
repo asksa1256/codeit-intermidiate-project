@@ -24,7 +24,7 @@ export interface AuthResponseData {
 
 // authStore 상태 인터페이스
 export interface AuthStoreState {
-  user: UserData | null | undefined;
+  user: UserData | null;
   isLoggedIn: boolean;
 }
 
