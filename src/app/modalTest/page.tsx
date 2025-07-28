@@ -56,7 +56,7 @@ export default function KeyboardsPage() {
           size='md'
           showCloseButton={true}
         >
-          <AddKeyboardForm />
+          <AddKeyboardForm onClose={() => setAddKeyboardOpen(false)} />
         </Modal>
       </section>
     </section>
