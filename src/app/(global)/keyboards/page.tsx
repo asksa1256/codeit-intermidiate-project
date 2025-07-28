@@ -12,7 +12,7 @@ import Modal from '@/components/feature/Modal';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
 import FilterRating from '@/components/ui/FilterRating';
-// import MultihandleSlider from '@/components/ui/RangeSlider/MultihandleSlider';
+import MultihandleSlider from '@/components/ui/RangeSlider/MultihandleSlider';
 
 import type { KeyboardItemType } from '@/types/keyboardTypes';
 
@@ -71,7 +71,7 @@ const KeyboardsPage = () => {
       {/* 필터 모달 */}
       <Modal open={isFilterOpen} onClose={() => setIsFilterOpen(false)} title='필터'>
         <div className='p-4 text-gray-700'>{/* 필터 UI 영역 (예: <FilterSidebar />) */}</div>
-        <div className='p-4 flex flex-col gap-y-6 text-gray-800'>
+        <div className='w-[327px] h-[590px] p-4 flex flex-col gap-y-6 text-gray-800'>
           {/* 키보드 타입 필터 */}
           <section>
             <h3 className='text-[16px] leading-[26px] font-semibold text-gray-800'>
@@ -81,30 +81,31 @@ const KeyboardsPage = () => {
               <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-primary text-white'>
                 멤브레인
               </ButtonDefault>
-
               <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-white text-primary border border-primary'>
                 기계식
               </ButtonDefault>
-
               <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-white text-primary border border-primary'>
                 펜타그래프
               </ButtonDefault>
             </div>
           </section>
-
-          {/* 가격  필터*/}
+          <div className='w-full h-px bg-gray-100' />
+          {/* 가격 슬라이더 필터*/}
           <section>
             <h3 className='text-xl font-semibold mb-2'>PRICE</h3>
-            <div className='h-10 bg-gray-200 rounded-md'></div>
             <div className='flex justify-between text-xs text-gray-500 mt-1'>
-              {/* <MultihandleSlider /> */}
+              <MultihandleSlider
+                valueUpdater={(min, max) => {
+                  console.log(min, max);
+                }}
+              />
             </div>
           </section>
-
+          <div className='w-full h-px bg-gray-100' />
           {/* 평점 필터 */}
           <section>
-            <h3 className='text-sm font-semibold mb-2'>RATING</h3>
-            <div className='flex flex-col gap-1 text-sm'>
+            <h3 className='text-xl font-semibold mb-2'>RATING</h3>
+            <div className='flex flex-col gap-1'>
               <FilterRating />
             </div>
           </section>
