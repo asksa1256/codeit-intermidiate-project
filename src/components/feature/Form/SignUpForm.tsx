@@ -14,7 +14,7 @@ import InputField from '@/components/ui/Input';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
 
-import PasswordInputField from '../PasswordInputField';
+import PasswordInputField from '../InputField/PasswordInputField';
 
 interface FormValues {
   email: string;
