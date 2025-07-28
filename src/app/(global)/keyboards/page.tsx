@@ -4,9 +4,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import FilterFooterButton from '@/components/feature/Keyboards/Filter/FilterFooterButton';
 import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenButton';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
+import Modal from '@/components/feature/Modal';
 
 import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
 
@@ -29,6 +31,19 @@ interface FetchParams {
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItem[]>([]);
   const [searchResults, setSearchResults] = useState<KeyboardItem[] | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // 필터 초기화 버튼 동작
+  const handleResetFilters = () => {
+    console.log('필터 초기화');
+    // 여기서 실제 필터 상태를 reset
+  };
+
+  // 필터 적용 버튼 동작
+  const handleApplyFilters = () => {
+    console.log('필터 적용하기');
+    setIsFilterOpen(false);
+  };
 
   // 커서를 돌리며 전체 데이터 불러오기
   useEffect(() => {
@@ -70,7 +85,18 @@ const KeyboardsPage = () => {
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
 
       {/* ✅ 테스트용 버튼 */}
-      <FilterOpenButton onClick={() => alert('필터 버튼 클릭!')} />
+      <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
+
+      {/* ✅ 필터 모달 */}
+      <Modal
+        open={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        title='필터'
+        footer={<FilterFooterButton onReset={handleResetFilters} onApply={handleApplyFilters} />}
+      >
+        {/* 모달 본문 (일단 비워둠) */}
+        <div className='p-4 text-gray-500'>{/* 나중에 필터 UI가 들어갈 영역 */}</div>
+      </Modal>
 
       <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
         {dataToRender.map((item) => (
