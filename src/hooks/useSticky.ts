@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const TABLET_WIDTH = 640;
+
 //targetY는 타겟 DOM요소가 sticky가 되는 뷰포트상의 y좌표입니다.
-const useSticky = (targetY: number, TabletTargetY?: number) => {
+const useSticky = (targetY: number, tabletTargetY?: number) => {
   const [isFixedOnTop, setIsFixedOnTop] = useState(false);
   const stickyRef = useRef<HTMLElement | null>(null);
 
@@ -17,8 +18,8 @@ const useSticky = (targetY: number, TabletTargetY?: number) => {
     const currentViewport = window.innerWidth;
     const isTabletView = currentViewport >= TABLET_WIDTH;
 
-    if (TabletTargetY && isTabletView) {
-      if (rect.y < TabletTargetY + THRESHOLD) {
+    if (tabletTargetY && isTabletView) {
+      if (rect.y < tabletTargetY + THRESHOLD) {
         setIsFixedOnTop(true);
         return;
       } else {
@@ -34,7 +35,7 @@ const useSticky = (targetY: number, TabletTargetY?: number) => {
       setIsFixedOnTop(false);
       return;
     }
-  }, [targetY, TabletTargetY]);
+  }, [targetY, tabletTargetY]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
