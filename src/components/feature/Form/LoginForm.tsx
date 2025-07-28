@@ -12,6 +12,7 @@ import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import { AxiosApiAuth } from '@/lib/api/axios';
+import useAuthStore from '@/stores/authStore';
 
 import PasswordInputField from '../PasswordInputField';
 
@@ -27,6 +28,7 @@ const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const auth = new AxiosApiAuth();
+  const signIn = useAuthStore((state) => state.signIn);
 
   const {
     register,
@@ -39,7 +41,10 @@ const LoginForm = () => {
     const { email, password } = formValues;
 
     try {
-      await auth.signInByEmail(email, password);
+      const res = await auth.signInByEmail(email, password);
+      const { user, accessToken, refreshToken } = res;
+      signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
+      router.push('/');
 
       // 쿼리 파라미터에서 redirect_url 가져오기 (로그인 후 리다이렉트 처리)
       const redirectUrl = searchParams.get('redirect_url');
