@@ -6,22 +6,11 @@ import Image from 'next/image';
 import axios from 'axios';
 import { useState } from 'react';
 
-import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
+import type { KeyboardItemType } from '@/types/keyboardTypes';
 
-interface KeyboardItem {
-  id: string;
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  avgRating: number;
-  reviewCount: number;
-  recentReview: KeyboardItemRecentReview | null;
-}
-
-// ✅ 부모에게 결과를 전달하기 위한 props 타입
+//  부모에게 결과를 전달하기 위한 props 타입
 interface KeyboardsSearchBarProps {
-  onSearchResults: (results: KeyboardItem[]) => void;
+  onSearchResults: (results: KeyboardItemType[]) => void;
 }
 
 const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
@@ -40,7 +29,7 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
         params: { limit: 20 },
       });
 
-      const dataArray: KeyboardItem[] = res.data.list || [];
+      const dataArray: KeyboardItemType[] = res.data.list || [];
 
       const filtered = dataArray.filter((item) => item.name.toLowerCase().includes(cleanQuery));
 

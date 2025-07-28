@@ -9,113 +9,90 @@ import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenBu
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 import Modal from '@/components/feature/Modal';
+import EmptyList from '@/components/ui/EmptyList';
 
-import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
-
-interface KeyboardItem {
-  id: string;
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  avgRating: number;
-  reviewCount: number;
-  recentReview: KeyboardItemRecentReview | null;
-}
-
-interface FetchParams {
-  limit: number;
-  cursor?: number;
-}
+import type { KeyboardItemType } from '@/types/keyboardTypes';
 
 const KeyboardsPage = () => {
-  const [items, setItems] = useState<KeyboardItem[]>([]);
-  const [searchResults, setSearchResults] = useState<KeyboardItem[] | null>(null);
+  const [items, setItems] = useState<KeyboardItemType[]>([]);
+  const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  // 필터 초기화 버튼 동작
+  const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
+
+  const isSearching = searchResults !== null;
+  const isSearchEmpty = isSearching && searchResults?.length === 0;
+
+  // 필터 초기화
   const handleResetFilters = () => {
     console.log('필터 초기화');
-    // 여기서 실제 필터 상태를 reset
+    // 여기에 필터 상태 초기화 로직이 들어갈 예정
   };
 
-  // 필터 적용 버튼 동작
+  // 필터 적용
   const handleApplyFilters = () => {
     console.log('필터 적용하기');
     setIsFilterOpen(false);
+    // 필터 적용 로직은 나중에 연결
   };
 
-  // 커서를 돌리며 전체 데이터 불러오기
   useEffect(() => {
-    const fetchAllItems = async () => {
+    const fetchItems = async () => {
       try {
-        let cursor: number | null = null;
-        let allItems: KeyboardItem[] = [];
+        const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+          params: { limit: 20 },
+        });
 
-        while (true) {
-          const params: FetchParams = { limit: 20 };
-          if (cursor !== null) params.cursor = cursor;
-
-          const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', { params });
-
-          const dataArray: KeyboardItem[] = res.data.list || [];
-          allItems = [...allItems, ...dataArray];
-
-          // nextCursor가 없으면 끝내기
-          if (res.data.nextCursor == null) break;
-          cursor = res.data.nextCursor;
-        }
-
-        setItems(allItems);
+        const dataArray: KeyboardItemType[] = res.data.list || [];
+        setItems(dataArray);
       } catch (err) {
         console.error('기본 데이터 호출 실패:', err);
       }
     };
 
-    fetchAllItems();
+    fetchItems();
   }, []);
-
-  // 검색 결과가 있으면 그걸 렌더링, 없으면 기본 아이템 렌더링
-  const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
 
   return (
     <div className='p-4'>
       <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
-      {/* 검색창: 검색 결과를 setSearchResults로 전달 */}
+
+      {/* 검색창 */}
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
 
-      {/* 필텨 열기 버튼은 모바일/태블릿에서만 보이게 */}
+      {/* 필터 버튼 - 모바일/태블릿에서만 */}
       <div className='block lg:hidden'>
         <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
       </div>
+
       {/* 필터 모달 */}
       <Modal open={isFilterOpen} onClose={() => setIsFilterOpen(false)} title='필터'>
-        {/* 필터 내용 - 나중에 이 안에 필터 UI가 들어감 */}
-        <div className='p-4 text-gray-700'>
-          {/* 필터 항목들: 와인 타입, 가격 슬라이더, 평점 필터 등 */}
-          {/* 예: <FilterSidebar /> */}
-        </div>
+        <div className='p-4 text-gray-700'>{/* 필터 UI 영역 (예: <FilterSidebar />) */}</div>
 
-        {/* 초기화, 필터 적용 버튼 */}
         <div className='px-4 pb-4'>
           <FilterFooterButton onReset={handleResetFilters} onApply={handleApplyFilters} />
         </div>
       </Modal>
 
-      <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
-        {dataToRender.map((item) => (
-          <IndexKeyboardsCard
-            key={item.id}
-            name={item.name}
-            region={item.region}
-            image={item.image}
-            price={item.price}
-            avgRating={item.avgRating}
-            reviewCount={item.reviewCount}
-            recentReview={item.recentReview}
-          />
-        ))}
-      </div>
+      {/* 콘텐츠 */}
+      {isSearchEmpty ? (
+        <EmptyList desc='검색 결과가 없습니다.' />
+      ) : (
+        <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
+          {dataToRender.map((item) => (
+            <IndexKeyboardsCard
+              key={item.id}
+              name={item.name}
+              region={item.region}
+              image={item.image}
+              price={item.price}
+              avgRating={item.avgRating}
+              reviewCount={item.reviewCount}
+              recentReview={item.recentReview}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
