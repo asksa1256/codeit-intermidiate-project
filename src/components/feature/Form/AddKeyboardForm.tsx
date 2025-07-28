@@ -10,6 +10,9 @@ import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
 import InputField from '@/components/ui/Input';
 import { KEYBOARD_TYPES } from '@/constants';
+import { formatPrice } from '@/utils/formatters';
+
+import PriceInputField from '../InputField/PriceInputField';
 
 interface FormValues {
   name: string;
@@ -22,10 +25,11 @@ const AddKeyboardForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
-    setError,
+    // formState: { errors, isSubmitting, isValid },
+    // setError,
     watch,
-    trigger,
+    // trigger,
+    formState: { errors },
   } = useForm<FormValues>({ mode: 'onBlur' });
 
   const [type, setType] = useState('');
@@ -55,9 +59,10 @@ const AddKeyboardForm = () => {
         </Field>
 
         <Field>
-          <InputField
+          <PriceInputField
             label='가격'
             inputLabelGap={16}
+            value={formatPrice(watch('price') || '')} // or 조건: watch('price')가 undefined일 경우 replace 오류 방지 (항상 문자열 보장)
             placeholder='가격 입력'
             {...register('price', {
               required: '가격을 입력해주세요.',
@@ -65,7 +70,7 @@ const AddKeyboardForm = () => {
                 value: 20,
                 message: '가격은 0원 이상이어야 합니다.',
               },
-              setValueAs: (v) => v.trim(),
+              setValueAs: (v) => v.trim().replace(/[^\d]/g, ''), // 숫자만 저장
             })}
             error={errors.price?.message}
           />
