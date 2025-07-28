@@ -14,7 +14,6 @@ const KeyboardDetailsPage = () => {
   const [keyboardInfo, setKeyboardInfo] = useState<KeyboardDetailType | null>(null);
   const params = useParams();
   const { keyboardid } = params;
-  console.log(keyboardid);
 
   const getKeyboardInfo = async () => {
     try {
@@ -35,7 +34,7 @@ const KeyboardDetailsPage = () => {
   }
 
   return (
-    <main className='max-w-285 px-4 pt-[30px] pb-10 md:px-5 lg:px-0 md:pt-10 md:pb-20 lg:pt-10 lg:mx-auto'>
+    <main className='lg:max-w-285 px-4 pt-[30px] pb-10 md:px-5 lg:px-0 md:pt-10 md:pb-20 lg:pt-10 lg:mx-auto'>
       <KeyboardInfoCard keyboardInfo={keyboardInfo} />
       <div className='lg:flex lg:items-start lg:gap-15 lg:justify-between'>
         <RatingsInfo keyboardInfo={keyboardInfo} />
