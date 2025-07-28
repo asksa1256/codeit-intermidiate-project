@@ -7,18 +7,7 @@ import { useEffect, useState } from 'react';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 
-import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
-
-interface KeyboardItem {
-  id: string;
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  avgRating: number;
-  reviewCount: number;
-  recentReview: KeyboardItemRecentReview | null;
-}
+import type { KeyboardItemType } from '@/types/keyboardTypes';
 
 interface FetchParams {
   limit: number;
@@ -26,15 +15,15 @@ interface FetchParams {
 }
 
 const KeyboardsPage = () => {
-  const [items, setItems] = useState<KeyboardItem[]>([]);
-  const [searchResults, setSearchResults] = useState<KeyboardItem[] | null>(null);
+  const [items, setItems] = useState<KeyboardItemType[]>([]);
+  const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
 
-  // 커서를 돌리며 전체 데이터 불러오기
+  // 커서를 돌리며 키보드 리스트 불러오기
   useEffect(() => {
     const fetchAllItems = async () => {
       try {
         let cursor: number | null = null;
-        let allItems: KeyboardItem[] = [];
+        let allItems: KeyboardItemType[] = [];
 
         while (true) {
           const params: FetchParams = { limit: 20 };
@@ -42,7 +31,7 @@ const KeyboardsPage = () => {
 
           const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', { params });
 
-          const dataArray: KeyboardItem[] = res.data.list || [];
+          const dataArray: KeyboardItemType[] = res.data.list || [];
           allItems = [...allItems, ...dataArray];
 
           // nextCursor가 없으면 끝
