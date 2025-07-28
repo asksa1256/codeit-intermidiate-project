@@ -1,37 +1,43 @@
 import Image from 'next/image';
 
-import { useState } from 'react';
+import { ChangeEvent } from 'react';
 
 import ImageUploadButton from '@/components/feature/ImageUpload/ImageUploadButton';
 import useImageUpload from '@/hooks/useImageUpload';
 
-const ImageUploader = () => {
+interface ImageUploaderProps {
+  value: string;
+  error?: string;
+  onChange?: (url: string) => void;
+}
+
+const ImageUploader = ({ value, error, onChange }: ImageUploaderProps) => {
   const { handleChangeImage, fileRef, isUploading } = useImageUpload();
-  const [imgUrl, setImgUrl] = useState('');
 
   const handleImageUpload = () => {
     fileRef.current?.click();
   };
 
+  const handleImageUrl = async (e: ChangeEvent<HTMLInputElement>) => {
+    const url = await handleChangeImage(e);
+    if (url) {
+      onChange?.(url);
+    }
+  };
+
   return (
     <div className='flex'>
-      <ImageUploadButton onClick={handleImageUpload} isUploading={isUploading} />
-      <input
-        type='file'
-        className='hidden'
-        ref={fileRef}
-        onChange={async (e) => {
-          const url = await handleChangeImage(e);
-          if (url) {
-            setImgUrl(url);
-          }
-        }}
+      <ImageUploadButton
+        onClick={handleImageUpload}
+        isUploading={isUploading}
+        className={error ? 'border-red-500' : ''}
       />
+      <input type='file' className='hidden' ref={fileRef} onChange={handleImageUrl} />
 
-      {imgUrl && (
+      {value && (
         <figure className='relative w-[140px] aspect-square rounded-2xl overflow-hidden ml-2 border-2 border-primary'>
           <Image
-            src={imgUrl}
+            src={value}
             alt='이미지'
             width={140}
             height={140}

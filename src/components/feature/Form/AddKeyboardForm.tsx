@@ -2,7 +2,7 @@
 
 import { Field, Label } from '@headlessui/react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import InfoIcon from '@/assets/icons/InfoIcon.svg';
 import ImageUploader from '@/components/feature/ImageUpload/ImageUploader';
@@ -18,7 +18,8 @@ interface FormValues {
   name: string;
   price: string; // 1,000 단위 포맷팅을 위해 string으로 받음
   company: string;
-  passwordCheck: string;
+  type: '기계식' | '멤브레인' | '펜타그래프';
+  image: string;
 }
 
 const AddKeyboardForm = () => {
@@ -28,8 +29,9 @@ const AddKeyboardForm = () => {
     // formState: { errors, isSubmitting, isValid },
     // setError,
     watch,
+    control,
     // trigger,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({ mode: 'onBlur' });
 
   const [type, setType] = useState('');
@@ -101,8 +103,29 @@ const AddKeyboardForm = () => {
 
         <Field>
           <Label className='block mb-4 font-medium text-sm md:text-base'>키보드 사진</Label>
-          <ImageUploader />
+          <Controller
+            name='image'
+            control={control}
+            rules={{ required: '키보드 이미지를 등록해주세요.' }}
+            render={({ field, fieldState }) => (
+              <>
+                <ImageUploader
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.error?.message}
+                />
+                {fieldState.error && (
+                  <p className='text-red-500 mt-1 text-sm'>{fieldState.error.message}</p>
+                )}
+              </>
+            )}
+          />
+
           <p className='flex items-center mt-2 text-md text-gray-500'>
+            <InfoIcon className='w-4 h-4 text-gray-500 mr-1' />
+            투명 배경의 키보드 이미지를 등록해주세요. (최대 5MB)
+          </p>
+          <p className='flex items-center text-md text-gray-500'>
             <InfoIcon className='w-4 h-4 text-gray-500 mr-1' />
             이미지는 세로 방향으로 등록됩니다.
           </p>
@@ -113,7 +136,7 @@ const AddKeyboardForm = () => {
         <ButtonDefault type='submit' disabled={false} className='btn-secondary w-[108px]'>
           취소
         </ButtonDefault>
-        <ButtonDefault type='submit' disabled={false} className='w-full'>
+        <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
           키보드 등록하기
         </ButtonDefault>
       </div>
