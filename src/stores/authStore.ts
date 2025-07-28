@@ -10,16 +10,12 @@ const useAuthStore = create<Auth.AuthStore>()(
       // 초기 사용자 상태
       user: null,
       isLoggedIn: false,
-      accessToken: null,
-      refreshToken: null,
 
       // 액션: 로그인
       signIn: (data) =>
         set({
           user: data.user,
           isLoggedIn: true,
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
         }),
 
       // 액션: 로그아웃
@@ -27,8 +23,6 @@ const useAuthStore = create<Auth.AuthStore>()(
         set({
           user: null,
           isLoggedIn: false,
-          accessToken: null,
-          refreshToken: null,
         }),
 
       // 액션: 유저 정보 수정
@@ -36,13 +30,6 @@ const useAuthStore = create<Auth.AuthStore>()(
         set((state: Auth.AuthStoreState) => ({
           user: state.user ? { ...state.user, ...updatedData } : null,
         })),
-
-      // 액션: 토큰 재발급
-      setTokens: (accessToken, refreshToken) =>
-        set({
-          accessToken,
-          refreshToken,
-        }),
     }),
 
     // persist option
