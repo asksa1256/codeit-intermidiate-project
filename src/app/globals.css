@@ -73,7 +73,7 @@
   .input {
     @apply w-full px-5 pr-12 border py-2.5 text-md sm:rounded-xl
           md:py-3 md:text-base md:rounded-2xl
-          bg-white text-gray-800 placeholder-gray-500
+          bg-white text-gray-800 placeholder-gray-500 border-gray-300
           shadow-sm transition focus:outline-none
           focus:ring-2 focus:ring-primary;
   }
