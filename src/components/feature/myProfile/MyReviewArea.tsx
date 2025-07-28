@@ -17,6 +17,7 @@ const MyReviewArea = () => {
   const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
   const [nextCursor, setNextCursor] = useState<number | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const isListEmpty = reviewList?.length === 0;
 
   useEffect(() => {
     const getReviewList = async () => {
@@ -70,8 +71,6 @@ const MyReviewArea = () => {
       </div>
     );
   }
-
-  const isListEmpty = reviewList.length === 0;
 
   return (
     <>

@@ -17,6 +17,7 @@ const MyKeyboardArea = () => {
   const [keyboardList, setKeyboardList] = useState<MyKeyboardItemType[] | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [nextCursor, setNextCursor] = useState<number | null>(null);
+  const isListEmpty = keyboardList?.length === 0;
 
   useEffect(() => {
     const getReviewList = async () => {
@@ -62,8 +63,6 @@ const MyKeyboardArea = () => {
 
   // 데이터 로딩시
   if (keyboardList === null) return <MyListLoading />;
-
-  const isListEmpty = keyboardList.length === 0;
 
   return (
     <>
