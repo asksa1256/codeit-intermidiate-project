@@ -4,6 +4,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenButton';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 
@@ -67,6 +68,9 @@ const KeyboardsPage = () => {
       <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
       {/* 검색창: 검색 결과를 setSearchResults로 전달 */}
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
+
+      {/* ✅ 테스트용 버튼 */}
+      <FilterOpenButton onClick={() => alert('필터 버튼 클릭!')} />
 
       <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
         {dataToRender.map((item) => (
