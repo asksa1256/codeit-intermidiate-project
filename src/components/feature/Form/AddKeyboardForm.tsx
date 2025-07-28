@@ -6,10 +6,9 @@ import { useForm } from 'react-hook-form';
 
 import ImageUploader from '@/components/feature/ImageUpload/ImageUploader';
 import ButtonDefault from '@/components/ui/ButtonDefault';
-import Dropdown from '@/components/ui/Dropdown/Dropdown';
-import DropdownSelectButton from '@/components/ui/Dropdown/DropdownSelectButton';
-import DropdownTrigger from '@/components/ui/Dropdown/DropdownTrigger';
+import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
 import InputField from '@/components/ui/Input';
+import { KEYBOARD_TYPES } from '@/constants';
 
 interface FormValues {
   name: string;
@@ -28,14 +27,14 @@ const AddKeyboardForm = () => {
     trigger,
   } = useForm<FormValues>({ mode: 'onBlur' });
 
-  const [dropdownValue, setDropdownValue] = useState<string>('기계식');
+  const [type, setType] = useState('');
 
-  const handleDropdownValue = (value: string) => {
-    setDropdownValue(value ?? '기타');
+  const handleChangeType = (value: string) => {
+    setType(value);
   };
 
   const onSubmit = async (formValues: FormValues) => {
-    console.log(formValues);
+    console.log(formValues, type);
   };
 
   return (
@@ -86,20 +85,12 @@ const AddKeyboardForm = () => {
 
         <Field>
           <Label className='block mb-4 font-medium text-sm md:text-base'>타입</Label>
-          <Dropdown size='md' wide className='z-10'>
-            <DropdownTrigger className='w-full text-left'>
-              <DropdownSelectButton value={dropdownValue} />
-            </DropdownTrigger>
-            <Dropdown.List>
-              <Dropdown.Item onClick={() => handleDropdownValue('기계식')}>기계식</Dropdown.Item>
-              <Dropdown.Item onClick={() => handleDropdownValue('멤브레인')}>
-                멤브레인
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleDropdownValue('펜타그래프')}>
-                펜타그래프
-              </Dropdown.Item>
-            </Dropdown.List>
-          </Dropdown>
+          <DropdownWithSelectButton
+            size='md'
+            wide
+            items={KEYBOARD_TYPES}
+            onChange={handleChangeType}
+          />
         </Field>
 
         <Field>

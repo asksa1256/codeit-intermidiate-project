@@ -16,3 +16,10 @@ export const KAKAO_LOGIN_PAGE = '/oauth/kakao';
 // images
 export const DEFAULT_PROFILE_IMG_URL =
   'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1693/1753524666758/UserThumbEmpty.png'; // api 요청 에러 방지용 기본 이미지 url
+
+// constants
+export const KEYBOARD_TYPES = [
+  { id: 1, value: '기계식' },
+  { id: 2, value: '멤브레인' },
+  { id: 3, value: '펜타그래프' },
+];
