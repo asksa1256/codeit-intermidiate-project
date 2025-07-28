@@ -4,6 +4,7 @@ import { Field, Label } from '@headlessui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import InfoIcon from '@/assets/icons/InfoIcon.svg';
 import ImageUploader from '@/components/feature/ImageUpload/ImageUploader';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
@@ -12,7 +13,7 @@ import { KEYBOARD_TYPES } from '@/constants';
 
 interface FormValues {
   name: string;
-  price: string; // 포맷팅을 위해 string으로 받음
+  price: string; // 1,000 단위 포맷팅을 위해 string으로 받음
   company: string;
   passwordCheck: string;
 }
@@ -96,6 +97,10 @@ const AddKeyboardForm = () => {
         <Field>
           <Label className='block mb-4 font-medium text-sm md:text-base'>키보드 사진</Label>
           <ImageUploader />
+          <p className='flex items-center mt-2 text-md text-gray-500'>
+            <InfoIcon className='w-4 h-4 text-gray-500 mr-1' />
+            이미지는 세로 방향으로 등록됩니다.
+          </p>
         </Field>
       </div>
 
