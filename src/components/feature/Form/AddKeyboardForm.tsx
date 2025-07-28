@@ -132,14 +132,16 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
             )}
           />
 
-          <p className='flex items-center mt-2 text-md text-gray-500'>
-            <InfoIcon className='w-4 h-4 text-gray-500 mr-1' />
-            투명 배경의 키보드 이미지를 등록해주세요. (최대 5MB)
-          </p>
-          <p className='flex items-center text-md text-gray-500'>
-            <InfoIcon className='w-4 h-4 text-gray-500 mr-1' />
-            이미지는 세로 방향으로 등록됩니다.
-          </p>
+          <div className='mt-2'>
+            <p className='group hint-text'>
+              <InfoIcon className='info-icon' />
+              투명 배경의 키보드 이미지를 등록해주세요. (최대 5MB)
+            </p>
+            <p className='group hint-text'>
+              <InfoIcon className='info-icon' />
+              이미지는 세로 방향으로 등록됩니다.
+            </p>
+          </div>
         </Field>
       </div>
 

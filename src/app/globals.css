@@ -118,6 +118,16 @@
   .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
   }
+
+  /* 안내 문구 */
+  .hint-text {
+    @apply flex items-center text-md text-gray-500;
+  }
+
+  /* info icon */
+  .info-icon {
+    @apply w-4 h-4 shrink-0 mr-1;
+  }
 }
 
 @layer base {
