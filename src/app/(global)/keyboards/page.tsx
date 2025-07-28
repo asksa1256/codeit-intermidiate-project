@@ -10,11 +10,6 @@ import EmptyList from '@/components/ui/EmptyList';
 
 import type { KeyboardItemType } from '@/types/keyboardTypes';
 
-interface FetchParams {
-  limit: number;
-  cursor?: number;
-}
-
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[]>([]);
   const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
@@ -23,34 +18,21 @@ const KeyboardsPage = () => {
   const isSearching = searchResults !== null;
   const isSearchEmpty = isSearching && searchResults?.length === 0;
 
-  // 커서를 돌리며 키보드 리스트 불러오기
   useEffect(() => {
-    const fetchAllItems = async () => {
+    const fetchItems = async () => {
       try {
-        let cursor: number | null = null;
-        let allItems: KeyboardItemType[] = [];
+        const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+          params: { limit: 20 },
+        });
 
-        while (true) {
-          const params: FetchParams = { limit: 20 };
-          if (cursor !== null) params.cursor = cursor;
-
-          const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', { params });
-
-          const dataArray: KeyboardItemType[] = res.data.list || [];
-          allItems = [...allItems, ...dataArray];
-
-          // nextCursor가 없으면 끝
-          if (res.data.nextCursor == null) break;
-          cursor = res.data.nextCursor;
-        }
-
-        setItems(allItems);
+        const dataArray: KeyboardItemType[] = res.data.list || [];
+        setItems(dataArray);
       } catch (err) {
         console.error('기본 데이터 호출 실패:', err);
       }
     };
 
-    fetchAllItems();
+    fetchItems();
   }, []);
 
   return (
