@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import ConfirmModal from '@/components/feature/ConfirmModal';
 import Modal from '@/components/feature/Modal';
+import ReviewForm from '@/components/feature/reviewForm/ReviewForm';
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import { MyReviewItemType } from '@/types/reviewTypes';
@@ -76,7 +77,7 @@ const MyReviewItem = ({ review, onDelete }: MyReviewItemProps) => {
       />
       {/* 리뷰 모달 */}
       <Modal open={isEditModal} onClose={handleEditModalClose} title='수정하기'>
-        여기 폼이 들어감
+        <ReviewForm />
       </Modal>
     </>
   );
