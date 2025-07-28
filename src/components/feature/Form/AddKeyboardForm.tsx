@@ -109,11 +109,7 @@ const AddKeyboardForm = () => {
       </div>
 
       <div className='form-btm-actions flex-row'>
-        <ButtonDefault
-          type='submit'
-          disabled={false}
-          className='w-[108px] bg-primary-10 text-primary'
-        >
+        <ButtonDefault type='submit' disabled={false} className='btn-secondary w-[108px]'>
           취소
         </ButtonDefault>
         <ButtonDefault type='submit' disabled={false} className='w-full'>
