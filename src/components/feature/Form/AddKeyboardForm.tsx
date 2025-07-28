@@ -45,7 +45,7 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
       type: convertToTypeArray(formValues.type),
     };
 
-    console.log(formData);
+    console.log(formData); // api 요청 데이터
   };
 
   return (
