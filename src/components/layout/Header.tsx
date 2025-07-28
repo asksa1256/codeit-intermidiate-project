@@ -1,20 +1,20 @@
 'use client';
 import Link from 'next/link';
 
+import UserThumbnail from '@/components/ui/UserThumbnail';
 import useSticky from '@/hooks/useSticky';
+import useAuthStore from '@/stores/authStore';
 import { cn } from '@/utils/style';
 
-import UserThumbnail from '../ui/UserThumbnail';
-
 interface HeaderProps {
-  loginStatus?: boolean;
   imgSrc?: string | null;
 }
 
 const STICKY_TOP = 0;
 
-const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) => {
+const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
   const { isFixedOnTop, stickyRef } = useSticky(STICKY_TOP);
+  const user = useAuthStore((state) => state.user);
 
   return (
     <header
@@ -30,16 +30,19 @@ const HeaderComponent = ({ loginStatus = false, imgSrc = null }: HeaderProps) =>
         <Link href='/' className='font-bold text-xl'>
           tadak
         </Link>
-        <div className='flex items-center gap-5 md:gap-10 font-medium text-md md:text-base'>
-          {loginStatus ? (
-            <UserThumbnail imgSrc={imgSrc} />
+        <Link
+          href='/myprofile'
+          className='flex items-center gap-5 md:gap-10 font-medium text-md md:text-base'
+        >
+          {user ? (
+            <UserThumbnail imgSrc={user.image ?? imgSrc} className='w-11 h-11 border-0' />
           ) : (
             <>
               <Link href='/login'>로그인</Link>
               <Link href='/signUp'>회원가입</Link>
             </>
           )}
-        </div>
+        </Link>
       </div>
     </header>
   );
