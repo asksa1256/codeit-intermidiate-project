@@ -2,20 +2,30 @@
 
 import { Input } from '@headlessui/react';
 import { AxiosError } from 'axios';
-import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FocusEvent, useRef, useState } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import CameraIcon from '@/assets/icons/CameraIcon.svg';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import UserThumbnail from '@/components/ui/UserThumbnail';
+import { DEFAULT_PROFILE_IMG_URL } from '@/constants';
 import useImageUpload from '@/hooks/useImageUpload';
 import { apiClient } from '@/lib/api/apiClient';
+import useAuthStore from '@/stores/authStore';
 import { UserType } from '@/types/userTypes';
 
 const MyprofileSidebar = () => {
   const nicknameRef = useRef<HTMLInputElement | null>(null);
   const [isSameNickname, setIsSameNickname] = useState(true);
-  const [user, setUser] = useState<UserType | null>(null);
   const { handleChangeImage, fileRef, isUploading } = useImageUpload();
+
+  // 유저 전역 상태 가져오기
+  const { user, updateUser } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      updateUser: state.updateUser,
+    })),
+  );
 
   // 유저 프로필 업데이트 함수
   const handleUserUpdate = async (updateData: Partial<Pick<UserType, 'nickname' | 'image'>>) => {
@@ -23,7 +33,7 @@ const MyprofileSidebar = () => {
 
     const currentUserData = {
       nickname: user.nickname,
-      image: user.image,
+      image: user.image ?? DEFAULT_PROFILE_IMG_URL,
     };
 
     const updateUserData = {
@@ -34,9 +44,8 @@ const MyprofileSidebar = () => {
     try {
       const URL = `/${process.env.NEXT_PUBLIC_TEAM}/users/me`;
 
-      const res = await apiClient.patch(URL, updateUserData);
-
-      setUser(res.data);
+      const { data } = await apiClient.patch(URL, updateUserData);
+      updateUser(data); // 유저 전역 상태 업데이트
     } catch (error) {
       const err = error as AxiosError;
 
@@ -88,29 +97,17 @@ const MyprofileSidebar = () => {
     setIsSameNickname(isSame);
   };
 
-  useEffect(() => {
-    // GET :: 유저 정보
-    const getUser = async () => {
-      try {
-        const { data } = await apiClient.get(`/${process.env.NEXT_PUBLIC_TEAM}/users/me`);
-        setUser(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getUser();
-  }, []);
-
   if (!user) return null;
-
-  const { nickname, image } = user;
 
   return (
     <article className='p-5 border border-gray-300 bg-white rounded-2xl shadow-[0_2px_20px_rgba(0,0,0,0.04)] md:px-10 md:pt-[23px] md:pb-[30px] lg:w-[280px] lg:shrink-0 lg:px-5 lg:py-[39px]'>
       <div className='flex items-center gap-4 md:items-start md:gap-8 lg:flex-col lg:items-center'>
         <div className='relative'>
-          <UserThumbnail imgSrc={image} userName={nickname} className='md:w-20 lg:w-[164px]' />
+          <UserThumbnail
+            imgSrc={user.image}
+            userName={user.nickname}
+            className='md:w-20 lg:w-[164px]'
+          />
           <input
             type='file'
             name='imgFileUpload'
@@ -132,8 +129,8 @@ const MyprofileSidebar = () => {
             </div>
           )}
         </div>
-        <span className='grow text-xl font-bold text-center md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px]'>
-          {nickname}
+        <span className='grow text-xl font-bold md:pt-[7px] md:text-2xl lg:pt-0 lg:min-h-[74px] lg:text-center'>
+          {user.nickname}
         </span>
       </div>
       <div className='mt-5 md:flex md:flex-wrap md:mt-[30px] lg:mt-[48px]'>
@@ -141,7 +138,7 @@ const MyprofileSidebar = () => {
           닉네임
         </span>
         <Input
-          placeholder={nickname}
+          placeholder={user.nickname}
           className='input h-[42px] py-[9px] mb-1.5 border-gray-300 shadow-none md:grow md:shrink md:basis-0 md:h-[48px] md:py-[11px] md:mb-0 md:mr-6 lg:grow-0 lg:shrink-0 lg:basis-full lg:mr-0 lg:mb-2'
           ref={nicknameRef}
           onBlur={checkSameNickname}

@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import { AxiosApiAuth } from '@/lib/api/axios';
+import useAuthStore from '@/stores/authStore';
 
 import PasswordInputField from './PasswordInputField';
 
@@ -28,6 +29,7 @@ const passwordRegex = /^[A-Za-z0-9!@#$%^&*]+$/;
 const SignInForm = () => {
   const router = useRouter();
   const auth = new AxiosApiAuth();
+  const signIn = useAuthStore((state) => state.signIn);
 
   const {
     register,
@@ -42,8 +44,10 @@ const SignInForm = () => {
     const { email, nickname, password, passwordCheck: passwordConfirmation } = formValues;
 
     try {
-      await auth.signUpByEmail(email, nickname, password, passwordConfirmation);
-      await auth.signInByEmail(email, password);
+      const res = await auth.signUpByEmail(email, nickname, password, passwordConfirmation); // 회원가입 처리
+      const { user, accessToken, refreshToken } = res;
+      signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
+      await auth.signInByEmail(email, password); // 로그인 처리
       router.push('/');
     } catch (error) {
       const err = error as AxiosError;
