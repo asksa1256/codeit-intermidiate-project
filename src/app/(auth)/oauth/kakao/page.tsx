@@ -6,15 +6,21 @@ import { useEffect, useState, useRef } from 'react';
 
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
+import useAuthStore from '@/stores/authStore';
 
 const KakaoOAuthPage = () => {
+  // routing
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const isProcessedRef = useRef(false); // 인가 코드 요청 중복 실행 방지
+  // authStore
+  const signIn = useAuthStore((state) => state.signIn);
+
+  // 인가 코드 요청 중복 실행 방지
+  const isProcessedRef = useRef(false);
   const [code, setCode] = useState<string | null>(null); // 인가 요청 1회 완료 시 ref 업데이트 트리거
 
-  // 인가 코드 한 번만 받기
+  // 인가 코드 먼저 받기
   useEffect(() => {
     const currentCode = searchParams.get('code');
     if (currentCode) setCode(currentCode);
@@ -26,15 +32,20 @@ const KakaoOAuthPage = () => {
 
     const authService = new AxiosApiAuth();
 
-    isProcessedRef.current = true;
+    isProcessedRef.current = true; // 인가 코드 받았으면 flag = true
 
-    const signIn = async () => {
+    const signInByKakao = async () => {
       try {
         const KAKAO_REDIRECT_URI = `${window.location.origin}/oauth/kakao`;
-        const res = await authService.signInBySocial('KAKAO', KAKAO_REDIRECT_URI, code);
+        const { user, accessToken, refreshToken } = await authService.signInBySocial(
+          'KAKAO',
+          KAKAO_REDIRECT_URI,
+          code,
+        );
 
-        tokenService.setAccessToken(res.accessToken);
-        tokenService.setRefreshToken(res.refreshToken);
+        tokenService.setAccessToken(accessToken);
+        tokenService.setRefreshToken(refreshToken);
+        signIn({ user }); // 유저 정보 zustand store에 저장
 
         router.push('/');
       } catch (err) {
@@ -43,8 +54,8 @@ const KakaoOAuthPage = () => {
         router.push('/login');
       }
     };
-    signIn();
-  }, [router, code]);
+    signInByKakao();
+  }, [router, code, signIn]);
 
   return <div>카카오 로그인 처리중...</div>;
 };

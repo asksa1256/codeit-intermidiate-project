@@ -89,6 +89,11 @@
     @apply !bg-white border border-gray-300 sm:rounded-xl hover:border-primary;
   }
 
+  /* 상세 페이지 별 */
+  .details-star {
+    @apply w-[18px] h-[18px] md:w-[24px] md:h-[24px];
+  }
+
   /* 목록 카드 별 */
   .list-star {
     @apply w-[14px] h-[14px] md:w-[24px] md:h-[24px];
@@ -97,6 +102,16 @@
   /* 추천 카드 별 */
   .recommend-star {
     @apply w-[12px] h-[12px] md:w-[18px] md:h-[18px];
+  }
+
+  /* 가로 스크롤 ui 숨기기 */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 }
 
