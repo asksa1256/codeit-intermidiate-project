@@ -35,7 +35,7 @@ const ImageUploader = () => {
             alt='이미지'
             width={140}
             height={140}
-            className='object-cover h-full'
+            className='object-contain rotate-90 h-full'
           />
         </figure>
       )}
