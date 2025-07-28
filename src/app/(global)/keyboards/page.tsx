@@ -84,10 +84,12 @@ const KeyboardsPage = () => {
       {/* 검색창: 검색 결과를 setSearchResults로 전달 */}
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
 
-      {/* ✅ 테스트용 버튼 */}
-      <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
+      {/* 필텨 열기 버튼은 모바일/태블릿에서만 보이게 */}
+      <div className='block lg:hidden'>
+        <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
+      </div>
 
-      {/* ✅ 필터 모달 */}
+      {/* 필터 모달 */}
       <Modal
         open={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
