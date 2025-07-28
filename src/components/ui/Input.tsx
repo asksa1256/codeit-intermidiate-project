@@ -27,7 +27,7 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
             type={type}
             placeholder={placeholder}
             autoComplete={props.autoComplete}
-            className={`input ${error ? 'border-red-500' : 'border-gray-300'}`}
+            className={`input hover:border-primary ${error ? 'border-red-500' : 'border-gray-300'}`}
             ref={ref}
             {...props}
           />
