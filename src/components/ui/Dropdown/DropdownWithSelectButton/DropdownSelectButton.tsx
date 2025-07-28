@@ -6,7 +6,11 @@ const DropdownSelectButton = ({ value }: { value: string }) => {
   return (
     <>
       <div className='w-full relative'>
-        <Input value={value} className={`input border-gray-300 cursor-pointer`} disabled={true} />
+        <Input
+          value={value}
+          className={`input border-gray-300 cursor-pointer outline-none focus:ring-2 focus:primary hover:border-primary`}
+          readOnly
+        />
         <Image
           src='/images/ArrowDownIcon.svg'
           alt='드롭다운 열기/닫기'
