@@ -10,11 +10,11 @@ interface ImageUploadButtonProps {
 const ImageUploadButton = ({ className, isUploading, onClick }: ImageUploadButtonProps) => {
   return (
     <button
-      className={`flex items-center justify-center w-[140px] aspect-square border border-gray-300 rounded-2xl ${className}`}
+      className={`group flex items-center justify-center w-[140px] aspect-square border border-gray-300 rounded-2xl hover:bg-primary-10 transition-colors ${className}`}
       onClick={onClick}
     >
       {!isUploading ? (
-        <CameraIcon className='text-gray-300 w-[26px] h-[24px]' />
+        <CameraIcon className='text-gray-300 w-[26px] h-[24px] group-hover:text-white' />
       ) : (
         <LoadingSpinner />
       )}
