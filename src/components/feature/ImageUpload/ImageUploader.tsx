@@ -27,9 +27,9 @@ const ImageUploader = () => {
           }
         }}
       />
-      <figure className='relative w-[140px] aspect-square rounded-2xl overflow-hidden ml-2 border-2 border-primary'>
-        {/* {imgUrl} 한글 파일 등록 시 인코딩 오류로 이미지 엑박뜸 */}
-        {imgUrl && (
+
+      {imgUrl && (
+        <figure className='relative w-[140px] aspect-square rounded-2xl overflow-hidden ml-2 border-2 border-primary'>
           <Image
             src={imgUrl}
             alt='이미지'
@@ -37,8 +37,8 @@ const ImageUploader = () => {
             height={140}
             className='object-cover h-full'
           />
-        )}
-      </figure>
+        </figure>
+      )}
     </div>
   );
 };
