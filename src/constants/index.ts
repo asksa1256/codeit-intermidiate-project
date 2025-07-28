@@ -12,3 +12,7 @@ export const LOGIN_PAGE = '/login';
 export const SIGNUP_PAGE = '/signUp';
 export const KEYBOARD_LIST_PAGE = '/keyboards';
 export const KAKAO_LOGIN_PAGE = '/oauth/kakao';
+
+// images
+export const DEFAULT_PROFILE_IMG_URL =
+  'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1693/1753524666758/UserThumbEmpty.png'; // api 요청 에러 방지용 기본 이미지 url
