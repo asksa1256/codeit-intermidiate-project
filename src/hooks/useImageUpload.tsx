@@ -15,7 +15,10 @@ const useImageUpload = () => {
       const URL = `/${process.env.NEXT_PUBLIC_TEAM}/images/upload`;
 
       // 한글 파일명 오류 방지 인코딩
-      const encodingFileName = encodeURIComponent(file.name);
+      const timestamp = Date.now();
+      const ext = file.name.split('.').pop();
+      const encodingFileName = `image_${timestamp}.${ext}`;
+
       const encodingFile = new File([file], encodingFileName, {
         type: file.type,
       });
