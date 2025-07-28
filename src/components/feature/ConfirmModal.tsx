@@ -75,6 +75,7 @@ export default function ConfirmModal({ open, onCancel, onConfirm }: ConfirmModal
                     onClick={onConfirm}
                     className='
                     w-[156px] h-[50px]
+                    lg:w-[156px] lg:h-[54px]
                     rounded-[12px]
                     border border-gray-300
                     bg-purple-600 
