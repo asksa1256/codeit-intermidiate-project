@@ -49,7 +49,7 @@ const MyprofileSidebar = () => {
     } catch (error) {
       const err = error as AxiosError;
 
-      if (err.status === 400) {
+      if (err.response?.status === 400) {
         alert('이미 사용중인 닉네임입니다.');
         return;
       }
