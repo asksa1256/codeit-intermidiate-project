@@ -6,12 +6,11 @@ import { useState } from 'react';
 
 import HeartIcon from '@/assets/icons/HeartIcon.svg';
 import KeyboardColorTags from '@/components/ui/KeyboardColorTags';
+import KeyboardProperties from '@/components/ui/RangeSlider/KeyboardProperties';
+import RatingAndPrice from '@/components/ui/RatingAndPrice';
+import UserThumbnail from '@/components/ui/UserThumbnail';
 import { ReviewItemType } from '@/types/reviewTypes';
 import { formatRelativeTime } from '@/utils/formatters';
-
-import KeyboardProperties from '../../ui/RangeSlider/KeyboardProperties';
-import RatingAndPrice from '../../ui/RatingAndPrice';
-import UserThumbnail from '../../ui/UserThumbnail';
 
 interface Props {
   review: ReviewItemType;
@@ -84,8 +83,7 @@ const ReviewCard = ({ review }: Props) => {
             />
           </Button>
         </div>
-      ) : undefined}
-      {!isReviewFolded ? (
+      ) : (
         <>
           <div className='text-md md:text-base'>{content}</div>
           <KeyboardProperties
@@ -110,7 +108,7 @@ const ReviewCard = ({ review }: Props) => {
             </Button>
           </div>
         </>
-      ) : undefined}
+      )}
     </section>
   );
 };

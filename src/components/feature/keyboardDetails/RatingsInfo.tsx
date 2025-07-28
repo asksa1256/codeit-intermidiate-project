@@ -1,16 +1,15 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { KeyboardItemType } from '@/types/keyboardTypes';
+import ButtonDefault from '@/components/ui/ButtonDefault';
+import RatingRangeBars from '@/components/ui/RangeSlider/RatingRangeBars';
+import StarRating from '@/components/ui/StarRating';
+import { KeyboardDetailType } from '@/types/keyboardTypes';
 import { formatPrice, formatRating } from '@/utils/formatters';
 import { cn } from '@/utils/style';
 
-import ButtonDefault from '../../ui/ButtonDefault';
-import RatingRangeBars from '../../ui/RangeSlider/RatingRangeBars';
-import StarRating from '../../ui/StarRating';
-
 interface Props {
-  keyboardInfo: KeyboardItemType;
+  keyboardInfo: KeyboardDetailType;
 }
 
 const RatingsInfo = ({ keyboardInfo }: Props) => {

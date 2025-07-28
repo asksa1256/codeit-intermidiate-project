@@ -1,12 +1,11 @@
 'use client';
 
-import { KeyboardItemType } from '@/types/keyboardTypes';
-
-import KeyboardThumbnail from '../../ui/KeyboardThumbnail';
-import RatingAndPrice from '../../ui/RatingAndPrice';
+import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
+import RatingAndPrice from '@/components/ui/RatingAndPrice';
+import { KeyboardDetailType } from '@/types/keyboardTypes';
 
 interface Props {
-  keyboardInfo: KeyboardItemType;
+  keyboardInfo: KeyboardDetailType;
 }
 
 const KeyboardInfoCard = ({ keyboardInfo }: Props) => {

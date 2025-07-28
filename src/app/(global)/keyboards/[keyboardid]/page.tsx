@@ -8,15 +8,15 @@ import KeyboardInfoCard from '@/components/feature/keyboardDetails/KeyboardInfoC
 import RatingsInfo from '@/components/feature/keyboardDetails/RatingsInfo';
 import ReviewList from '@/components/feature/keyboardDetails/ReviewList';
 import { apiClient } from '@/lib/api/apiClient';
-import { KeyboardItemType } from '@/types/keyboardTypes';
+import { KeyboardDetailType } from '@/types/keyboardTypes';
 
 const KeyboardDetailsPage = () => {
-  const [keyboardInfo, setKeyboardInfo] = useState<KeyboardItemType | null>(null);
+  const [keyboardInfo, setKeyboardInfo] = useState<KeyboardDetailType | null>(null);
   const params = useParams();
   const { keyboardid } = params;
   console.log(keyboardid);
 
-  const getKeybaordInfo = async () => {
+  const getKeyboardInfo = async () => {
     try {
       const res = await apiClient(`/${process.env.NEXT_PUBLIC_TEAM}/wines/${keyboardid}`);
       setKeyboardInfo(res.data);
@@ -27,7 +27,7 @@ const KeyboardDetailsPage = () => {
   };
 
   useEffect(() => {
-    getKeybaordInfo();
+    getKeyboardInfo();
   }, []);
 
   if (!keyboardInfo) {
