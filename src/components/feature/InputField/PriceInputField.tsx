@@ -28,7 +28,7 @@ const PriceInputField = forwardRef<HTMLInputElement, PriceInputProps>(
             type='text'
             placeholder={placeholder}
             value={value}
-            className={`input ${error ? 'border-red-500' : 'border-gray-300'}`}
+            className={`input ${error ? 'border-red-500' : 'border-gray-300'} hover:border-primary`}
             ref={ref}
             {...props}
           />
