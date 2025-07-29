@@ -11,6 +11,7 @@ import ImageUploader from '@/components/feature/ImageUpload/ImageUploader';
 import PriceInputField from '@/components/feature/InputField/PriceInputField';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
+import HintTextWithIcon from '@/components/ui/HintTextWithIcon';
 import InputField from '@/components/ui/Input';
 import { KEYBOARD_TYPES_MAP, TEAM_ID } from '@/constants';
 import useWindowWidth from '@/hooks/useWindowWidth';
@@ -181,14 +182,11 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
           />
 
           <div className='mt-2'>
-            <p className='group hint-text'>
-              <InfoIcon className='info-icon' />
-              투명 배경의 키보드 이미지를 등록해주세요. (최대 5MB)
-            </p>
-            <p className='group hint-text'>
-              <InfoIcon className='info-icon' />
-              이미지는 세로 방향으로 등록됩니다.
-            </p>
+            <HintTextWithIcon
+              text='투명 배경의 키보드 이미지를 등록해주세요. (최대 5MB)'
+              icon={InfoIcon}
+            />
+            <HintTextWithIcon text='이미지는 세로 방향으로 등록됩니다.' icon={InfoIcon} />
           </div>
         </Field>
       </div>

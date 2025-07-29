@@ -20,6 +20,7 @@ const DropdownWithSelectButton = ({
   items,
   value,
   size,
+  wide,
   className,
   onChange,
 }: DropdownWithSelectProps) => {
@@ -28,7 +29,7 @@ const DropdownWithSelectButton = ({
   };
 
   return (
-    <Dropdown size={size} wide className={`z-10 mb-7 ${className}`}>
+    <Dropdown size={size} wide={wide} className={`z-10 mb-7 ${className}`}>
       <DropdownTrigger className='w-full text-left'>
         <DropdownSelectButton value={value ?? items[0].value} />
       </DropdownTrigger>
