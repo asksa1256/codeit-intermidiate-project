@@ -23,9 +23,14 @@ const MyKeyboardItem = ({ keyboard, onDelete }: MyKeyboardItemProps) => {
   const { id, name, image, region, price } = keyboard;
 
   // 리뷰 삭제
-  const handleDelete = () => {
-    onDelete(id);
-    setIsConfirmOpen(false);
+  const handleDelete = async () => {
+    try {
+      await onDelete(id);
+      // 에러 발생시 모달창 유지
+      setIsConfirmOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
   // 삭제 모달 열기
   const handleDeleteConfirmOpen = () => setIsConfirmOpen(true);
