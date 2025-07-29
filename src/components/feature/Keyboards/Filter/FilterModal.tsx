@@ -19,6 +19,8 @@ interface FilterModalProps {
   onApply: () => void;
   priceRange: [number, number];
   onChangePrice: MultihandleSliderProps['valueUpdater'];
+  rating: number | null;
+  onChangeRating: (value: number | null) => void;
 }
 
 const FilterModal = ({
@@ -77,7 +79,7 @@ const FilterModal = ({
         <section>
           <h3 className='text-xl font-semibold mb-2'>RATING</h3>
           <div className='flex flex-col gap-1'>
-            <FilterRating />
+            <FilterRating value={null} onChange={() => {}} />
           </div>
         </section>
       </div>

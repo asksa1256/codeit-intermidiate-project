@@ -1,14 +1,13 @@
 'use client';
 
 import { Field, Label, Radio, RadioGroup } from '@headlessui/react';
-import { useState } from 'react';
 
-interface FilterRatingProps {
+interface RatingOption {
   label: string;
   value: number | null;
 }
 
-const FilterRatingItem = ({ rating }: { rating: FilterRatingProps }) => {
+const FilterRatingItem = ({ rating }: { rating: RatingOption }) => {
   const { label, value } = rating;
 
   return (
@@ -26,7 +25,7 @@ const FilterRatingItem = ({ rating }: { rating: FilterRatingProps }) => {
   );
 };
 
-const RATING_LIST: FilterRatingProps[] = [
+const RATING_LIST = [
   { label: '전체', value: null },
   { label: '4.5 - 5.0', value: 4.5 },
   { label: '4.0 - 4.5', value: 4.0 },
@@ -34,16 +33,14 @@ const RATING_LIST: FilterRatingProps[] = [
   { label: '3.0 - 3.5', value: 3.0 },
 ];
 
-const FilterRating = () => {
-  const [selected, setSelected] = useState(RATING_LIST[0].value);
+interface FilterRatingProps {
+  value: number | null;
+  onChange: (value: number | null) => void;
+}
 
+const FilterRating = ({ value, onChange }: FilterRatingProps) => {
   return (
-    <RadioGroup
-      name='rating'
-      value={selected}
-      onChange={setSelected}
-      className='flex flex-col gap-2.5'
-    >
+    <RadioGroup name='rating' value={value} onChange={onChange} className='flex flex-col gap-2.5'>
       {RATING_LIST.map((rating, idx) => (
         <FilterRatingItem key={idx} rating={rating} />
       ))}

@@ -19,6 +19,7 @@ const KeyboardsPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<KeyboardCategoryType[]>([]); // 키보드 타입 필터용
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
+  const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
   const INITIAL_PRICE_RANGE: [number, number] = [0, 300000];
   const INITIAL_SELECTED_TYPES: KeyboardCategoryType[] = [];
 
@@ -32,6 +33,7 @@ const KeyboardsPage = () => {
     console.log('필터 초기화');
     setSelectedTypes(INITIAL_SELECTED_TYPES);
     setPriceRange(INITIAL_PRICE_RANGE);
+    setSelectedRating(null);
     // 여기에 필터 상태 초기화 로직이 들어갈 예정
   };
 
@@ -51,6 +53,11 @@ const KeyboardsPage = () => {
   // 가격 슬라이더 함수
   const handlePriceChange: MultihandleSliderProps['valueUpdater'] = (min, max) => {
     setPriceRange([min, max]);
+  };
+
+  // 평점 필터 함수
+  const handleRatingChange = (value: number | null) => {
+    setSelectedRating(value);
   };
 
   useEffect(() => {
@@ -90,6 +97,8 @@ const KeyboardsPage = () => {
         onApply={handleApplyFilters}
         priceRange={priceRange}
         onChangePrice={handlePriceChange}
+        rating={selectedRating}
+        onChangeRating={handleRatingChange}
       />
 
       {/* 검색 결과 */}
