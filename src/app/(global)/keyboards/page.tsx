@@ -4,15 +4,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import FilterCheckbox from '@/components/feature/Keyboards/Filter/FilterCheckbox';
-import FilterFooterButton from '@/components/feature/Keyboards/Filter/FilterFooterButton';
+import FilterModal from '@/components/feature/Keyboards/Filter/FilterModal';
 import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenButton';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
-import Modal from '@/components/feature/Modal';
 import EmptyList from '@/components/ui/EmptyList';
-import FilterRating from '@/components/ui/FilterRating';
-import MultihandleSlider from '@/components/ui/RangeSlider/MultihandleSlider';
 
 import type { KeyboardItemType, KeyboardCategoryType } from '@/types/keyboardTypes';
 
@@ -27,20 +23,20 @@ const KeyboardsPage = () => {
   const isSearching = searchResults !== null;
   const isSearchEmpty = isSearching && searchResults?.length === 0;
 
-  // 필터 초기화
+  // 필터 초기화 버튼 함수
   const handleResetFilters = () => {
     console.log('필터 초기화');
     // 여기에 필터 상태 초기화 로직이 들어갈 예정
   };
 
-  // 필터 적용
+  // 필터 적용 버튼 함수
   const handleApplyFilters = () => {
     console.log('필터 적용하기');
     setIsFilterOpen(false);
     // 필터 적용 로직은 나중에 연결
   };
 
-  // 키보드 타입 필터 토글
+  // 키보드 타입 필터 체크박스 함수
   const handleToggle = (type: KeyboardCategoryType) => {
     setSelectedTypes((prev) =>
       prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
@@ -75,61 +71,14 @@ const KeyboardsPage = () => {
       </div>
 
       {/* 필터 모달 */}
-      <Modal open={isFilterOpen} onClose={() => setIsFilterOpen(false)} title='필터'>
-        <div className='p-4 text-gray-700'>{/* 필터 UI 영역 (예: <FilterSidebar />) */}</div>
-        <div className='w-[327px] h-[590px] p-4 flex flex-col gap-y-6 text-gray-800'>
-          {/* 키보드 타입 필터 */}
-          <section>
-            <h3 className='text-[16px] leading-[26px] font-semibold text-gray-800'>
-              KEYBOARD TYPES
-            </h3>
-            <div className='w-[296px] flex gap-[10px] mt-[34px]'>
-              <FilterCheckbox
-                label='멤브레인'
-                value='WHITE'
-                isChecked={selectedTypes.includes('WHITE')}
-                onChange={handleToggle}
-              />
-              <FilterCheckbox
-                label='기계식'
-                value='RED'
-                isChecked={selectedTypes.includes('RED')}
-                onChange={handleToggle}
-              />
-              <FilterCheckbox
-                label='펜타그래프'
-                value='SPARKLING'
-                isChecked={selectedTypes.includes('SPARKLING')}
-                onChange={handleToggle}
-              />
-            </div>
-          </section>
-          <div className='w-full h-px bg-gray-100' />
-          {/* 가격 슬라이더 필터*/}
-          <section>
-            <h3 className='text-xl font-semibold mb-2'>PRICE</h3>
-            <div className='flex justify-between text-xs text-gray-500 mt-1'>
-              <MultihandleSlider
-                valueUpdater={(min, max) => {
-                  console.log(min, max);
-                }}
-              />
-            </div>
-          </section>
-          <div className='w-full h-px bg-gray-100' />
-          {/* 평점 필터 */}
-          <section>
-            <h3 className='text-xl font-semibold mb-2'>RATING</h3>
-            <div className='flex flex-col gap-1'>
-              <FilterRating />
-            </div>
-          </section>
-        </div>
-
-        <div className='flex justify-center'>
-          <FilterFooterButton onReset={handleResetFilters} onApply={handleApplyFilters} />
-        </div>
-      </Modal>
+      <FilterModal
+        open={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        selectedTypes={selectedTypes}
+        onToggleType={handleToggle}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+      />
 
       {/* 검색 결과 */}
       {isSearchEmpty ? (
