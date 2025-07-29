@@ -1,5 +1,5 @@
 import { Input, Label } from '@headlessui/react';
-import { forwardRef, MouseEvent } from 'react';
+import { forwardRef } from 'react';
 
 interface PriceInputProps {
   value: string | number;
@@ -8,7 +8,6 @@ interface PriceInputProps {
   inputLabelGap?: number;
   autoComplete?: string;
   error?: string;
-  onIconBtnClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const PriceInputField = forwardRef<HTMLInputElement, PriceInputProps>(
