@@ -1,12 +1,10 @@
 'use client';
 
-import Image from 'next/image';
-
 import React, { useState } from 'react';
 
 import ConfirmModal from '@/components/feature/ConfirmModal';
 import Modal from '@/components/feature/Modal';
-import Dropdown from '@/components/ui/Dropdown/Dropdown';
+import KebabMenu from '@/components/ui/Dropdown/KebabMenu/KebabMenu';
 import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import { MyKeyboardItemType } from '@/types/keyboardTypes';
@@ -55,21 +53,11 @@ const MyKeyboardItem = ({ keyboard, onDelete }: MyKeyboardItemProps) => {
           </h3>
           <p className='mb-[10px] text-md text-gray-500 md:text-base md:mb-[20px]'>{region}</p>
           <RatingAndPrice label='price' value={price} className='md:py-[5.5px]' />
-          <Dropdown className='absolute top-5 right-5 md:top-[30px] md:right-10'>
-            <Dropdown.Trigger className='block'>
-              <Image
-                src='/images/KebabIcon.svg'
-                width={40}
-                height={40}
-                alt='케밥 메뉴 아이콘'
-                className='w-6 md:w-[26px]'
-              />
-            </Dropdown.Trigger>
-            <Dropdown.List className='mt-2 lg:mt-4'>
-              <Dropdown.Item onClick={handleEditOpen}>수정하기</Dropdown.Item>
-              <Dropdown.Item onClick={handleDeleteConfirmOpen}>삭제하기</Dropdown.Item>
-            </Dropdown.List>
-          </Dropdown>
+          <KebabMenu
+            onEdit={handleEditOpen}
+            onDelete={handleDeleteConfirmOpen}
+            className='absolute top-5 right-5 md:top-[30px] md:right-10'
+          />
         </div>
       </li>
       {/* portal에 생성됨 */}

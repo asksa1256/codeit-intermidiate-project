@@ -1,13 +1,11 @@
 'use client';
 
-import Image from 'next/image';
-
 import { useState } from 'react';
 
 import ConfirmModal from '@/components/feature/ConfirmModal';
 import Modal from '@/components/feature/Modal';
 import ReviewForm, { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
-import Dropdown from '@/components/ui/Dropdown/Dropdown';
+import KebabMenu from '@/components/ui/Dropdown/KebabMenu/KebabMenu';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import { MyReviewItemType } from '@/types/reviewTypes';
 import { formatRelativeTime } from '@/utils/formatters';
@@ -66,21 +64,11 @@ const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
           <span className='text-md text-gray-500 md:text-base'>
             {formatRelativeTime(updatedAt)}
           </span>
-          <Dropdown className='inline-block ml-auto'>
-            <Dropdown.Trigger className='block'>
-              <Image
-                src='/images/KebabIcon.svg'
-                width={40}
-                height={40}
-                alt='케밥 메뉴 아이콘'
-                className='w-6 md:w-[26px]'
-              />
-            </Dropdown.Trigger>
-            <Dropdown.List className='mt-2 lg:mt-4'>
-              <Dropdown.Item onClick={handleEditModalOpen}>수정하기</Dropdown.Item>
-              <Dropdown.Item onClick={handleDeleteConfirmOpen}>삭제하기</Dropdown.Item>
-            </Dropdown.List>
-          </Dropdown>
+          <KebabMenu
+            onEdit={handleEditModalOpen}
+            onDelete={handleDeleteConfirmOpen}
+            className='inline-block ml-auto'
+          />
         </div>
         <h3 className='mb-[10px] text-md text-gray-500 line-clamp-1 md:text-base'>{wine.name}</h3>
         <p className='text-md text-ellipsis break-keep md:text-base'>{content}</p>
