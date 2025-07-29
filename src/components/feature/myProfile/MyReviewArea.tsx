@@ -24,7 +24,7 @@ const MyReviewArea = () => {
   useEffect(() => {
     const getReviewList = async () => {
       try {
-        const res = await apiClient.get(`/${TEAM}/users/me/reviewss?limit=${DEFAULT_LIMIT}`);
+        const res = await apiClient.get(`/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}`);
         const data: MyReviewListType = res.data;
         const { list, nextCursor, totalCount } = data;
 
