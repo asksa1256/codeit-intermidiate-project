@@ -12,9 +12,21 @@ import keyCap from '../../../../public/images/KeyCap.png';
 
 const MINIMUM_HANDLE_GAP = 20; // 전체 트랙 길이 300중 20
 
-const MultihandleSlider = ({ className, valueUpdater }: MultihandleSliderProps) => {
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(300);
+const MultihandleSlider = ({
+  className,
+  valueUpdater,
+  initialRange = [0, 300000],
+}: MultihandleSliderProps) => {
+  const initialMinValue = initialRange[0] / 1000;
+  const initialMaxValue = initialRange[1] / 1000;
+  const [minValue, setMinValue] = useState(initialMinValue);
+  const [maxValue, setMaxValue] = useState(initialMaxValue);
+  // 초기값 설정 보내주기용
+  useEffect(() => {
+    setMinValue(initialRange[0] / 1000);
+    setMaxValue(initialRange[1] / 1000);
+  }, [initialRange]);
+
   const activeHandleRef = useRef<string | null>(null);
   const RangesliderRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);

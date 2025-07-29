@@ -8,6 +8,7 @@ import FilterCheckbox from './FilterCheckbox';
 import FilterFooterButton from './FilterFooterButton';
 
 import type { KeyboardCategoryType } from '@/types/keyboardTypes';
+import type { MultihandleSliderProps } from '@/types/rangeSliderTypes';
 
 interface FilterModalProps {
   open: boolean;
@@ -16,6 +17,8 @@ interface FilterModalProps {
   onToggleType: (type: KeyboardCategoryType) => void;
   onReset: () => void;
   onApply: () => void;
+  priceRange: [number, number];
+  onChangePrice: MultihandleSliderProps['valueUpdater'];
 }
 
 const FilterModal = ({
@@ -25,6 +28,8 @@ const FilterModal = ({
   onToggleType,
   onReset,
   onApply,
+  priceRange,
+  onChangePrice,
 }: FilterModalProps) => {
   return (
     <Modal open={open} onClose={onClose} title='필터'>
@@ -62,11 +67,7 @@ const FilterModal = ({
         <section>
           <h3 className='text-xl font-semibold mb-2'>PRICE</h3>
           <div className='flex justify-between text-xs text-gray-500 mt-1'>
-            <MultihandleSlider
-              valueUpdater={(min, max) => {
-                console.log(min, max);
-              }}
-            />
+            <MultihandleSlider valueUpdater={onChangePrice} initialRange={priceRange} />
           </div>
         </section>
 
