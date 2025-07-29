@@ -41,7 +41,7 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
     formState: { errors, isSubmitting, isValid },
     setError,
   } = useForm<FormValues>({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       type: KEYBOARD_TYPES_MAP[0].value,
     },
@@ -102,8 +102,8 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
               setValueAs: (v) => v.trim(),
             })}
             error={errors.name?.message}
-            // ref={nameRef}
             ref={(el) => {
+              // 키보드 중복 등록 시 자동 스크롤 및 포커스를 위한 ref
               nameRef.current = el;
               register('name').ref(el);
             }}
