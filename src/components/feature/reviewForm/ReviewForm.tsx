@@ -47,6 +47,7 @@ const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
   });
 
   const handleSubmitForm = async (formValues: ReviewFormValues) => {
+    // isSubmitting이 제대로 동작하기 위해 async/await로 수정됨.
     await onSubmit(formValues);
   };
 
