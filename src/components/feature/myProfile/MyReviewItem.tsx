@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import ConfirmModal from '@/components/feature/ConfirmModal';
 import Modal from '@/components/feature/Modal';
-import ReviewForm from '@/components/feature/reviewForm/ReviewForm';
+import ReviewForm, { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import { MyReviewItemType } from '@/types/reviewTypes';
@@ -15,9 +15,10 @@ import { formatRelativeTime } from '@/utils/formatters';
 interface MyReviewItemProps {
   review: MyReviewItemType;
   onDelete: (id: number) => void;
+  onEdit: (reviewId: number, formValues: ReviewFormValues) => void;
 }
 
-const MyReviewItem = ({ review, onDelete }: MyReviewItemProps) => {
+const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
   const [isDeleteConfirm, setIsDeleteConfirm] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
 
@@ -33,6 +34,11 @@ const MyReviewItem = ({ review, onDelete }: MyReviewItemProps) => {
   // 삭제 확인 모달 닫기
   const handleDeleteConfirmClose = () => setIsDeleteConfirm(false);
 
+  // 수정하기
+  const handleEditReview = (value: ReviewFormValues) => {
+    onEdit(review.id, value);
+    setIsEditModal(false);
+  };
   // 수정 모달 열기
   const handleEditModalOpen = () => setIsEditModal(true);
   // 수정 모달 닫기
@@ -77,7 +83,7 @@ const MyReviewItem = ({ review, onDelete }: MyReviewItemProps) => {
       />
       {/* 리뷰 모달 */}
       <Modal open={isEditModal} onClose={handleEditModalClose} title='수정하기'>
-        <ReviewForm />
+        <ReviewForm keyboardTitle={wine.name} initReview={review} onSubmit={handleEditReview} />
       </Modal>
     </>
   );

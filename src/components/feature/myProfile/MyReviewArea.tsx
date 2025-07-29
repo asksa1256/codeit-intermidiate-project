@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 import MyReviewList from '@/components/feature/myProfile/MyReviewList';
+import { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
 import EmptyList from '@/components/ui/EmptyList';
 import { apiClient } from '@/lib/api/apiClient';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
@@ -60,6 +61,35 @@ const MyReviewArea = () => {
     }
   };
 
+  // 리뷰 수정
+  const handleReviewReview = async (
+    reviewId: number,
+    formValues: ReviewFormValues,
+  ): Promise<void> => {
+    try {
+      const res = await apiClient.patch(`/${TEAM}/reviews/${reviewId}`, formValues);
+
+      const { teamId, wineId, ...updateData } = res.data;
+
+      setReviewList((prev) => {
+        if (prev === null) return prev;
+        return prev.map((review) =>
+          review.id === reviewId ? { ...review, ...updateData } : review,
+        );
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response?.status === 403) {
+        alert('본인이 작성한 리뷰만 수정 가능합니다.');
+        return;
+      }
+
+      alert('리뷰 수정에 실패 하였습니다.');
+      throw error;
+    }
+  };
+
   // 나중에 사용할 상태값들입니다. 빌드시 에러가 뜨는거 같아서 임시로 추가해둘게요!
   console.log(nextCursor);
 
@@ -88,7 +118,11 @@ const MyReviewArea = () => {
             </Link>
           </EmptyList>
         ) : (
-          <MyReviewList reviewList={reviewList} onReviewDelete={handleDeleteReview} />
+          <MyReviewList
+            reviewList={reviewList}
+            onReviewDelete={handleDeleteReview}
+            onReviewEdit={handleReviewReview}
+          />
         )}
       </div>
     </>
