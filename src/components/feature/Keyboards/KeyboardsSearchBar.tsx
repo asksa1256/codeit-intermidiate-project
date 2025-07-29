@@ -22,7 +22,7 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
       onSearchResults([]); // 검색어 없으면 빈 배열 전달
       return;
     }
-
+    // TODO name 파라미터 params에 다시 사용하기
     try {
       // limit 값대로 불러와서 필터링
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
@@ -67,6 +67,7 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
           placeholder='키보드를 검색해보세요'
           className='flex-1 text-sm placeholder:text-gray-400 outline-none border-none bg-transparent'
         />
+        {/*TODO 함수로 분리 */}
         <Image
           src='/images/SearchIcon.svg'
           width={40}

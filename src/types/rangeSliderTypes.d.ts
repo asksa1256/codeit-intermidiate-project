@@ -28,4 +28,5 @@ type PriceDataRefCurrent = {
 export interface MultihandleSliderProps {
   className?: string;
   valueUpdater: (minPrice: number, maxPrice: number) => void;
+  initialRange?: [number, number];
 }

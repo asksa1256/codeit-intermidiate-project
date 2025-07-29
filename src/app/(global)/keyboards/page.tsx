@@ -4,19 +4,61 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import FilterModal from '@/components/feature/Keyboards/Filter/FilterModal';
+import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenButton';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 import EmptyList from '@/components/ui/EmptyList';
 
-import type { KeyboardItemType } from '@/types/keyboardTypes';
+import type { KeyboardItemType, KeyboardCategoryType } from '@/types/keyboardTypes';
+import type { MultihandleSliderProps } from '@/types/rangeSliderTypes';
 
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[]>([]);
   const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedTypes, setSelectedTypes] = useState<KeyboardCategoryType[]>([]); // 키보드 타입 필터용
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
+  const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
+  const INITIAL_PRICE_RANGE: [number, number] = [0, 300000];
+  const INITIAL_SELECTED_TYPES: KeyboardCategoryType[] = [];
+
   const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
 
   const isSearching = searchResults !== null;
   const isSearchEmpty = isSearching && searchResults?.length === 0;
+
+  // 필터 초기화 버튼 함수
+  const handleResetFilters = () => {
+    console.log('필터 초기화');
+    setSelectedTypes(INITIAL_SELECTED_TYPES);
+    setPriceRange(INITIAL_PRICE_RANGE);
+    setSelectedRating(null);
+    // 여기에 필터 상태 초기화 로직이 들어갈 예정
+  };
+
+  // 필터 적용 버튼 함수
+  const handleApplyFilters = () => {
+    console.log('필터 적용하기');
+    setIsFilterOpen(false);
+    // 필터 적용 로직은 나중에 연결
+  };
+
+  // 키보드 타입 필터 체크박스 함수
+  const handleToggle = (type: KeyboardCategoryType) => {
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
+    );
+  };
+  // 가격 슬라이더 함수
+  const handlePriceChange: MultihandleSliderProps['valueUpdater'] = (min, max) => {
+    setPriceRange([min, max]);
+  };
+
+  // 평점 필터 함수
+  const handleRatingChange = (value: number | null) => {
+    setSelectedRating(value);
+  };
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -37,9 +79,29 @@ const KeyboardsPage = () => {
 
   return (
     <div className='p-4'>
-      <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
-      {/* 검색창: 검색 결과를 setSearchResults로 전달 */}
+      {/* 검색창 */}
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
+
+      {/* 필터 열기 버튼 - 모바일/태블릿에서만 */}
+      <div className='block lg:hidden'>
+        <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
+      </div>
+
+      {/* 필터 모달 */}
+      <FilterModal
+        open={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        selectedTypes={selectedTypes}
+        onToggleType={handleToggle}
+        onReset={handleResetFilters}
+        onApply={handleApplyFilters}
+        priceRange={priceRange}
+        onChangePrice={handlePriceChange}
+        rating={selectedRating}
+        onChangeRating={handleRatingChange}
+      />
+
+      {/* 검색 결과 */}
       {isSearchEmpty ? (
         <EmptyList desc='검색 결과가 없습니다.' />
       ) : (
