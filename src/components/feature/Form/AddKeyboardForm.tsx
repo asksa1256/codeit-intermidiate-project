@@ -1,7 +1,7 @@
 'use client';
 
 import { Field, Label } from '@headlessui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import InfoIcon from '@/assets/icons/InfoIcon.svg';
@@ -27,6 +27,7 @@ interface FormValues {
 
 const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
   const [myKeyboards, setMyKeyboards] = useState<Pick<KeyboardItemBase, 'name'>[]>([]);
+  const nameRef = useRef<HTMLInputElement | null>(null);
 
   const {
     register,
@@ -57,6 +58,11 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
       setError('name', {
         message: '이미 등록하신 키보드입니다.',
       });
+
+      setTimeout(() => {
+        nameRef.current?.scrollIntoView();
+        nameRef.current?.focus();
+      }, 0);
       return;
     }
 
@@ -90,6 +96,11 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
               setValueAs: (v) => v.trim(),
             })}
             error={errors.name?.message}
+            // ref={nameRef}
+            ref={(el) => {
+              nameRef.current = el;
+              register('name').ref(el);
+            }}
           />
         </Field>
 
