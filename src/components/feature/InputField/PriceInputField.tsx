@@ -1,8 +1,8 @@
 import { Input, Label } from '@headlessui/react';
 import { forwardRef } from 'react';
 
-interface InputProps {
-  type?: string;
+interface PriceInputProps {
+  value: string | number;
   placeholder: string;
   label?: string;
   inputLabelGap?: number;
@@ -10,8 +10,8 @@ interface InputProps {
   error?: string;
 }
 
-const InputField = forwardRef<HTMLInputElement, InputProps>(
-  ({ type, placeholder, error, inputLabelGap, ...props }, ref) => {
+const PriceInputField = forwardRef<HTMLInputElement, PriceInputProps>(
+  ({ value, placeholder, error, inputLabelGap, ...props }, ref) => {
     return (
       <>
         {props.label && (
@@ -24,10 +24,10 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
         )}
         <div className='w-full relative'>
           <Input
-            type={type}
+            type='text'
             placeholder={placeholder}
-            autoComplete={props.autoComplete}
-            className={`input hover:border-primary ${error ? 'border-red-500' : 'border-gray-300'}`}
+            value={value}
+            className={`input ${error ? 'border-red-500' : 'border-gray-300'} hover:border-primary`}
             ref={ref}
             {...props}
           />
@@ -38,6 +38,6 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
   },
 );
 
-InputField.displayName = 'InputField';
+PriceInputField.displayName = 'PriceInputField';
 
-export default InputField;
+export default PriceInputField;
