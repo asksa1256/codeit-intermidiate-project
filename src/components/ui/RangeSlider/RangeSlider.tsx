@@ -11,8 +11,8 @@ import keyCap from '../../../../public/images/KeyCap.png';
 
 const INITIAL_HANDLE_STATE = 5;
 
-const RangeSlider = ({ className, valueUpdater }: RangeSliderProps) => {
-  const [value, setValue] = useState(INITIAL_HANDLE_STATE);
+const RangeSlider = ({ className, valueUpdater, initValue }: RangeSliderProps) => {
+  const [value, setValue] = useState(initValue ?? INITIAL_HANDLE_STATE);
   const RangesliderRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
   const handleStyle = { left: `${(value / 10) * 100}%` };

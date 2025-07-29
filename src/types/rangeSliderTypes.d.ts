@@ -5,6 +5,7 @@
 export interface RangeSliderProps {
   className?: string;
   valueUpdater: (value: number) => void;
+  initValue: number;
 }
 
 // -- RangeSliderReadonly 타입 --
