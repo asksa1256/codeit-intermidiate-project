@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { Field, Label } from '@headlessui/react';
 import { useEffect, useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -28,6 +30,7 @@ interface FormValues {
 const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
   const [myKeyboards, setMyKeyboards] = useState<Pick<KeyboardItemBase, 'name'>[]>([]);
   const nameRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
 
   const {
     register,
@@ -67,7 +70,9 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
     }
 
     try {
-      await apiClient.post(`/${TEAM_ID}/wines`, formData);
+      const res = await apiClient.post(`/${TEAM_ID}/wines`, formData);
+      const data = res?.data;
+      router.replace(`/keyboards/${data.id}`);
     } catch (err) {
       console.error(err);
     }
