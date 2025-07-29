@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
+import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import MyReviewList from '@/components/feature/myProfile/MyReviewList';
 import { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
 import EmptyList from '@/components/ui/EmptyList';
@@ -69,6 +70,7 @@ const MyReviewArea = () => {
     try {
       const res = await apiClient.patch(`/${TEAM}/reviews/${reviewId}`, formValues);
 
+      // 리뷰리스트 스키마와 동일한 스키마로 만들어주기 위해 teamId, wineId값 제외하고 적용
       const { teamId, wineId, ...updateData } = res.data;
 
       setReviewList((prev) => {
@@ -94,13 +96,7 @@ const MyReviewArea = () => {
   console.log(nextCursor);
 
   // 데이터 로딩시
-  if (reviewList === null) {
-    return (
-      <div className='flex items-center justify-center h-[50vh]'>
-        <div className=' w-8 h-8 border-4 mb-4 border-gray-300 border-t-primary rounded-full animate-spin' />
-      </div>
-    );
-  }
+  if (reviewList === null) return <MyListLoading />;
 
   return (
     <>
