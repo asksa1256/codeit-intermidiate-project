@@ -12,7 +12,7 @@ const DropdownSelectButton = ({ value }: { value: string }) => {
           readOnly
         />
         <Image
-          src='/images/ArrowDownIcon.svg'
+          src='/images/DownArrowIconFill.svg'
           alt='드롭다운 열기/닫기'
           width={24}
           height={24}
