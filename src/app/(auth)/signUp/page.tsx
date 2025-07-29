@@ -1,4 +1,4 @@
-import SignUpForm from '@/components/feature/SignUpForm';
+import SignUpForm from '@/components/feature/Form/SignUpForm';
 
 const SignInPage = async () => {
   return (

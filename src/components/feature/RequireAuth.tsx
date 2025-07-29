@@ -117,7 +117,8 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
     checkAndRefreshToken();
   }, [pathname, router, user, refreshAccessTokenAndUser]);
 
-  if (!isAuthChecked) return isRefreshing ? <LoadingSpinner text='로그인 확인중...' /> : null;
+  if (!isAuthChecked)
+    return isRefreshing ? <LoadingSpinner text='로그인 확인중...' className='h-screen' /> : null;
 
   return <>{children}</>;
 };
