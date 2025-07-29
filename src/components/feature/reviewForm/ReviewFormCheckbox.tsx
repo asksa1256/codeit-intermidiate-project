@@ -20,13 +20,11 @@ const ReviewFormCheckbox = ({ name, control }: Props) => {
     rules: {
       minLength: {
         value: 1,
-        message: '1개 이상을 선택해주세요',
+        message: '1개 이상 선택 해주세요',
       },
       required: true,
     },
   });
-
-  console.log(value);
 
   return (
     <>

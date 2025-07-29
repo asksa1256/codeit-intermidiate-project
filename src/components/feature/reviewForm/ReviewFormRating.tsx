@@ -16,7 +16,7 @@ const ReviewFormRating = ({ name, control }: Props) => {
     rules: {
       min: {
         value: 1,
-        message: '1점 이상을 선택해주세요',
+        message: '1점 이상 선택 해주세요',
       },
       required: true,
     },
