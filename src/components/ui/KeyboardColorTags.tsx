@@ -21,6 +21,8 @@ const KeyboardColorTags = ({ aroma, children }: Props) => {
           {color}
         </span>
       ))}
+      {/* 별점뒤에 가려지는 태그가 없도록 빈 div 추가 */}
+      <div className='invisible text-sm md:text-base'>가림방지태그</div>
       {children}
     </div>
   );
