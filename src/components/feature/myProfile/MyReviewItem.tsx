@@ -25,9 +25,14 @@ const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
   const { rating, content, updatedAt, wine } = review;
 
   // 삭제하기
-  const handleDeleteReview = () => {
-    onDelete(review.id);
-    setIsDeleteConfirm(false);
+  const handleDeleteReview = async () => {
+    try {
+      await onDelete(review.id);
+      // 에러 발생시 모달창 유지
+      setIsDeleteConfirm(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
   // 삭제 확인 모달 열기
   const handleDeleteConfirmOpen = () => setIsDeleteConfirm(true);
@@ -35,9 +40,14 @@ const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
   const handleDeleteConfirmClose = () => setIsDeleteConfirm(false);
 
   // 수정하기
-  const handleEditReview = (value: ReviewFormValues) => {
-    onEdit(review.id, value);
-    setIsEditModal(false);
+  const handleEditReview = async (value: ReviewFormValues) => {
+    try {
+      await onEdit(review.id, value);
+      // 에러 발생시 모달창 유지
+      setIsEditModal(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
   // 수정 모달 열기
   const handleEditModalOpen = () => setIsEditModal(true);

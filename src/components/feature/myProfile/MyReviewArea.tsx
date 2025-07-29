@@ -24,7 +24,7 @@ const MyReviewArea = () => {
   useEffect(() => {
     const getReviewList = async () => {
       try {
-        const res = await apiClient.get(`/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}`);
+        const res = await apiClient.get(`/${TEAM}/users/me/reviewss?limit=${DEFAULT_LIMIT}`);
         const data: MyReviewListType = res.data;
         const { list, nextCursor, totalCount } = data;
 
@@ -58,7 +58,7 @@ const MyReviewArea = () => {
       }
 
       alert('리뷰 삭제에 실패 하였습니다.');
-      console.error(err.response?.statusText);
+      throw error;
     }
   };
 
