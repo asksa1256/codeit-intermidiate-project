@@ -36,7 +36,7 @@ const ReviewCard = ({ review }: Props) => {
   const UP_ARROW_ICON_URL = '/images/UpArrowIcon.svg';
 
   return (
-    <section className='relative border-1 border-gray-300 rounded-xl p-4 pb-2 md:px-10 md:pt-8 md:pb-5 w-full md:max-w-200'>
+    <section className='relative border-1 border-gray-300 rounded-xl p-4 pb-2 md:px-10 md:pt-8 md:pb-5 w-full md:max-w-285 lg:max-w-200'>
       <div className='flex justify-between items-start'>
         <div className='flex items-center gap-4'>
           <UserThumbnail className='w-[42px] md:w-16 h-[42px] md:h-16' imgSrc={image} />

@@ -17,6 +17,13 @@ export const KAKAO_LOGIN_PAGE = '/oauth/kakao';
 export const DEFAULT_PROFILE_IMG_URL =
   'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1693/1753524666758/UserThumbEmpty.png'; // api 요청 에러 방지용 기본 이미지 url
 
+// constants
+export const KEYBOARD_TYPES_MAP = [
+  { id: 1, type: 'RED', value: '기계식' },
+  { id: 2, type: 'WHITE', value: '멤브레인' },
+  { id: 3, type: 'SPARKLING', value: '펜타그래프' },
+];
+
 // aroma 속성 색상값 매핑
 export const KEYBOARD_COLOR_MAP = {
   CHERRY: '레드',

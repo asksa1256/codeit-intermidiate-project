@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import React from 'react';
 
 import { cn } from '@/utils/style';
@@ -28,6 +30,10 @@ type ButtonDefaultProps = {
    * 이 클래스들은 기본 스타일보다 우선 적용됩니다.
    */
   className?: string;
+  /**
+   * 버튼이 Link 역할을 할 경우, `href` 속성을 받아와서 클릭 시 해당 경로로 이동합니다.
+   */
+  href?: string;
 };
 
 /**
@@ -62,6 +68,7 @@ const ButtonDefault = ({
   type = 'button',
   disabled = false,
   className = '',
+  href,
 }: ButtonDefaultProps) => {
   /**
    * Figma에서 제공된 디자인 명세를 기반으로 하는 버튼의 기본 스타일입니다.
@@ -97,6 +104,13 @@ const ButtonDefault = ({
    * 예를 들어, `baseStyles`에 `w-[400px]`가 있고 `className`에 `w-[100px]`가 있다면, 최종적으로 `w-[100px]`가 적용됩니다.
    */
   const buttonClasses = cn(baseStyles, className);
+
+  if (href)
+    return (
+      <Link href={href} passHref className={buttonClasses.trim().replace(/\s+/g, ' ')}>
+        {children}
+      </Link>
+    );
 
   return (
     /**

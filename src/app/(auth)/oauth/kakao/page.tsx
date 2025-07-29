@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 
 import { useEffect, useState, useRef } from 'react';
 
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
@@ -57,7 +58,7 @@ const KakaoOAuthPage = () => {
     signInByKakao();
   }, [router, code, signIn]);
 
-  return <div>카카오 로그인 처리중...</div>;
+  return <LoadingSpinner text='카카오 로그인 처리중...' className='h-screen' />;
 };
 
 export default KakaoOAuthPage;
