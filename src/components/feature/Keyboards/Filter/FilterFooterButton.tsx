@@ -13,7 +13,7 @@ const FilterFooterButton = ({ onReset, onApply }: FilterFooterButtonProps) => {
       <ButtonDefault
         onClick={onReset}
         className='
-          w-[96px] h-[54px] px-[36px] py-2 
+          w-[96px] h-[54px] px-4 py-2 
           rounded-md text-md font-semibold cursor-pointer
           bg-primary-10 text-primary hover:bg-[#E2D9FB]
         '
@@ -25,7 +25,7 @@ const FilterFooterButton = ({ onReset, onApply }: FilterFooterButtonProps) => {
       <ButtonDefault
         onClick={onApply}
         className='
-          w-[223px] h-[54px] px-[36px] py-2
+          w-[223px] h-[54px] px-4 py-2
           rounded-md text-md font-semibold cursor-pointer
           bg-primary text-white hover:bg-primary-dark
         '

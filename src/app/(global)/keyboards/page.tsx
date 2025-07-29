@@ -4,22 +4,23 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import FilterCheckbox from '@/components/feature/Keyboards/Filter/FilterCheckbox';
 import FilterFooterButton from '@/components/feature/Keyboards/Filter/FilterFooterButton';
 import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenButton';
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 import Modal from '@/components/feature/Modal';
-import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
 import FilterRating from '@/components/ui/FilterRating';
 import MultihandleSlider from '@/components/ui/RangeSlider/MultihandleSlider';
 
-import type { KeyboardItemType } from '@/types/keyboardTypes';
+import type { KeyboardItemType, KeyboardCategoryType } from '@/types/keyboardTypes';
 
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[]>([]);
   const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedTypes, setSelectedTypes] = useState<KeyboardCategoryType[]>([]); // 키보드 타입 필터용
 
   const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
 
@@ -37,6 +38,13 @@ const KeyboardsPage = () => {
     console.log('필터 적용하기');
     setIsFilterOpen(false);
     // 필터 적용 로직은 나중에 연결
+  };
+
+  // 키보드 타입 필터 토글
+  const handleToggle = (type: KeyboardCategoryType) => {
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
+    );
   };
 
   useEffect(() => {
@@ -58,8 +66,6 @@ const KeyboardsPage = () => {
 
   return (
     <div className='p-4'>
-      <h1 className='text-2xl font-bold mb-4'>키보드 페이지</h1>
-
       {/* 검색창 */}
       <KeyboardsSearchBar onSearchResults={setSearchResults} />
 
@@ -77,16 +83,25 @@ const KeyboardsPage = () => {
             <h3 className='text-[16px] leading-[26px] font-semibold text-gray-800'>
               KEYBOARD TYPES
             </h3>
-            <div className='flex gap-[10px] mt-[44px]'>
-              <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-primary text-white'>
-                멤브레인
-              </ButtonDefault>
-              <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-white text-primary border border-primary'>
-                기계식
-              </ButtonDefault>
-              <ButtonDefault className='w-auto h-[32px] px-4 rounded-full text-md font-medium bg-white text-primary border border-primary'>
-                펜타그래프
-              </ButtonDefault>
+            <div className='w-[296px] flex gap-[10px] mt-[34px]'>
+              <FilterCheckbox
+                label='멤브레인'
+                value='WHITE'
+                isChecked={selectedTypes.includes('WHITE')}
+                onChange={handleToggle}
+              />
+              <FilterCheckbox
+                label='기계식'
+                value='RED'
+                isChecked={selectedTypes.includes('RED')}
+                onChange={handleToggle}
+              />
+              <FilterCheckbox
+                label='펜타그래프'
+                value='SPARKLING'
+                isChecked={selectedTypes.includes('SPARKLING')}
+                onChange={handleToggle}
+              />
             </div>
           </section>
           <div className='w-full h-px bg-gray-100' />
