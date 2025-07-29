@@ -46,12 +46,13 @@ const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
     },
   });
 
-  const handleSubmitForm = (formValues: ReviewFormValues) => {
-    onSubmit(formValues);
+  const handleSubmitForm = async (formValues: ReviewFormValues) => {
+    await onSubmit(formValues);
   };
 
   const isEdit = initReview !== null;
   const isSubmitDisabled = isEdit ? !(isDirty && isValid) : !isValid;
+  const isEditLoading = isEdit ? '리뷰 수정중....' : '리뷰 등록중...';
 
   return (
     <form className='mt-10 -mb-4' onSubmit={handleSubmit(handleSubmitForm)}>
@@ -122,7 +123,7 @@ const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
         type='submit'
         className='w-full h-[54px] rounded-xl'
       >
-        리뷰 남기기
+        {isSubmitting ? isEditLoading : '리뷰 남기기'}
       </ButtonDefault>
     </form>
   );
