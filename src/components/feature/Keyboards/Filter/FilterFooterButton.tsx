@@ -8,15 +8,14 @@ interface FilterFooterButtonProps {
 
 const FilterFooterButton = ({ onReset, onApply }: FilterFooterButtonProps) => {
   return (
-    <div className='flex justify-end gap-2'>
+    <div className='flex justify-between gap-2'>
       {/* 초기화 버튼 */}
       <ButtonDefault
         onClick={onReset}
         className='
-          w-auto h-auto px-4 py-2
-          bg-white text-gray-700 border border-gray-300
-          rounded-md cursor-pointer
-          hover:bg-gray-100
+          w-[96px] h-[54px] px-[36px] py-2 
+          rounded-md text-md font-semibold cursor-pointer
+          bg-primary-10 text-primary hover:bg-[#E2D9FB]
         '
       >
         초기화
@@ -26,10 +25,9 @@ const FilterFooterButton = ({ onReset, onApply }: FilterFooterButtonProps) => {
       <ButtonDefault
         onClick={onApply}
         className='
-          w-auto h-auto px-4 py-2
-          bg-purple-600 text-white
-          rounded-md cursor-pointer
-          hover:bg-purple-700
+          w-[223px] h-[54px] px-[36px] py-2
+          rounded-md text-md font-semibold cursor-pointer
+          bg-primary text-white hover:bg-primary-dark
         '
       >
         필터 적용하기

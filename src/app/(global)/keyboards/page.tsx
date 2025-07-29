@@ -111,7 +111,7 @@ const KeyboardsPage = () => {
           </section>
         </div>
 
-        <div className='px-4 pb-4'>
+        <div className='flex justify-center'>
           <FilterFooterButton onReset={handleResetFilters} onApply={handleApplyFilters} />
         </div>
       </Modal>

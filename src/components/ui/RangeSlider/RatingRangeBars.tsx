@@ -9,7 +9,13 @@ const RatingRangeBars = ({ reviewCount, avgRatings }: Props) => {
   const RATING_LABEL = ['5', '4', '3', '2', '1'];
   const FLEX_STYLE = 'flex gap-4 items-center my-2';
   const calcPercentage = (label: keyof AvgRatings): number => {
-    return (avgRatings[label] / reviewCount) * 100;
+    const percentage = (avgRatings[label] / reviewCount) * 100;
+
+    if (Number.isNaN(percentage)) {
+      return 0;
+    } else {
+      return percentage;
+    }
   };
 
   return (
@@ -30,7 +36,7 @@ const RangeBar = ({ percentage }: { percentage: number }) => {
     <div className='w-full'>
       <div className='relative w-full h-[6px] rounded-[50px] bg-gray-100'>
         <div
-          className='absolute w-full h-[6px] rounded-[50px] bg-primary'
+          className='absolute h-[6px] rounded-[50px] bg-primary'
           style={{ width: `${percentage}%` }}
         />
       </div>

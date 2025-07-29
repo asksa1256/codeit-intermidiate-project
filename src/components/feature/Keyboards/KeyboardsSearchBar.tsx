@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import type { KeyboardItemType } from '@/types/keyboardTypes';
 
-//  부모에게 결과를 전달하기 위한 props 타입
+// 부모에게 결과를 전달하기 위한 props 타입
 interface KeyboardsSearchBarProps {
   onSearchResults: (results: KeyboardItemType[]) => void;
 }
