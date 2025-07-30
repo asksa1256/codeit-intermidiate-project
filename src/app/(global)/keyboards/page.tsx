@@ -36,6 +36,13 @@ const KeyboardsPage = () => {
   const isSearching = searchResults !== null;
   const isSearchEmpty = isSearching && searchResults?.length === 0;
 
+  const isFiltering =
+    selectedType !== null || priceRange[0] > 0 || priceRange[1] < 300000 || selectedRating !== null;
+
+  const emptyMessage = isFiltering
+    ? '선택한 필터 조건에 맞는 키보드가 없습니다.'
+    : '검색 결과가 없습니다.';
+
   // 필터 초기화 버튼 함수
   const handleResetFilters = () => {
     console.log('필터 초기화');
@@ -139,7 +146,7 @@ const KeyboardsPage = () => {
 
       {/* 검색 결과 */}
       {isSearchEmpty ? (
-        <EmptyList desc='검색 결과가 없습니다.' />
+        <EmptyList desc={emptyMessage} />
       ) : (
         <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
           {dataToRender.map((item) => (
