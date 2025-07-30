@@ -12,6 +12,17 @@ import EmptyList from '@/components/ui/EmptyList';
 
 import type { KeyboardItemType, KeyboardCategoryType } from '@/types/keyboardTypes';
 
+interface FilterParams {
+  teamId: string;
+  limit: number;
+  cursor?: number;
+  type?: KeyboardCategoryType;
+  minPrice?: number;
+  maxPrice?: number;
+  rating?: number;
+  name?: string;
+}
+
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[]>([]);
   const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
@@ -35,10 +46,42 @@ const KeyboardsPage = () => {
   };
 
   // 필터 적용 버튼 함수
-  const handleApplyFilters = () => {
-    console.log('필터 적용하기');
-    setIsFilterOpen(false);
-    // 필터 적용 로직은 나중에 연결
+  const handleApplyFilters = async () => {
+    try {
+      console.log('필터 적용하기');
+      setIsFilterOpen(false); // 모달 닫기
+
+      const params: FilterParams = {
+        teamId: '16-3',
+        limit: 20,
+      };
+
+      if (selectedTypes.length > 0) {
+        // 여러 타입 중 첫 번째만 전송 (API가 단일 타입만 받는 경우)
+        params.type = selectedTypes[0];
+      }
+
+      if (priceRange[0] > 0) {
+        params.minPrice = priceRange[0];
+      }
+
+      if (priceRange[1] < 300000) {
+        params.maxPrice = priceRange[1];
+      }
+
+      if (selectedRating !== null) {
+        params.rating = selectedRating;
+      }
+
+      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+        params,
+      });
+
+      const filteredList = res.data.list || [];
+      setSearchResults(filteredList);
+    } catch (error) {
+      console.error('필터 적용 실패:', error);
+    }
   };
 
   // 키보드 타입 필터 체크박스 함수

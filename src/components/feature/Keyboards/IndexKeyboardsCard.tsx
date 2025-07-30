@@ -7,6 +7,7 @@ import React from 'react';
 import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import StarRating from '@/components/ui/StarRating';
+import { formatRating } from '@/utils/formatters';
 
 import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
 
@@ -48,7 +49,7 @@ const IndexKeyboardsCard = ({
           </span>
           <div className='items-center justify-between flex mt-[22px]'>
             {/* 평점 숫자 */}
-            <div className='text-xl font-bold'>{avgRating}</div>
+            <div className='text-xl font-bold'>{formatRating(avgRating)}</div>
             <div className='items-center gap-2'>
               {/* 별점 5개 */}
               <StarRating value={avgRating} />
