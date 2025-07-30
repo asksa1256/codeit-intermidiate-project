@@ -8,10 +8,11 @@ import { useState } from 'react';
 interface Props {
   className?: string;
   updater: (rating: number) => void;
+  value: number;
 }
 
-const StarRatingInput = ({ className, updater }: Props) => {
-  const [rating, setRating] = useState(0);
+const StarRatingInput = ({ className, updater, value }: Props) => {
+  const [rating, setRating] = useState(value);
   const [hoveringRating, setHoveringRating] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
 
