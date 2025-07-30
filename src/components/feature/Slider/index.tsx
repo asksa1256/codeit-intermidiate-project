@@ -12,6 +12,10 @@ import IconButton from '@/components/ui/Button/IconButton';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import { KeyboardMiniItem } from '@/types/keyboardTypes';
 
+const SLIDES_MIN_LENGTH = 3;
+const SLIDE_MD_WIDTH = 232;
+const SLIDE_SM_WIDTH = 192;
+
 interface ItemsProps {
   items: KeyboardMiniItem[];
 }
@@ -43,13 +47,22 @@ const ListSlider = ({ items }: ItemsProps) => {
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
+        onAfterInit={(swiper) => {
+          console.log(swiper.slides.length);
+          if (swiper.slides.length < SLIDES_MIN_LENGTH) {
+            setIsEnd(true);
+          }
+        }}
         onSlideChange={(swiper) => {
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
       >
         {items.map((item: KeyboardMiniItem) => (
-          <SwiperSlide key={item.id} style={isMobile ? { width: 192 } : { width: 232 }}>
+          <SwiperSlide
+            key={item.id}
+            style={isMobile ? { width: SLIDE_SM_WIDTH } : { width: SLIDE_MD_WIDTH }}
+          >
             <KeyboardMiniCard item={item} />
           </SwiperSlide>
         ))}
