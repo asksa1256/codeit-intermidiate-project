@@ -55,7 +55,7 @@ const MyKeyboardArea = () => {
       }
 
       alert('키보드 삭제에 실패 하였습니다.');
-      console.error(err);
+      throw error;
     }
   };
 
@@ -71,7 +71,6 @@ const MyKeyboardArea = () => {
       </span>
       {isListEmpty ? (
         <EmptyList desc='등록된 키보드가 없어요.'>
-          {/* [ ] onClick시 키보드 등록 모달 열기 */}
           <ButtonDefault className='inline-flex items-center justify-center px-[15px] w-auto h-[48px] font-semibold text-white bg-primary rounded-xl md:px-[24px]'>
             키보드 등록 하기
           </ButtonDefault>

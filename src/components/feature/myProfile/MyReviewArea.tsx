@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
+import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import MyReviewList from '@/components/feature/myProfile/MyReviewList';
+import { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
 import EmptyList from '@/components/ui/EmptyList';
 import { apiClient } from '@/lib/api/apiClient';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
@@ -56,7 +58,37 @@ const MyReviewArea = () => {
       }
 
       alert('리뷰 삭제에 실패 하였습니다.');
-      console.error(err.response?.statusText);
+      throw error;
+    }
+  };
+
+  // 리뷰 수정
+  const handleEditReview = async (
+    reviewId: number,
+    formValues: ReviewFormValues,
+  ): Promise<void> => {
+    try {
+      const res = await apiClient.patch(`/${TEAM}/reviews/${reviewId}`, formValues);
+
+      // 리뷰리스트 스키마와 동일한 스키마로 만들어주기 위해 teamId, wineId값 제외하고 적용
+      const { teamId, wineId, ...updateData } = res.data;
+
+      setReviewList((prev) => {
+        if (prev === null) return prev;
+        return prev.map((review) =>
+          review.id === reviewId ? { ...review, ...updateData } : review,
+        );
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response?.status === 403) {
+        alert('본인이 작성한 리뷰만 수정 가능합니다.');
+        return;
+      }
+
+      alert('리뷰 수정에 실패 하였습니다.');
+      throw error;
     }
   };
 
@@ -64,13 +96,7 @@ const MyReviewArea = () => {
   console.log(nextCursor);
 
   // 데이터 로딩시
-  if (reviewList === null) {
-    return (
-      <div className='flex items-center justify-center h-[50vh]'>
-        <div className=' w-8 h-8 border-4 mb-4 border-gray-300 border-t-primary rounded-full animate-spin' />
-      </div>
-    );
-  }
+  if (reviewList === null) return <MyListLoading />;
 
   return (
     <>
@@ -88,7 +114,11 @@ const MyReviewArea = () => {
             </Link>
           </EmptyList>
         ) : (
-          <MyReviewList reviewList={reviewList} onReviewDelete={handleDeleteReview} />
+          <MyReviewList
+            reviewList={reviewList}
+            onReviewDelete={handleDeleteReview}
+            onReviewEdit={handleEditReview}
+          />
         )}
       </div>
     </>
