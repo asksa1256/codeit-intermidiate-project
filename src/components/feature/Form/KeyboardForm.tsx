@@ -1,6 +1,7 @@
 'use client';
 
 import { Field, Label } from '@headlessui/react';
+import { AxiosError } from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 
 import InfoIcon from '@/assets/icons/InfoIcon.svg';
@@ -10,47 +11,61 @@ import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
 import HintTextWithIcon from '@/components/ui/HintTextWithIcon';
 import InputField from '@/components/ui/Input';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { KEYBOARD_TYPES_MAP } from '@/constants';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import convertToTypeArray from '@/utils/convertToTypeArray';
 import { formatPrice } from '@/utils/formatters';
 
-interface FormValues {
+export interface KeyboardFormValues {
   name: string;
-  price: string; // 1,000 단위 포맷팅을 위해 string으로 받음
-  company: string;
+  price: string; // form에서는 string으로 처리하고, 부모에서 number로 변환하여 api 요청
+  region: string;
   type: string;
   image: string;
 }
 
-const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
+interface KeyboardFormProps {
+  initialValues?: KeyboardFormValues;
+  onSubmit: (formData: KeyboardFormValues) => void;
+  onClose: () => void;
+}
+
+const KeyboardForm = ({ initialValues, onSubmit, onClose }: KeyboardFormProps) => {
   const {
     register,
     handleSubmit,
     watch,
     control,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<FormValues>({
-    mode: 'onBlur',
+  } = useForm<KeyboardFormValues>({
+    mode: 'onChange',
     defaultValues: {
-      type: KEYBOARD_TYPES_MAP[0].value,
+      ...initialValues,
+      type: initialValues?.type === '' ? KEYBOARD_TYPES_MAP[0].value : initialValues?.type,
     },
   });
 
   const innerWidth = useWindowWidth();
   const isMobile = innerWidth < 640;
 
-  const onSubmit = async (formValues: FormValues) => {
+  const handleKeyboardFormSubmit = async (formValues: KeyboardFormValues) => {
     const formData = {
       ...formValues,
       type: convertToTypeArray(formValues.type),
     };
 
-    console.log(formData); // api 요청 데이터
+    try {
+      onSubmit(formData);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error);
+      alert('등록 중 문제가 발생했습니다. 다시 시도해주세요. ' + error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleKeyboardFormSubmit)}>
       <div className='flex flex-col w-full md:gap-2.5'>
         <Field>
           <InputField
@@ -76,11 +91,11 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
               validate: {
                 isNonNegative: (v) => {
                   const num = Number(v);
-                  if (num < 0) return '가격은 0원 이상이어야 합니다.';
+                  if (num <= 0) return '가격은 0원 이상이어야 합니다.';
                   return true;
                 },
               },
-              setValueAs: (v) => v.trim().replace(/[^\d]/g, ''), // 숫자만 저장
+              setValueAs: (v) => String(v).trim().replace(/[^\d]/g, ''),
             })}
             error={errors.price?.message}
           />
@@ -91,11 +106,11 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
             label='제조사'
             inputLabelGap={isMobile ? 8 : 16}
             placeholder='제조사 입력'
-            {...register('company', {
+            {...register('region', {
               required: '제조사를 입력해주세요.',
               setValueAs: (v) => v.trim(),
             })}
-            error={errors.company?.message}
+            error={errors.region?.message}
           />
         </Field>
 
@@ -156,11 +171,20 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
           취소
         </ButtonDefault>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
-          키보드 등록하기
+          {isSubmitting ? (
+            <>
+              <LoadingSpinner className='inline-flex' />
+              등록중...
+            </>
+          ) : initialValues ? (
+            '수정하기'
+          ) : (
+            '키보드 등록하기'
+          )}
         </ButtonDefault>
       </div>
     </form>
   );
 };
 
-export default AddKeyboardForm;
+export default KeyboardForm;

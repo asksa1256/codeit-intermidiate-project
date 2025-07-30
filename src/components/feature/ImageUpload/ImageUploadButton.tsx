@@ -10,6 +10,7 @@ interface ImageUploadButtonProps {
 const ImageUploadButton = ({ className, isUploading, onClick }: ImageUploadButtonProps) => {
   return (
     <button
+      type='button'
       className={`group flex items-center justify-center w-[140px] aspect-square border border-gray-300 rounded-2xl hover:bg-primary-10 transition-colors ${className}`}
       onClick={onClick}
     >
