@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-import AddKeyboardForm from '@/components/feature/Form/AddKeyboardForm';
+import KeyboardForm from '@/components/feature/Form/KeyboardForm';
 import Modal from '@/components/feature/Modal';
 
 export default function KeyboardsPage() {
   // 모달 열림/닫힘 상태
   const [open, setOpen] = useState(false);
-  const [addKeyboardOpen, setAddKeyboardOpen] = useState(false);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   return (
     <section className='p-8'>
@@ -42,7 +42,7 @@ export default function KeyboardsPage() {
       <section className='mt-8'>
         {/* 키보드 등록 모달 열기 버튼 */}
         <button
-          onClick={() => setAddKeyboardOpen(true)}
+          onClick={() => setKeyboardOpen(true)}
           className='px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700'
         >
           키보드 등록 모달 열기
@@ -50,13 +50,13 @@ export default function KeyboardsPage() {
 
         {/* 키보드 등록 모달 */}
         <Modal
-          open={addKeyboardOpen}
-          onClose={() => setAddKeyboardOpen(false)}
+          open={keyboardOpen}
+          onClose={() => setKeyboardOpen(false)}
           title='키보드 등록'
           size='md'
           showCloseButton={true}
         >
-          <AddKeyboardForm onClose={() => setAddKeyboardOpen(false)} />
+          <KeyboardForm onClose={() => setKeyboardOpen(false)} />
         </Modal>
       </section>
     </section>

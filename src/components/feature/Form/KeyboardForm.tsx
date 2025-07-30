@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 
 import { Field, Label } from '@headlessui/react';
-import { useEffect, useState, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import InfoIcon from '@/assets/icons/InfoIcon.svg';
@@ -16,7 +15,6 @@ import InputField from '@/components/ui/Input';
 import { KEYBOARD_TYPES_MAP, TEAM_ID } from '@/constants';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import { apiClient } from '@/lib/api/apiClient';
-import { KeyboardItemBase } from '@/types/keyboardTypes';
 import convertToTypeArray from '@/utils/convertToTypeArray';
 import { formatPrice } from '@/utils/formatters';
 
@@ -29,8 +27,6 @@ interface FormValues {
 }
 
 const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
-  const [myKeyboards, setMyKeyboards] = useState<Pick<KeyboardItemBase, 'name'>[]>([]);
-  const nameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
   const {
@@ -39,7 +35,6 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
     watch,
     control,
     formState: { errors, isSubmitting, isValid },
-    setError,
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
@@ -57,19 +52,6 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
       type: convertToTypeArray(formValues.type),
     };
 
-    const isDuplicate = myKeyboards.some((item) => item.name === formData.name);
-    if (Array.isArray(myKeyboards) && isDuplicate) {
-      setError('name', {
-        message: '이미 등록하신 키보드입니다.',
-      });
-
-      setTimeout(() => {
-        nameRef.current?.scrollIntoView();
-        nameRef.current?.focus();
-      }, 0);
-      return;
-    }
-
     try {
       const res = await apiClient.post(`/${TEAM_ID}/wines`, formData);
       const data = res?.data;
@@ -78,16 +60,6 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
       console.error(err);
     }
   };
-
-  // 키보드 중복 등록 방지용 myKeyboards GET
-  useEffect(() => {
-    const getMyKeyboards = async () => {
-      const res = await apiClient.get(`/${TEAM_ID}/users/me/wines?limit=20`);
-      const data = res?.data.list;
-      setMyKeyboards(data);
-    };
-    getMyKeyboards();
-  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -102,11 +74,6 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
               setValueAs: (v) => v.trim(),
             })}
             error={errors.name?.message}
-            ref={(el) => {
-              // 키보드 중복 등록 시 자동 스크롤 및 포커스를 위한 ref
-              nameRef.current = el;
-              register('name').ref(el);
-            }}
           />
         </Field>
 
