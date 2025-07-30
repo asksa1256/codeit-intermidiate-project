@@ -38,9 +38,9 @@ const FilterModalBack = ({ open, onClose }: Props) => {
   return (
     <>
       {isModalOpenOrWeb && (
-        <div className='fixed top-0 left-0 h-dvh w-full z-50 bg-black/30 flex items-end justify-center md:items-center lg:static lg:block lg:w-[300px] lg:h-auto lg:shrink-0 lg:bg-transparent lg:z-auto lg:pb-4'>
+        <div className='fixed top-0 left-0 h-dvh w-full z-50 bg-black/30 flex items-end justify-center fade md:items-center lg:static lg:block lg:w-[300px] lg:h-auto lg:shrink-0 lg:bg-transparent lg:z-auto lg:pb-4'>
           <div
-            className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl md:max-w-[375px] md:rounded-2xl lg:rounded-none lg:max-h-none'
+            className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl modalBox-open md:max-w-[375px] md:rounded-2xl lg:rounded-none lg:max-h-none'
             ref={ref}
           >
             <div className='flex justify-between shrink-0 p-6 pb-0 mb-8 lg:hidden'>
