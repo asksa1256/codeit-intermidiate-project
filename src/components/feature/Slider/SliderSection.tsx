@@ -9,7 +9,7 @@ const SliderSection = async ({ title }: { title?: string | ReactNode }) => {
   const data = res.data;
 
   return (
-    <section className='lg:w-285 lg:mx-auto mx-4 mt-4 mb-6 md:mt-5 md:mb-10'>
+    <section className='w-full'>
       <article className='bg-gray-100 p-5 md:p-[30px] rounded-xl md:rounded-2xl'>
         {title && <h4 className='text-lg md:text-xl font-bold mb-5 md:mb-[30px]'>{title}</h4>}
         <ListSlider items={data} />
