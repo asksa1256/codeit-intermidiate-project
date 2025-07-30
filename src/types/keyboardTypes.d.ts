@@ -98,6 +98,12 @@ interface KeyboardListType {
   nextCursor: number | null;
 }
 
+/**
+ * - Page : 키보드 목록 페이지
+ * - 추천 키보드 아이템
+ */
+export type KeyboardMiniItem = Pick<KeyboardItemBase, 'id', 'name', 'image', 'avgRating'>;
+
 // ==================================================================================
 
 /**
