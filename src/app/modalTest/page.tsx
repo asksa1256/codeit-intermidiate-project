@@ -8,6 +8,7 @@ import KeyboardForm from '@/components/feature/Form/KeyboardForm';
 import { KeyboardFormValues } from '@/components/feature/Form/KeyboardForm';
 import Modal from '@/components/feature/Modal';
 import { TEAM_ID } from '@/constants';
+import { KEYBOARD_TYPES_MAP } from '@/constants';
 import { apiClient } from '@/lib/api/apiClient';
 
 export default function KeyboardsPage() {
@@ -19,28 +20,32 @@ export default function KeyboardsPage() {
   const router = useRouter();
 
   const handleSubmit = async (formData: KeyboardFormValues) => {
-    const payload = { ...formData, price: +formData.price };
-    const updatePayload = { ...payload, avgRating: 4 };
+    const payload = {
+      ...formData,
+      price: +formData.price,
+      type: formData.type ?? KEYBOARD_TYPES_MAP[0].type,
+    };
+    // const updatePayload = { ...payload, avgRating: 4 };
 
     // 키보드 등록 api
-    // try {
-    //   const res = await apiClient.post(`/${TEAM_ID}/wines`, payload);
-    //   const data = res?.data;
-
-    //   router.replace(`/keyboards/${data.id}`);
-    // } catch (err) {
-    //   throw err; // 폼에 에러 전달
-    // }
-
-    // 키보드 수정 api
     try {
-      const res = await apiClient.patch(`/${TEAM_ID}/wines/1398`, updatePayload);
+      const res = await apiClient.post(`/${TEAM_ID}/wines`, payload);
       const data = res?.data;
 
       router.replace(`/keyboards/${data.id}`);
     } catch (err) {
       throw err; // 폼에 에러 전달
     }
+
+    // 키보드 수정 api
+    // try {
+    //   const res = await apiClient.patch(`/${TEAM_ID}/wines/1398`, updatePayload);
+    //   const data = res?.data;
+
+    //   router.replace(`/keyboards/${data.id}`);
+    // } catch (err) {
+    //   throw err; // 폼에 에러 전달
+    // }
   };
 
   useEffect(() => {
@@ -107,11 +112,7 @@ export default function KeyboardsPage() {
           size='md'
           showCloseButton={true}
         >
-          <KeyboardForm
-            initialValues={tempInitialValues}
-            onSubmit={handleSubmit}
-            onClose={() => setKeyboardOpen(false)}
-          />
+          <KeyboardForm onSubmit={handleSubmit} onClose={() => setKeyboardOpen(false)} />
         </Modal>
       </section>
     </section>

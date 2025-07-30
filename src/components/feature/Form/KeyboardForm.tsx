@@ -42,7 +42,7 @@ const KeyboardForm = ({ initialValues, onSubmit, onClose }: KeyboardFormProps) =
     mode: 'onChange',
     defaultValues: {
       ...initialValues,
-      type: initialValues?.type === '' ? KEYBOARD_TYPES_MAP[0].value : initialValues?.type,
+      type: initialValues?.type === '' ? KEYBOARD_TYPES_MAP[0].type : initialValues?.type,
     },
   });
 
