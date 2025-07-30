@@ -47,10 +47,10 @@ const ScrollToTopButton = () => {
       icon={RightArrowIcon}
       rounded
       className={clsx(
-        'fixed bottom-10 right-10 z-[9] -rotate-90 transition-all duration-300 ease-in-out',
+        'fixed bottom-[100px] md:bottom-10 right-10 z-[8] -rotate-90 transition-all duration-300 ease-in-out shadow-primary',
         isVisible ? 'translate-y-0 pointer-events-auto' : 'translate-y-5 pointer-events-none',
       )}
-      style={{ opacity: isVisible ? '100' : '0' }}
+      style={{ opacity: isVisible ? '1' : '0' }}
       onClick={handleScrollToTop}
     />
   );
