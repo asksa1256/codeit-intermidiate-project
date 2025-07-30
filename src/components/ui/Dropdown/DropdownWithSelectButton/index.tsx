@@ -1,6 +1,7 @@
 'use client';
 
 import { DropdownWrapProps } from '@/types/dropdownTypes';
+import { convertToTypeValueArray } from '@/utils/convertToTypeArray';
 
 import Dropdown from '../Dropdown';
 import DropdownSelectButton from './DropdownSelectButton';
@@ -31,7 +32,7 @@ const DropdownWithSelectButton = ({
   return (
     <Dropdown size={size} wide={wide} className={`z-10 mb-7 ${className}`}>
       <DropdownTrigger className='w-full text-left'>
-        <DropdownSelectButton value={value ?? items[0].value} />
+        <DropdownSelectButton value={convertToTypeValueArray(value) ?? items[0].value} />
       </DropdownTrigger>
       <Dropdown.List className='mt-4'>
         {items.map((item) => (
