@@ -75,7 +75,10 @@ const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
         <textarea
           placeholder='후기를 작성해 주세요'
           className='block w-full h-[100px] mt-6 py-[14px] px-[20px] border border-gray-300 text-md resize-none rounded-xl outline-none placeholder:text-gray-500 md:h-[120px] md:rounded-2xl md:text-base'
-          {...register('content', { required: true })}
+          {...register('content', {
+            required: true,
+            setValueAs: (v) => v.trim(),
+          })}
         />
       </div>
 
