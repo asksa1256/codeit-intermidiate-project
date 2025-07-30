@@ -27,10 +27,9 @@ const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[]>([]);
   const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [selectedTypes, setSelectedTypes] = useState<KeyboardCategoryType[]>([]); // 키보드 타입 필터용
+  const [selectedType, setSelectedType] = useState<KeyboardCategoryType | null>(null); // 키보드 타입 필터용
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
   const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
-  const INITIAL_SELECTED_TYPES: KeyboardCategoryType[] = [];
 
   const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
 
@@ -40,7 +39,7 @@ const KeyboardsPage = () => {
   // 필터 초기화 버튼 함수
   const handleResetFilters = () => {
     console.log('필터 초기화');
-    setSelectedTypes(INITIAL_SELECTED_TYPES);
+    setSelectedType(null);
     setPriceRange([0, 300000]);
     setSelectedRating(null);
   };
@@ -56,9 +55,8 @@ const KeyboardsPage = () => {
         limit: 20,
       };
 
-      if (selectedTypes.length > 0) {
-        // 여러 타입 중 첫 번째만 전송 (API가 단일 타입만 받는 경우)
-        params.type = selectedTypes[0];
+      if (selectedType) {
+        params.type = selectedType;
       }
 
       if (priceRange[0] > 0) {
@@ -86,9 +84,7 @@ const KeyboardsPage = () => {
 
   // 키보드 타입 필터 체크박스 함수
   const handleToggle = (type: KeyboardCategoryType) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
-    );
+    setSelectedType((prev) => (prev === type ? null : type));
   };
   // 가격 슬라이더 함수
   const handlePriceChange = ([min, max]: [number, number]) => {
@@ -131,7 +127,7 @@ const KeyboardsPage = () => {
       <FilterModal
         open={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
-        selectedTypes={selectedTypes}
+        selectedType={selectedType}
         onToggleType={handleToggle}
         onReset={handleResetFilters}
         onApply={handleApplyFilters}

@@ -1,3 +1,4 @@
+// 모바일/태블릿용 필터 모달
 'use client';
 
 import Modal from '@/components/feature/Modal';
@@ -12,7 +13,7 @@ import type { KeyboardCategoryType } from '@/types/keyboardTypes';
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  selectedTypes: KeyboardCategoryType[];
+  selectedType: KeyboardCategoryType | null;
   onToggleType: (type: KeyboardCategoryType) => void;
   onReset: () => void;
   onApply: () => void;
@@ -25,7 +26,7 @@ interface FilterModalProps {
 const FilterModal = ({
   open,
   onClose,
-  selectedTypes,
+  selectedType,
   onToggleType,
   onReset,
   onApply,
@@ -46,19 +47,19 @@ const FilterModal = ({
             <FilterCheckbox
               label='멤브레인'
               value='WHITE'
-              isChecked={selectedTypes.includes('WHITE')}
+              isChecked={selectedType === 'WHITE'}
               onChange={onToggleType}
             />
             <FilterCheckbox
               label='기계식'
               value='RED'
-              isChecked={selectedTypes.includes('RED')}
+              isChecked={selectedType === 'RED'}
               onChange={onToggleType}
             />
             <FilterCheckbox
               label='펜타그래프'
               value='SPARKLING'
-              isChecked={selectedTypes.includes('SPARKLING')}
+              isChecked={selectedType === 'SPARKLING'}
               onChange={onToggleType}
             />
           </div>

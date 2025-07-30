@@ -1,4 +1,4 @@
-//필터 색상용 체크박스
+//필터 타입용 체크박스
 'use client';
 
 import { Checkbox } from '@headlessui/react';
