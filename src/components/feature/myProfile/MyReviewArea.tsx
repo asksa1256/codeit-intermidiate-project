@@ -63,7 +63,7 @@ const MyReviewArea = () => {
   };
 
   // 리뷰 수정
-  const handleReviewReview = async (
+  const handleEditReview = async (
     reviewId: number,
     formValues: ReviewFormValues,
   ): Promise<void> => {
@@ -117,7 +117,7 @@ const MyReviewArea = () => {
           <MyReviewList
             reviewList={reviewList}
             onReviewDelete={handleDeleteReview}
-            onReviewEdit={handleReviewReview}
+            onReviewEdit={handleEditReview}
           />
         )}
       </div>
