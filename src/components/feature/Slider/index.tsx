@@ -48,7 +48,6 @@ const ListSlider = ({ items }: ItemsProps) => {
           setIsEnd(swiper.isEnd);
         }}
         onAfterInit={(swiper) => {
-          console.log(swiper.slides.length);
           if (swiper.slides.length < SLIDES_MIN_LENGTH) {
             setIsEnd(true);
           }
