@@ -1,8 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
 import { Field, Label } from '@headlessui/react';
+import { AxiosError } from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 
 import InfoIcon from '@/assets/icons/InfoIcon.svg';
@@ -12,57 +11,61 @@ import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
 import HintTextWithIcon from '@/components/ui/HintTextWithIcon';
 import InputField from '@/components/ui/Input';
-import { KEYBOARD_TYPES_MAP, TEAM_ID } from '@/constants';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { KEYBOARD_TYPES_MAP } from '@/constants';
 import useWindowWidth from '@/hooks/useWindowWidth';
-import { apiClient } from '@/lib/api/apiClient';
 import convertToTypeArray from '@/utils/convertToTypeArray';
 import { formatPrice } from '@/utils/formatters';
 
-interface FormValues {
+export interface KeyboardFormValues {
   name: string;
-  price: string; // 1,000 단위 포맷팅을 위해 string으로 받음
+  price: string; // form에서는 string으로 처리하고, 부모에서 number로 변환하여 api 요청
   region: string;
   type: string;
   image: string;
 }
 
-const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
-  const router = useRouter();
+interface KeyboardFormProps {
+  initialValues?: KeyboardFormValues;
+  onSubmit: (formData: KeyboardFormValues) => void;
+  onClose: () => void;
+}
 
+const KeyboardForm = ({ initialValues, onSubmit, onClose }: KeyboardFormProps) => {
   const {
     register,
     handleSubmit,
     watch,
     control,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<FormValues>({
+  } = useForm<KeyboardFormValues>({
     mode: 'onChange',
     defaultValues: {
-      type: KEYBOARD_TYPES_MAP[0].value,
+      ...initialValues,
+      type: initialValues?.type === '' ? KEYBOARD_TYPES_MAP[0].value : initialValues?.type,
     },
   });
 
   const innerWidth = useWindowWidth();
   const isMobile = innerWidth < 640;
 
-  const onSubmit = async (formValues: FormValues) => {
+  const handleKeyboardFormSubmit = async (formValues: KeyboardFormValues) => {
     const formData = {
       ...formValues,
-      price: +formValues.price,
       type: convertToTypeArray(formValues.type),
     };
 
     try {
-      const res = await apiClient.post(`/${TEAM_ID}/wines`, formData);
-      const data = res?.data;
-      router.replace(`/keyboards/${data.id}`);
+      onSubmit(formData);
     } catch (err) {
-      console.error(err);
+      const error = err as AxiosError;
+      console.log(error);
+      alert('등록 중 문제가 발생했습니다. 다시 시도해주세요. ' + error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleKeyboardFormSubmit)}>
       <div className='flex flex-col w-full md:gap-2.5'>
         <Field>
           <InputField
@@ -92,7 +95,7 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
                   return true;
                 },
               },
-              setValueAs: (v) => v.trim().replace(/[^\d]/g, ''), // 숫자만 저장
+              setValueAs: (v) => String(v).trim().replace(/[^\d]/g, ''),
             })}
             error={errors.price?.message}
           />
@@ -168,11 +171,20 @@ const AddKeyboardForm = ({ onClose }: { onClose: () => void }) => {
           취소
         </ButtonDefault>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
-          키보드 등록하기
+          {isSubmitting ? (
+            <>
+              <LoadingSpinner className='inline-flex' />
+              등록중...
+            </>
+          ) : initialValues ? (
+            '수정하기'
+          ) : (
+            '키보드 등록하기'
+          )}
         </ButtonDefault>
       </div>
     </form>
   );
 };
 
-export default AddKeyboardForm;
+export default KeyboardForm;
