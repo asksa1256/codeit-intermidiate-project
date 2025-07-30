@@ -10,8 +10,13 @@ import RightArrowIcon from '@/assets/icons/RightArrowIcon.svg';
 import KeyboardMiniCard from '@/components/feature/keyboardDetails/KeyboardMiniCard';
 import IconButton from '@/components/ui/Button/IconButton';
 import useWindowWidth from '@/hooks/useWindowWidth';
+import { KeyboardMiniItem } from '@/types/keyboardTypes';
 
-const ListSlider = () => {
+interface ItemsProps {
+  items: KeyboardMiniItem[];
+}
+
+const ListSlider = ({ items }: ItemsProps) => {
   SwiperCore.use([Navigation, Autoplay]);
   const swiperRef = useRef<SwiperType>(null);
 
@@ -27,7 +32,6 @@ const ListSlider = () => {
         slidesPerView='auto'
         spaceBetween={16}
         loop={false}
-        // navigation={true}
         autoplay={{
           delay: 2500,
           disableOnInteraction: false, // 사용자 상호작용시 슬라이더 일시 정지 비활성화
@@ -44,34 +48,13 @@ const ListSlider = () => {
           setIsEnd(swiper.isEnd);
         }}
       >
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
-        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-          <KeyboardMiniCard href='/slider' />
-        </SwiperSlide>
+        {items.map((item: KeyboardMiniItem) => (
+          <SwiperSlide key={item.id} style={isMobile ? { width: 192 } : { width: 232 }}>
+            <KeyboardMiniCard item={item} />
+          </SwiperSlide>
+        ))}
       </Swiper>
+
       <div className='absolute top-1/2 left-0 -translate-y-1/2 -mt-6 w-full z-[3]'>
         <IconButton
           icon={RightArrowIcon}
