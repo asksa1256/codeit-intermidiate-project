@@ -12,7 +12,7 @@ import reviewCardImg from '../../../public/images/ReviewCard.png';
 
 const Home = () => {
   return (
-    <main className='bg-gray-100 px-4 pt-[90px] md:pt-[114px] lg:pt-[178px] pb-16 -mt-[90px] md:-mt-[110px] overflow-hidden'>
+    <main className='bg-gray-100 lg:bg-white px-4 pt-[90px] md:pt-[114px] lg:pt-[178px] pb-16 -mt-[90px] md:-mt-[110px] overflow-hidden'>
       <section className='overflow-hidden bg-[#171a21] rounded-2xl lg:max-w-285 h-101 lg:h-134 pt-14 md:pt-18 lg:pt-21 mx-auto'>
         <div className='relative w-65 h-full mx-auto'>
           <div className='flex flex-col items-center gap-6 lg:gap-3'>
