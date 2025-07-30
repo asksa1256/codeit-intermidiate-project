@@ -1,10 +1,14 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import StarRating from '@/components/ui/StarRating';
 
-const KeyboardMiniCard = () => {
+const KeyboardMiniCard = ({ href }: { href: string }) => {
   return (
-    <article className='w-[192px] h-[160px] md:w-[232px] md:h-[185px] px-6 md:px-[30px] pt-6 bg-white rounded-xl shadow-primary'>
+    <Link
+      href={href}
+      className='block w-[192px] h-[160px] md:w-[232px] md:h-[185px] px-6 md:px-[30px] pt-6 bg-white rounded-xl shadow-primary'
+    >
       <div className='flex gap-4 md:gap-6'>
         <div className='shrink-0 w-[52px] md:w-[60px] mt-[130%] md:mt-[118%]'>
           <div className='relative'>
@@ -25,7 +29,7 @@ const KeyboardMiniCard = () => {
           </h6>
         </div>
       </div>
-    </article>
+    </Link>
   );
 };
 
