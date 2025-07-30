@@ -16,35 +16,44 @@ interface KeyboardsSearchBarProps {
 const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
   const [query, setQuery] = useState('');
 
+  // 검색 수행 함수 (API 호출 및 결과 처리, 서버 필터링, 클라이언트 보정 필터링)
   const handleSearch = async () => {
     const cleanQuery = query.trim().toLowerCase();
+
     if (!cleanQuery) {
       onSearchResults([]); // 검색어 없으면 빈 배열 전달
       return;
     }
-    // TODO name 파라미터 params에 다시 사용하기
     try {
-      // limit 값대로 불러와서 필터링
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-        params: { limit: 20 },
+        params: { limit: 30, name: cleanQuery },
       });
 
       const dataArray: KeyboardItemType[] = res.data.list || [];
 
-      const filtered = dataArray.filter((item) => item.name.toLowerCase().includes(cleanQuery));
+      //  클라이언트 추가 보정 필터
+      const normalizedQuery = cleanQuery.normalize('NFC');
+      const filtered = dataArray.filter((item) =>
+        item.name.toLowerCase().normalize('NFC').includes(normalizedQuery),
+      );
 
-      // name 필드의 indexOf 순서로 정렬
+      // 검색어 위치(indexOf) 기준 정렬
       const sorted = [...filtered].sort((a, b) => {
-        const aPos = a.name.toLowerCase().indexOf(cleanQuery);
-        const bPos = b.name.toLowerCase().indexOf(cleanQuery);
+        const aPos = a.name.toLowerCase().indexOf(normalizedQuery);
+        const bPos = b.name.toLowerCase().indexOf(normalizedQuery);
         return aPos - bPos;
       });
 
-      // 결과를 페이지에 전달
-      onSearchResults(sorted);
+      onSearchResults(sorted); // 결과 전달
     } catch (err) {
       console.error('검색 중 오류 발생:', err);
     }
+  };
+
+  // 검색 트리거 이벤트 (입력/버튼 공통)
+  const handleTriggerSearch = (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent) => {
+    if ('key' in e && e.key !== 'Enter') return;
+    handleSearch();
   };
 
   return (
@@ -63,18 +72,17 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
           type='text'
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          onKeyDown={handleTriggerSearch}
           placeholder='키보드를 검색해보세요'
           className='flex-1 text-sm placeholder:text-gray-400 outline-none border-none bg-transparent'
         />
-        {/*TODO 함수로 분리 */}
         <Image
           src='/images/SearchIcon.svg'
           width={40}
           height={40}
           alt='검색 아이콘'
           className='w-6 md:w-[26px] cursor-pointer'
-          onClick={handleSearch}
+          onClick={handleTriggerSearch}
         />
       </section>
     </div>
