@@ -8,7 +8,6 @@ import FilterCheckbox from './FilterCheckbox';
 import FilterFooterButton from './FilterFooterButton';
 
 import type { KeyboardCategoryType } from '@/types/keyboardTypes';
-import type { MultihandleSliderProps } from '@/types/rangeSliderTypes';
 
 interface FilterModalProps {
   open: boolean;
@@ -18,8 +17,8 @@ interface FilterModalProps {
   onReset: () => void;
   onApply: () => void;
   priceRange: [number, number];
-  onChangePrice: MultihandleSliderProps['valueUpdater'];
-  rating: number | null;
+  onChangePrice: (range: [number, number]) => void;
+  selectedRating: number | null;
   onChangeRating: (value: number | null) => void;
 }
 
@@ -32,6 +31,8 @@ const FilterModal = ({
   onApply,
   priceRange,
   onChangePrice,
+  selectedRating,
+  onChangeRating,
 }: FilterModalProps) => {
   return (
     <Modal open={open} onClose={onClose} title='필터'>
@@ -69,7 +70,7 @@ const FilterModal = ({
         <section>
           <h3 className='text-xl font-semibold mb-2'>PRICE</h3>
           <div className='flex justify-between text-xs text-gray-500 mt-1'>
-            <MultihandleSlider valueUpdater={onChangePrice} initialRange={priceRange} />
+            <MultihandleSlider value={priceRange} onChange={onChangePrice} />
           </div>
         </section>
 
@@ -79,7 +80,7 @@ const FilterModal = ({
         <section>
           <h3 className='text-xl font-semibold mb-2'>RATING</h3>
           <div className='flex flex-col gap-1'>
-            <FilterRating value={null} onChange={() => {}} />
+            <FilterRating value={selectedRating} onChange={onChangeRating} />
           </div>
         </section>
       </div>

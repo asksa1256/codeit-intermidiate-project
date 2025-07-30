@@ -11,7 +11,6 @@ import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBa
 import EmptyList from '@/components/ui/EmptyList';
 
 import type { KeyboardItemType, KeyboardCategoryType } from '@/types/keyboardTypes';
-import type { MultihandleSliderProps } from '@/types/rangeSliderTypes';
 
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[]>([]);
@@ -20,7 +19,6 @@ const KeyboardsPage = () => {
   const [selectedTypes, setSelectedTypes] = useState<KeyboardCategoryType[]>([]); // 키보드 타입 필터용
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
   const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
-  const INITIAL_PRICE_RANGE: [number, number] = [0, 300000];
   const INITIAL_SELECTED_TYPES: KeyboardCategoryType[] = [];
 
   const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
@@ -32,9 +30,8 @@ const KeyboardsPage = () => {
   const handleResetFilters = () => {
     console.log('필터 초기화');
     setSelectedTypes(INITIAL_SELECTED_TYPES);
-    setPriceRange(INITIAL_PRICE_RANGE);
+    setPriceRange([0, 300000]);
     setSelectedRating(null);
-    // 여기에 필터 상태 초기화 로직이 들어갈 예정
   };
 
   // 필터 적용 버튼 함수
@@ -51,7 +48,7 @@ const KeyboardsPage = () => {
     );
   };
   // 가격 슬라이더 함수
-  const handlePriceChange: MultihandleSliderProps['valueUpdater'] = (min, max) => {
+  const handlePriceChange = ([min, max]: [number, number]) => {
     setPriceRange([min, max]);
   };
 
@@ -97,7 +94,7 @@ const KeyboardsPage = () => {
         onApply={handleApplyFilters}
         priceRange={priceRange}
         onChangePrice={handlePriceChange}
-        rating={selectedRating}
+        selectedRating={selectedRating}
         onChangeRating={handleRatingChange}
       />
 
