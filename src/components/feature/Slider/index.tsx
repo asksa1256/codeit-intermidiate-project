@@ -1,59 +1,95 @@
 'use client';
-import SwiperCore from 'swiper';
+import { useRef, useState } from 'react';
+import SwiperCore, { Swiper as SwiperType } from 'swiper';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import RightArrowIcon from '@/assets/icons/RightArrowIcon.svg';
 import KeyboardMiniCard from '@/components/feature/keyboardDetails/KeyboardMiniCard';
+import IconButton from '@/components/ui/Button/IconButton';
 import useWindowWidth from '@/hooks/useWindowWidth';
 
 const ListSlider = () => {
+  SwiperCore.use([Navigation, Autoplay]);
+  const swiperRef = useRef<SwiperType>(null);
+
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+
   const innerWidth = useWindowWidth();
   const isMobile = innerWidth < 640;
-  SwiperCore.use([Navigation, Autoplay]);
 
   return (
-    <Swiper
-      slidesPerView='auto'
-      spaceBetween={16}
-      loop={false}
-      navigation={true}
-      autoplay={{
-        delay: 2500,
-        disableOnInteraction: true, // 사용자 상호작용시 슬라이더 일시 정지
-      }}
-      speed={1000}
-      modules={[Autoplay, Navigation]}
-    >
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-      <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
-        <KeyboardMiniCard href='/slider' />
-      </SwiperSlide>
-    </Swiper>
+    <div className='relative'>
+      <Swiper
+        slidesPerView='auto'
+        spaceBetween={16}
+        loop={false}
+        // navigation={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false, // 사용자 상호작용시 슬라이더 일시 정지 비활성화
+        }}
+        speed={1000}
+        modules={[Autoplay, Navigation]}
+        onBeforeInit={(swiper) => {
+          swiperRef.current = swiper;
+          setIsBeginning(swiper.isBeginning);
+          setIsEnd(swiper.isEnd);
+        }}
+        onSlideChange={(swiper) => {
+          setIsBeginning(swiper.isBeginning);
+          setIsEnd(swiper.isEnd);
+        }}
+      >
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+        <SwiperSlide style={isMobile ? { width: 192 } : { width: 232 }}>
+          <KeyboardMiniCard href='/slider' />
+        </SwiperSlide>
+      </Swiper>
+      <div className='absolute top-1/2 left-0 -translate-y-1/2 -mt-6 w-full z-[3]'>
+        <IconButton
+          icon={RightArrowIcon}
+          iconReverse
+          rounded
+          className='absolute left-5 shadow-md'
+          disabled={isBeginning}
+          onClick={() => swiperRef.current?.slidePrev()}
+        />
+        <IconButton
+          icon={RightArrowIcon}
+          rounded
+          className='absolute right-5 shadow-md'
+          disabled={isEnd}
+          onClick={() => swiperRef.current?.slideNext()}
+        />
+      </div>
+    </div>
   );
 };
 
