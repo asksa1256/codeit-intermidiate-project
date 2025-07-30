@@ -159,6 +159,7 @@ const KeyboardsPage = () => {
               avgRating={item.avgRating}
               reviewCount={item.reviewCount}
               recentReview={item.recentReview}
+              keyboardId={item.id}
             />
           ))}
         </div>

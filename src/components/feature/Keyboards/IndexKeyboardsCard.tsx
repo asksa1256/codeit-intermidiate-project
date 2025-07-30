@@ -1,6 +1,7 @@
 // 목록 페이지의 키보드 카드 컴포넌트
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import React from 'react';
 
@@ -19,6 +20,7 @@ interface IndexKeyboardsCardProps {
   avgRating: number;
   reviewCount: number;
   recentReview: KeyboardItemRecentReview | null;
+  keyboardId: number;
 }
 
 const IndexKeyboardsCard = ({
@@ -29,7 +31,13 @@ const IndexKeyboardsCard = ({
   reviewCount,
   avgRating,
   recentReview,
+  keyboardId,
 }: IndexKeyboardsCardProps) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/keyboards/${keyboardId}`); // 상세 페이지로 이동
+  };
   return (
     <div className='w-[343px] rounded-xl border border-gray-300 shadow-sm flex flex-col bg-white overflow-hidden'>
       <div className='flex  overflow-hidden'>
@@ -64,6 +72,7 @@ const IndexKeyboardsCard = ({
               width={20}
               height={20}
               className='cursor-pointer'
+              onClick={handleClick}
             />
           </div>
         </div>
