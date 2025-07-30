@@ -11,7 +11,6 @@ import UserThumbnail from '@/components/ui/UserThumbnail';
 import { apiClient } from '@/lib/api/apiClient';
 import useAuthStore from '@/stores/authStore';
 import { ReviewItemType } from '@/types/reviewTypes';
-import { AuthStore } from '@/types/userTypes';
 import { formatRelativeTime } from '@/utils/formatters';
 
 import LikeButton from './LikeButton';
@@ -42,7 +41,7 @@ const ReviewCard = ({ review }: Props) => {
     isLikedReview,
     (currentState, changedState: boolean) => changedState,
   );
-  const { user: me } = useAuthStore<AuthStore>((state) => state);
+  const me = useAuthStore((state) => state.user);
   const isMyReview = userId === me?.id;
 
   const KEBAB_ICON_URL = '/images/KebabIcon.svg';
@@ -57,7 +56,6 @@ const ReviewCard = ({ review }: Props) => {
 
         setIsLikedReview(true);
       } catch (e) {
-        // 좋아요 요청은 간단하고 빠르게 일어나는 요청이기 때문에 에러 쓰로잉 제외
         console.log('좋아요 등록 실패 ', e);
       }
     });
