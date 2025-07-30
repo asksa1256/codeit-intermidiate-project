@@ -23,7 +23,7 @@ export interface ReviewItemBase {
   createdAt: string;
   updatedAt: string;
   user: ReviewUser;
-  isLiked?: boolean;
+  isLiked: boolean;
 }
 
 // ==================================================================================

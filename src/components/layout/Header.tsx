@@ -34,7 +34,7 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
     <header
       ref={stickyRef}
       className={cn(
-        'flex sticky top-0 text-white transition-all duration-300 ease-in-out lg:w-285 bg-black rounded-xl md:rounded-2xl h-[50px] md:h-[70px] mx-4 lg:mx-auto my-5 px-5 md:px-15 z-999',
+        'flex sticky top-0 text-white transition-all duration-300 ease-in-out lg:w-285 bg-black rounded-xl md:rounded-2xl h-[50px] md:h-[70px] mx-4 lg:mx-auto my-5 px-5 md:px-15 z-10',
         {
           'rounded-none md:rounded-none lg:w-full px-9 md:px-19 mx-0': isFixedOnTop,
         },
