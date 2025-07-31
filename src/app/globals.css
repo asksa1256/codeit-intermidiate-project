@@ -63,6 +63,40 @@
     }
   }
 
+  .fade-down {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeDown 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeDown {
+    to {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+  }
+
+  .bounce-in {
+    animation: bounceIn 0.3s ease-out forwards;
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
   /* 우선순위 적용 문제 때문에 utilities에 설정 */
   .btn-secondary {
     @apply bg-primary-10 text-primary hover:bg-primary hover:text-white transition-colors;
