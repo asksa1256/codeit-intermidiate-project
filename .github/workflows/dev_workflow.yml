@@ -118,6 +118,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Stop existing container
+        run: docker stop codeit_intermidiate_frontend || true
+
       - name: Remove existing container
         run: docker rm codeit_intermidiate_frontend || true
 
@@ -151,9 +154,6 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:dev
-
-      - name: Stop existing container
-        run: docker stop codeit_intermidiate_frontend || true
 
       - name: Run container with new image
         run:
