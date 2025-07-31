@@ -97,65 +97,6 @@
     }
   }
 
-  /* custom modal animation */
-  .fade {
-    opacity: 0;
-    animation: fade 0.3s ease forwards 0.1s;
-  }
-
-  .modalBox-open {
-    transform: translateY(100%);
-    animation: customModalBoxOpen_SM 0.5s ease forwards 0.2s;
-  }
-  @media (min-width: 640px) {
-    .modalBox-open {
-      opacity: 0;
-      transform: scale(0.8);
-      animation: customModalBoxOpen_MD 0.5s ease forwards 0.2s;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .fade {
-      opacity: 1;
-      animation: none;
-    }
-    .modalBox-open {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-  }
-
-  @keyframes fade {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes customModalBoxOpen_SM {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0%);
-    }
-  }
-
-  @keyframes customModalBoxOpen_MD {
-    from {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
   /* 우선순위 적용 문제 때문에 utilities에 설정 */
   .btn-secondary {
     @apply bg-primary-10 text-primary hover:bg-primary hover:text-white transition-colors;

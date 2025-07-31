@@ -38,7 +38,7 @@ const DropdownList = ({ children, align = 'right', className }: DropdownListProp
   );
 
   return (
-    <MenuItems className={mergedClassName} transition={true}>
+    <MenuItems className={mergedClassName} transition={true} modal={false}>
       {children}
     </MenuItems>
   );

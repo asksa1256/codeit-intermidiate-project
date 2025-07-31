@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Transition, TransitionChild } from '@headlessui/react';
+import { useEffect, useState } from 'react';
 
 import CloseIcon from '@/assets/icons/CloseIcon.svg';
 import FilterForm from '@/components/feature/Form/FilterForm';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import useOutsideClick from '@/hooks/useClickOutside';
 import useWindowWidth from '@/hooks/useWindowWidth';
+import { cn } from '@/utils/style';
 
 interface Props {
   open: boolean;
@@ -17,7 +19,10 @@ const FilterModalBack = ({ open, onClose }: Props) => {
   const innerWidth = useWindowWidth();
   const isWeb = innerWidth > 1280;
   const isModalOpenOrWeb = open || isWeb;
-  const handleClose = () => onClose(false);
+  const handleClose = () => {
+    if (isWeb) return;
+    onClose(false);
+  };
   const ref = useOutsideClick(handleClose);
 
   useEffect(() => {
@@ -35,12 +40,25 @@ const FilterModalBack = ({ open, onClose }: Props) => {
     }
   }, [isWeb, open, onClose]);
 
+  console.log(isModalOpenOrWeb);
+
   return (
-    <>
-      {isModalOpenOrWeb && (
-        <div className='fixed top-0 left-0 h-dvh w-full z-50 bg-black/30 flex items-end justify-center fade md:items-center lg:static lg:block lg:w-[300px] lg:h-auto lg:shrink-0 lg:bg-transparent lg:z-auto lg:pb-4'>
+    <Transition show={isModalOpenOrWeb} appear={isWeb}>
+      <div className='fixed top-0 left-0 h-dvh w-full z-50 flex items-end justify-center md:items-center lg:static lg:block lg:w-[300px] lg:h-auto lg:shrink-0 lg:bg-transparent lg:z-auto lg:pb-4'>
+        <TransitionChild>
           <div
-            className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl modalBox-open md:max-w-[375px] md:rounded-2xl lg:rounded-none lg:max-h-none'
+            className={cn(
+              'absolute top-0 left-0 w-full h-full bg-black/30 backdrop-blur-sm lg:hidden',
+              'transition duration-300 ease-in data-closed:opacity-0 data-closed:delay-100',
+            )}
+          />
+        </TransitionChild>
+        <TransitionChild>
+          <div
+            className={cn(
+              'flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl z-[1] md:max-w-[375px] md:rounded-2xl md:overflow-hidden lg:rounded-none lg:max-h-none lg:overflow-visible',
+              'transition duration-300 delay-100 data-closed:delay-0 data-closed:translate-y-full md:data-closed:translate-y-0 md:data-closed:scale-[0.9] md:data-closed:opacity-0 lg:duration-0 lg:transition-none',
+            )}
             ref={ref}
           >
             <div className='flex justify-between shrink-0 p-6 pb-0 mb-8 lg:hidden'>
@@ -56,9 +74,9 @@ const FilterModalBack = ({ open, onClose }: Props) => {
               </ButtonDefault>
             </div>
           </div>
-        </div>
-      )}
-    </>
+        </TransitionChild>
+      </div>
+    </Transition>
   );
 };
 
