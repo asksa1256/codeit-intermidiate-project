@@ -31,4 +31,4 @@ COPY . /frontend
 EXPOSE 3000
 
 # 도커 이미지를 이용하여 컨테이너를 생성시 nodejs 자동 실행
-CMD ["npm","run","dev"]
+CMD ["npm","run","start"]
