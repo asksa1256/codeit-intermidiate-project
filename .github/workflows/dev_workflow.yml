@@ -66,6 +66,9 @@ jobs:
       - name: Search for .env.local
         run: find . -name ".env.local"
 
+      - name: Current Path
+        run: pwd
+
       - name: Create Directory frontend
         run: mkdir frontend
 
