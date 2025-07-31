@@ -69,9 +69,9 @@ jobs:
 
       - name: Create .env.local file
         run: |
-          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}"
-          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}"
-          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}"
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
+          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env
+          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env
 
       - name: Search for .env.local
         run: find . -name ".env.local"
