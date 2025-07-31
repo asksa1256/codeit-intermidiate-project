@@ -2,8 +2,9 @@
 import Image from 'next/image';
 
 import { Button } from '@headlessui/react';
-import { useOptimistic, useState, useTransition } from 'react';
+import { Dispatch, SetStateAction, useOptimistic, useState, useTransition } from 'react';
 
+import KebabMenu from '@/components/ui/Dropdown/KebabMenu/KebabMenu';
 import KeyboardColorTags from '@/components/ui/KeyboardColorTags';
 import KeyboardProperties from '@/components/ui/RangeSlider/KeyboardProperties';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
@@ -14,12 +15,17 @@ import { ReviewItemType } from '@/types/reviewTypes';
 import { formatRelativeTime } from '@/utils/formatters';
 
 import LikeButton from './LikeButton';
+import ConfirmModal from '../ConfirmModal';
+import Modal from '../Modal';
+import ReviewForm, { ReviewFormValues } from '../reviewForm/ReviewForm';
 
 interface Props {
   review: ReviewItemType;
+  keyboardName: string;
+  updateTrigger: Dispatch<SetStateAction<number>>;
 }
 
-const ReviewCard = ({ review }: Props) => {
+const ReviewCard = ({ review, keyboardName, updateTrigger }: Props) => {
   const {
     id: reviewId,
     user,
@@ -37,6 +43,8 @@ const ReviewCard = ({ review }: Props) => {
   const { id: userId, image, nickname } = user;
   const [isReviewFolded, setIsReviewFolded] = useState(false);
   const [isLikedReview, setIsLikedReview] = useState(isLiked);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [optimisticIsLiked, toggleOptimisticLiked] = useOptimistic(
     isLikedReview,
@@ -83,6 +91,24 @@ const ReviewCard = ({ review }: Props) => {
     }
   };
 
+  const handleEditReview = async (formValues: ReviewFormValues) => {
+    try {
+      await apiClient.patch(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`, formValues);
+      updateTrigger((prev) => prev + 1);
+    } catch (e) {
+      console.log('리뷰 수정 실패', e);
+    }
+  };
+
+  const handleDeleteReview = async () => {
+    try {
+      await apiClient.delete(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`);
+      updateTrigger((prev) => prev + 1);
+    } catch (e) {
+      console.log('리뷰 삭제 실패', e);
+    }
+  };
+
   return (
     <section className='relative border-1 border-gray-300 rounded-xl p-4 pb-2 md:px-10 md:pt-8 md:pb-5 w-full md:max-w-285 lg:max-w-200'>
       <div className='flex justify-between items-start'>
@@ -97,14 +123,21 @@ const ReviewCard = ({ review }: Props) => {
           </div>
         </div>
         {isMyReview ? (
-          <Image
-            className='md:w-[38px] md:h-[38px]'
-            src={KEBAB_ICON_URL}
-            alt='리뷰 수정과 삭제 메뉴 버튼'
-            width={32}
-            height={32}
+          <KebabMenu
+            onEdit={() => {
+              setIsEditModalOpen(true);
+            }}
+            onDelete={() => {}}
+            className='inline-block ml-auto'
           />
         ) : (
+          // <Image
+          //   className='md:w-[38px] md:h-[38px]'
+          //   src={KEBAB_ICON_URL}
+          //   alt='리뷰 수정과 삭제 메뉴 버튼'
+          //   width={32}
+          //   height={32}
+          // />
           <LikeButton onClick={toggleLike} isPending={isPending} isLiked={optimisticIsLiked} />
         )}
       </div>
@@ -159,6 +192,23 @@ const ReviewCard = ({ review }: Props) => {
           </div>
         </>
       )}
+      <ConfirmModal
+        open={isDeleteModalOpen}
+        onCancel={() => {
+          setIsDeleteModalOpen(false);
+        }}
+        onConfirm={handleDeleteReview}
+      />
+      {/* 리뷰 수정 모달 */}
+      <Modal
+        open={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+        }}
+        title='수정하기'
+      >
+        <ReviewForm keyboardTitle={keyboardName} initReview={review} onSubmit={handleEditReview} />
+      </Modal>
     </section>
   );
 };
