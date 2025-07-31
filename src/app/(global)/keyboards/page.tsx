@@ -39,9 +39,8 @@ const KeyboardsPage = () => {
   const [selectedType, setSelectedType] = useState<KeyboardCategoryType | null>(null); // 키보드 타입 필터용
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
   const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
-  // 키보드 등록용
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const [tempInitialValues, setTempInitialValues] = useState<KeyboardFormValues>();
+  const [tempInitialValues, setTempInitialValues] = useState<KeyboardFormValues>(); // 키보드 등록용
 
   const router = useRouter();
 
@@ -198,7 +197,7 @@ const KeyboardsPage = () => {
 
       {/* 하단 영역 시작 부분 */}
       <div className='flex items-start gap-10 mt-6'>
-        {/* 필터 영역 */}
+        {/* 필터 모달 영역 */}
         <FilterModal
           open={isFilterOpen}
           onClose={() => setIsFilterOpen(false)}
