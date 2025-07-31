@@ -9,7 +9,7 @@ ENV TZ="Asia/Seoul"
 WORKDIR /frontend
 
 # 환경 변수 파일 먼저 복사 (중요)
-COPY ./frontend/.env.local /frontend/.env.local
+COPY ../.env.local /frontend/.env.local
 
 # package.json을 도커 이미지에 복사합니다.
 COPY package.json /frontend
