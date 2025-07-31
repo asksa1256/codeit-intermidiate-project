@@ -61,15 +61,19 @@ const MyKeyboardArea = () => {
         return prev.filter((keyboard) => keyboard.id !== keyboardId);
       });
       setTotalCount((totalCount) => totalCount - 1);
+      addToast({ message: '키보드 삭제 성공', type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response?.status === 403) {
-        alert('삭제 권한이 없습니다.');
+        addToast({
+          message: '본인이 추가한 키보드만 삭제 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
         return;
       }
-
-      alert('키보드 삭제에 실패 하였습니다.');
+      addToast({ message: '키보드 삭제 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
@@ -99,7 +103,19 @@ const MyKeyboardArea = () => {
           keyboard.id === keyboardId ? { ...keyboard, ...updateData } : keyboard,
         );
       });
+      addToast({ message: '키보드 수정 성공', type: 'success', duration: 2000 });
     } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response?.status === 403) {
+        addToast({
+          message: '본인이 추가한 키보드만 수정 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
+        return;
+      }
+      addToast({ message: '키보드 수정 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
@@ -118,10 +134,9 @@ const MyKeyboardArea = () => {
       setKeyboardList((prev) => (prev === null ? [data] : [...prev, data]));
       setTotalCount((totalCount) => totalCount + 1);
       handleKeyboardModalClose();
-      addToast({ message: '키보드 등록 성공!', type: 'success', duration: 2000 });
+      addToast({ message: '키보드 등록 성공', type: 'success', duration: 2000 });
     } catch (err) {
-      alert('키보드 등록에 실패하였습니다.');
-      addToast({ message: '키보드 등록 실패...💀', type: 'error', duration: 2000 });
+      addToast({ message: '키보드 등록 실패', type: 'error', duration: 2000 });
       throw err; // 폼에 에러 전달
     }
   };

@@ -11,6 +11,7 @@ import { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
 import EmptyList from '@/components/ui/EmptyList';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { apiClient } from '@/lib/api/apiClient';
+import useToastStore from '@/stores/toastStore';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
@@ -24,6 +25,7 @@ const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType>
 };
 
 const MyReviewArea = () => {
+  const addToast = useToastStore((state) => state.addToast);
   const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
   const [cursor, setCursor] = useState<number | null>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -60,15 +62,20 @@ const MyReviewArea = () => {
         return prev.filter((review) => review.id !== reviewId);
       });
       setTotalCount((totalCount) => totalCount - 1);
+      addToast({ message: '리뷰 삭제 성공', type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response?.status === 403) {
-        alert('본인이 작성한 리뷰만 삭제 가능합니다.');
+        addToast({
+          message: '본인이 작성한 리뷰만 삭제 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
         return;
       }
 
-      alert('리뷰 삭제에 실패 하였습니다.');
+      addToast({ message: '리뷰 삭제 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
@@ -116,15 +123,20 @@ const MyReviewArea = () => {
           review.id === reviewId ? { ...review, ...updateData } : review,
         );
       });
+      addToast({ message: '리뷰 수정 성공', type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response?.status === 403) {
-        alert('본인이 작성한 리뷰만 수정 가능합니다.');
+        addToast({
+          message: '본인이 작성한 리뷰만 수정 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
         return;
       }
 
-      alert('리뷰 수정에 실패 하였습니다.');
+      addToast({ message: '리뷰 수정 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
