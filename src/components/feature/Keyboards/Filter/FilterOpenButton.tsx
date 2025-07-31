@@ -9,10 +9,7 @@ const FilterOpenButton = ({ onClick }: FilterOpenButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className='
-        w-[38px] border border-gray-300 aspect-square rounded-lg shrink-0 grow-0 basis-auto md:w-12 lg:hidden
-        hover:bg-gray-100
-      '
+      className='w-[38px] border border-gray-300 aspect-square rounded-lg shrink-0 grow-0 basis-auto md:w-12 lg:hidden'
     >
       <Image
         src='/images/FilterIcon.svg'

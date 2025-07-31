@@ -1,7 +1,7 @@
 // 목록 페이지의 키보드 카드 컴포넌트
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import React from 'react';
 
@@ -33,14 +33,11 @@ const IndexKeyboardsCard = ({
   recentReview,
   keyboardId,
 }: IndexKeyboardsCardProps) => {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/keyboards/${keyboardId}`); // 상세 페이지로 이동
-  };
-
   return (
-    <div className='block mb-5 border border-gray-300 rounded-xl md:rounded-2xl bg-white'>
+    <Link
+      href={`/keyboards/${keyboardId}`}
+      className='block mb-5 border border-gray-300 rounded-xl md:rounded-2xl bg-white'
+    >
       <div className='flex'>
         {/* 이미지 영역 */}
         <div className='w-[126px] px-3 shrink-0 self-center md:w-[160px] md:pl-0 md:self-end lg:w-[168px]'>
@@ -82,7 +79,6 @@ const IndexKeyboardsCard = ({
               width={32}
               height={32}
               className='ml-auto w-[32px] md:w-[36px] md:mt-auto cursor-pointer'
-              onClick={handleClick}
             />
           </div>
         </div>
@@ -99,7 +95,7 @@ const IndexKeyboardsCard = ({
           <p className='py-3 text-gray-600 text-center'>최신 후기가 없습니다.</p>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 
