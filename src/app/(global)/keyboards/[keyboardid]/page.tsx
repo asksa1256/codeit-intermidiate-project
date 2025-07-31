@@ -18,8 +18,6 @@ const KeyboardDetailsPage = () => {
   const params = useParams();
   const { keyboardid } = params;
 
-  console.log(isCreateModalOpen);
-
   const getKeyboardInfo = useCallback(async () => {
     try {
       const res = await apiClient(`/${process.env.NEXT_PUBLIC_TEAM}/wines/${keyboardid}`);
