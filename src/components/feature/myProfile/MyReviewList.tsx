@@ -1,14 +1,17 @@
 import MyReviewItem from '@/components/feature/myProfile/MyReviewItem';
 import { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
+import ScrollLoading from '@/components/ui/ScrollLoading';
 import { MyReviewItemType } from '@/types/reviewTypes';
 
 interface Props {
   reviewList: MyReviewItemType[];
   onReviewDelete: (value: number) => void;
   onReviewEdit: (reviewId: number, formValues: ReviewFormValues) => void;
+  endRef: React.ForwardedRef<HTMLDivElement>;
+  hasNextPage: boolean;
 }
 
-const MyReviewList = ({ reviewList, onReviewDelete, onReviewEdit }: Props) => {
+const MyReviewList = ({ reviewList, onReviewDelete, onReviewEdit, endRef, hasNextPage }: Props) => {
   return (
     <>
       <ul>
@@ -21,6 +24,7 @@ const MyReviewList = ({ reviewList, onReviewDelete, onReviewEdit }: Props) => {
           />
         ))}
       </ul>
+      <ScrollLoading endRef={endRef} hasNextPage={hasNextPage} />
     </>
   );
 };

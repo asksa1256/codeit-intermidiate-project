@@ -9,33 +9,46 @@ import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import MyReviewList from '@/components/feature/myProfile/MyReviewList';
 import { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
 import EmptyList from '@/components/ui/EmptyList';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { apiClient } from '@/lib/api/apiClient';
+import useToastStore from '@/stores/toastStore';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 1;
+
+const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType> => {
+  const res = await apiClient.get(
+    `/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}&cursor=${cursor}`,
+  );
+  return res.data;
+};
 
 const MyReviewArea = () => {
+  const addToast = useToastStore((state) => state.addToast);
   const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
-  const [nextCursor, setNextCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | null>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
   const isListEmpty = reviewList?.length === 0;
 
+  const getReviewList = async () => {
+    if (cursor === null) return;
+
+    try {
+      const data = await fetchReviewList(cursor);
+      const { list, nextCursor, totalCount } = data;
+
+      setReviewList((prev) => (prev === null ? list : [...prev, ...list]));
+      setTotalCount(totalCount);
+      setCursor(nextCursor);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const targetRef = useIntersectionObserver(getReviewList);
+
   useEffect(() => {
-    const getReviewList = async () => {
-      try {
-        const res = await apiClient.get(`/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}`);
-        const data: MyReviewListType = res.data;
-        const { list, nextCursor, totalCount } = data;
-
-        setReviewList(list);
-        setTotalCount(totalCount);
-        setNextCursor(nextCursor);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     getReviewList();
   }, []);
 
@@ -49,15 +62,20 @@ const MyReviewArea = () => {
         return prev.filter((review) => review.id !== reviewId);
       });
       setTotalCount((totalCount) => totalCount - 1);
+      addToast({ message: '리뷰 삭제 성공', type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response?.status === 403) {
-        alert('본인이 작성한 리뷰만 삭제 가능합니다.');
+        addToast({
+          message: '본인이 작성한 리뷰만 삭제 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
         return;
       }
 
-      alert('리뷰 삭제에 실패 하였습니다.');
+      addToast({ message: '리뷰 삭제 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
@@ -105,21 +123,23 @@ const MyReviewArea = () => {
           review.id === reviewId ? { ...review, ...updateData } : review,
         );
       });
+      addToast({ message: '리뷰 수정 성공', type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response?.status === 403) {
-        alert('본인이 작성한 리뷰만 수정 가능합니다.');
+        addToast({
+          message: '본인이 작성한 리뷰만 수정 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
         return;
       }
 
-      alert('리뷰 수정에 실패 하였습니다.');
+      addToast({ message: '리뷰 수정 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
-
-  // 나중에 사용할 상태값들입니다. 빌드시 에러가 뜨는거 같아서 임시로 추가해둘게요!
-  console.log(nextCursor);
 
   // 데이터 로딩시
   if (reviewList === null) return <MyListLoading />;
@@ -144,6 +164,8 @@ const MyReviewArea = () => {
             reviewList={reviewList}
             onReviewDelete={handleDeleteReview}
             onReviewEdit={handleEditReview}
+            endRef={targetRef}
+            hasNextPage={reviewList.length !== totalCount && cursor !== null}
           />
         )}
       </div>

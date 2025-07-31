@@ -201,6 +201,7 @@ const ReviewCard = ({ review, keyboardName, updateTrigger }: Props) => {
         onClose={() => {
           setIsEditModalOpen(false);
         }}
+        size='lg'
         title='수정하기'
       >
         <ReviewForm keyboardTitle={keyboardName} initReview={review} onSubmit={handleEditReview} />

@@ -1,10 +1,12 @@
 import { ChangeEvent, useRef, useState } from 'react';
 
 import { apiClient } from '@/lib/api/apiClient';
+import useToastStore from '@/stores/toastStore';
 
 const MAX_SIZE = 1024 * 1024 * 5; // 5MB
 
 const useImageUpload = () => {
+  const addToast = useToastStore((state) => state.addToast);
   const [isUploading, setIsUploading] = useState(false);
   const fileRef = useRef<null | HTMLInputElement>(null);
   const [uploadImage, setUploadImage] = useState<File | null>(null);
@@ -49,7 +51,7 @@ const useImageUpload = () => {
 
     // 이미지 용량 검증
     if (file.size > MAX_SIZE) {
-      alert('사진 최대 용량은 5MB입니다.'); // 추후에 토스트로 적용해봐도 좋을 것 같음.
+      addToast({ message: '사진 최대 용량은 5MB입니다.', type: 'error', duration: 2000 });
       return;
     }
 

@@ -95,6 +95,7 @@ const RatingsInfo = ({
         onClose={() => {
           onCreateModalOpen(false);
         }}
+        size='lg'
         title='리뷰 등록'
       >
         <ReviewForm keyboardTitle={name} onSubmit={handleCreateReview} />
