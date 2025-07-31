@@ -20,7 +20,7 @@ const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
   const [isDeleteConfirm, setIsDeleteConfirm] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
 
-  const { rating, content, updatedAt, wine } = review;
+  const { rating, content, createdAt, updatedAt, wine } = review;
 
   // 삭제하기
   const handleDeleteReview = async () => {
@@ -63,6 +63,7 @@ const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
           />
           <span className='text-md text-gray-500 md:text-base'>
             {formatRelativeTime(updatedAt)}
+            {createdAt !== updatedAt ? '(수정됨)' : ''}
           </span>
           <KebabMenu
             onEdit={handleEditModalOpen}

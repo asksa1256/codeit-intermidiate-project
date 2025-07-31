@@ -1,24 +1,26 @@
 'use client';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import { ReviewItemType } from '@/types/reviewTypes';
+import { KeyboardDetailType } from '@/types/keyboardTypes';
 
 import ReviewCard from './ReviewCard';
 
 interface Props {
-  reviewList: ReviewItemType[];
+  keyboardInfo: KeyboardDetailType;
+  updateTrigger: Dispatch<SetStateAction<number>>;
 }
 
 const LIMIT = 10;
 
-const ReviewList = ({ reviewList }: Props) => {
-  const maxCursor = reviewList.length;
+const ReviewList = ({ keyboardInfo, updateTrigger }: Props) => {
   const [cursor, setCursor] = useState(LIMIT);
   const [isLoading, setIsLoading] = useState(false);
+  const reviewList = keyboardInfo.reviews;
+  const maxCursor = reviewList.length;
   const loadMoreReview = () => {
     if (cursor >= maxCursor) {
       return;
@@ -40,7 +42,14 @@ const ReviewList = ({ reviewList }: Props) => {
           if (cursor <= idx) {
             return;
           }
-          return <ReviewCard key={review.id} review={review} />;
+          return (
+            <ReviewCard
+              key={review.id}
+              review={review}
+              keyboardName={keyboardInfo.name}
+              updateTrigger={updateTrigger}
+            />
+          );
         })
       ) : (
         <div className='lg:mt-38 lg:w-275 mb-30 lg:mb-63'>
