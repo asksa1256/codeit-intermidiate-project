@@ -20,33 +20,33 @@ on:
 #     branches: [dev-test]
 # 워크플로우에서 실행할 작업을 정의합니다.
 jobs:
-  test:
-    # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
-    runs-on: ubuntu-22.04
-    # 워크플로우에서 실행할 단계들을 정의합니다.
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        # 두 번째 단계: Node.js 환경을 설정합니다.
-        with:
-          node-version: '22.16.0'
-          # Node.js의 버전을 지정합니다.
-          # 이 예시에서는 '20.10.0' 버전을 사용합니다.
+  # test:
+  #   # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
+  #   runs-on: ubuntu-22.04
+  #   # 워크플로우에서 실행할 단계들을 정의합니다.
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       # 두 번째 단계: Node.js 환경을 설정합니다.
+  #       with:
+  #         node-version: '22.16.0'
+  #         # Node.js의 버전을 지정합니다.
+  #         # 이 예시에서는 '20.10.0' 버전을 사용합니다.
 
-      - name: Install dependencies
-        run: |
-          npm install
+  #     - name: Install dependencies
+  #       run: |
+  #         npm install
 
-      # - name: Run tests
-      #   run: |
-      #     npm test
-      # 네 번째 단계: 테스트를 실행합니다.
-      # 'npm test' 명령어를 사용하여 정의된 테스트 케이스를 실행합니다.
+  #     # - name: Run tests
+  #     #   run: |
+  #     #     npm test
+  #     # 네 번째 단계: 테스트를 실행합니다.
+  #     # 'npm test' 명령어를 사용하여 정의된 테스트 케이스를 실행합니다.
 
   build:
     # 이 Job이 'build' Job이 완료된 후에 실행되도록 설정
-    needs: test
+    # needs: test
     # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
     runs-on: ubuntu-22.04
     # 워크플로우에서 실행할 단계들을 정의합니다.
