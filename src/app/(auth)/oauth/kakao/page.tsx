@@ -8,14 +8,14 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
+import useToastStore from '@/stores/toastStore';
 
 const KakaoOAuthPage = () => {
   // routing
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  // authStore
   const signIn = useAuthStore((state) => state.signIn);
+  const addToast = useToastStore((state) => state.addToast);
 
   // 인가 코드 요청 중복 실행 방지
   const isProcessedRef = useRef(false);
@@ -49,14 +49,28 @@ const KakaoOAuthPage = () => {
         signIn({ user }); // 유저 정보 zustand store에 저장
 
         router.push('/');
+        addToast({
+          message: (
+            <span>
+              안녕하세요, <b>{user.nickname}</b>님!
+            </span>
+          ),
+          type: 'success',
+          duration: 2000,
+        });
       } catch (err) {
         // code가 없는 경우 (로그인 실패)
-        console.log('카카오 인가 코드를 찾을 수 없습니다.: ' + err);
+        console.error(err);
+        addToast({
+          message: '카카오 로그인에 실패했습니다. 다시 시도해주세요.',
+          type: 'error',
+          duration: 2000,
+        });
         router.push('/login');
       }
     };
     signInByKakao();
-  }, [router, code, signIn]);
+  }, [router, code, signIn, addToast]);
 
   return <LoadingSpinner text='카카오 로그인 처리중...' className='h-screen' />;
 };
