@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import React, { useState } from 'react';
 
 import ConfirmModal from '@/components/feature/ConfirmModal';
@@ -64,23 +66,29 @@ const MyKeyboardItem = ({ keyboard, onDelete, onEdit }: MyKeyboardItemProps) => 
 
   return (
     <>
-      <li className='flex mb-[10px] border border-gray-300 rounded-xl'>
-        <div className='relative shrink-0 w-[108px] px-[14px] md:w-[176px] md:px-5 self-center md:self-end'>
-          <KeyboardThumbnail imgSrc={image} keyboardName={name} className='md:w-[70%] md:mx-auto' />
-        </div>
+      <li className='relative mb-[10px] border border-gray-300 rounded-xl'>
+        <Link href={`/keyboards/${keyboard.id}`} className='flex'>
+          <div className='shrink-0 w-[108px] px-[14px] md:w-[176px] md:px-5 self-center md:self-end'>
+            <KeyboardThumbnail
+              imgSrc={image}
+              keyboardName={name}
+              className='md:w-[70%] md:mx-auto'
+            />
+          </div>
 
-        <div className='relative grow pt-[25px] pr-12 pb-6 md:py-[30px] md:pr-[86px] lg:pr-[124px]'>
-          <h3 className='mb-[10px] text-lg font-semibold break-keep md:text-[28px] md:leading-[1.17] md:mb-[20px]'>
-            {name}
-          </h3>
-          <p className='mb-[10px] text-md text-gray-500 md:text-base md:mb-[20px]'>{region}</p>
-          <RatingAndPrice label='price' value={price} className='md:py-[5.5px]' />
-          <KebabMenu
-            onEdit={handleEditOpen}
-            onDelete={handleDeleteConfirmOpen}
-            className='absolute top-5 right-5 md:top-[30px] md:right-10'
-          />
-        </div>
+          <div className='relative grow pt-[25px] pr-12 pb-6 md:py-[30px] md:pr-[86px] lg:pr-[124px]'>
+            <h3 className='mb-[10px] text-lg font-semibold break-keep md:text-[28px] md:leading-[1.17] md:mb-[20px]'>
+              {name}
+            </h3>
+            <p className='mb-[10px] text-md text-gray-500 md:text-base md:mb-[20px]'>{region}</p>
+            <RatingAndPrice label='price' value={price} className='md:py-[5.5px]' />
+          </div>
+        </Link>
+        <KebabMenu
+          onEdit={handleEditOpen}
+          onDelete={handleDeleteConfirmOpen}
+          className='absolute top-5 right-5 md:top-[30px] md:right-10'
+        />
       </li>
       {/* portal에 생성됨 */}
       {/* 삭제 확인 모달 */}
