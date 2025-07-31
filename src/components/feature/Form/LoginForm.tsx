@@ -8,13 +8,13 @@ import { Field } from '@headlessui/react';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 
+import PasswordInputField from '@/components/feature/InputField/PasswordInputField';
 import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
-
-import PasswordInputField from '../InputField/PasswordInputField';
+import useToastStore from '@/stores/toastStore';
 
 interface FormValues {
   email: string;
@@ -29,6 +29,7 @@ const LoginForm = () => {
   const searchParams = useSearchParams();
   const auth = new AxiosApiAuth();
   const signIn = useAuthStore((state) => state.signIn);
+  const addToast = useToastStore((state) => state.addToast);
 
   const {
     register,
@@ -44,7 +45,6 @@ const LoginForm = () => {
       const res = await auth.signInByEmail(email, password);
       const { user, accessToken, refreshToken } = res;
       signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
-      router.push('/');
 
       // 쿼리 파라미터에서 redirect_url 가져오기 (로그인 후 리다이렉트 처리)
       const redirectUrl = searchParams.get('redirect_url');
@@ -54,6 +54,8 @@ const LoginForm = () => {
       } else {
         router.push('/');
       }
+
+      addToast({ message: `안녕하세요, ${user.nickname}님!`, type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
       if (err.response?.status === 400) {

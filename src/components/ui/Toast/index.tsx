@@ -29,7 +29,6 @@ const ToastContainer = () => {
   if (!mounted) return null; // hydration 이후 overlayRoot에 접근
 
   const overlayRoot = document.querySelector('#overlay-root');
-  console.log(overlayRoot);
   if (!overlayRoot) return null;
 
   return createPortal(
