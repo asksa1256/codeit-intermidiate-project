@@ -43,12 +43,13 @@ const KeyboardsPage = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
   const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const [tempInitialValues, setTempInitialValues] = useState<KeyboardFormValues>(); // 키보드 등록용
-  //무한 스크롤용
-  const [cursor, setCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | null>(null); // 일반 무한 스크롤용
+  const [searchCursor, setSearchCursor] = useState<number | null>(null); // 검색 결과 무한 스크롤용
   const [isLoading, setIsLoading] = useState(false);
-
+  const [query, setQuery] = useState('');
   const router = useRouter();
+
+  const ScrollLimit = 10; // 스크롤 시 불러올 데이터 개수
 
   const handleSubmit = async (formData: KeyboardFormValues) => {
     const payload = {
@@ -67,24 +68,6 @@ const KeyboardsPage = () => {
       throw err;
     }
   };
-
-  useEffect(() => {
-    const getValues = async () => {
-      const res = await apiClient.get(`/${TEAM_ID}/wines/1398`);
-      const data = res.data;
-
-      const sanitizedData: KeyboardFormValues = {
-        name: data.name,
-        price: data.price,
-        region: data.region,
-        type: data.type,
-        image: data.image,
-      };
-
-      setTempInitialValues(sanitizedData);
-    };
-    getValues();
-  }, []);
 
   const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
 
@@ -105,33 +88,40 @@ const KeyboardsPage = () => {
     setPriceRange([0, 300000]);
     setSelectedRating(null);
   };
-
+  const params: FilterParams = {
+    teamId: '16-3',
+    limit: 1,
+    type: selectedType ?? undefined,
+    minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
+    maxPrice: priceRange[1] < 300000 ? priceRange[1] : undefined,
+    rating: selectedRating ?? undefined,
+  };
   // 필터 적용 버튼 함수
   const handleApplyFilters = async () => {
     try {
       console.log('필터 적용하기');
       setIsFilterOpen(false); // 모달 닫기
 
-      const params: FilterParams = {
-        teamId: '16-3',
-        limit: 20,
-      };
+      // const params: FilterParams = {
+      //   teamId: '16-3',
+      //   limit: 1,
+      // };
 
-      if (selectedType) {
-        params.type = selectedType;
-      }
+      // if (selectedType) {
+      //   params.type = selectedType;
+      // }
 
-      if (priceRange[0] > 0) {
-        params.minPrice = priceRange[0];
-      }
+      // if (priceRange[0] > 0) {
+      //   params.minPrice = priceRange[0];
+      // }
 
-      if (priceRange[1] < 300000) {
-        params.maxPrice = priceRange[1];
-      }
+      // if (priceRange[1] < 300000) {
+      //   params.maxPrice = priceRange[1];
+      // }
 
-      if (selectedRating !== null) {
-        params.rating = selectedRating;
-      }
+      // if (selectedRating !== null) {
+      //   params.rating = selectedRating;
+      // }
 
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
         params,
@@ -139,6 +129,7 @@ const KeyboardsPage = () => {
 
       const filteredList = res.data.list || [];
       setSearchResults(filteredList);
+      setSearchCursor(res.data.nextCursor);
     } catch (error) {
       console.error('필터 적용 실패:', error);
     }
@@ -162,11 +153,12 @@ const KeyboardsPage = () => {
     const fetchItems = async () => {
       try {
         const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-          params: { limit: 20 },
+          params: { limit: ScrollLimit },
         });
 
         const dataArray: KeyboardItemType[] = res.data.list || [];
         setItems(dataArray);
+        setCursor(res.data.nextCursor);
       } catch (err) {
         console.error('기본 데이터 호출 실패:', err);
       }
@@ -175,14 +167,79 @@ const KeyboardsPage = () => {
     fetchItems();
   }, []);
 
+  // 기본 상품 무한 스크롤용 커서 감지
+  const fetchMoreItems = async () => {
+    if (cursor === null) return;
+
+    try {
+      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+        params: { limit: ScrollLimit, cursor },
+      });
+
+      const dataArray: KeyboardItemType[] = res.data.list || [];
+      setItems((prev) => [...(prev ?? []), ...dataArray]);
+      setCursor(res.data.nextCursor);
+    } catch (err) {
+      console.error('기본 데이터 호출 실패:', err);
+    }
+  };
+
+  // 검색 결과 무한 스크롤용 커서 감지
+  const handleSearchMore = async () => {
+    if (searchCursor === null) return;
+
+    try {
+      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+        params: { limit: ScrollLimit, cursor: searchCursor, name: query },
+      });
+
+      const dataArray: KeyboardItemType[] = res.data.list || [];
+      setSearchResults((prev) => [...(prev ?? []), ...dataArray]);
+      setSearchCursor(res.data.nextCursor);
+    } catch (err) {
+      console.error('검색 데이터 호출 실패:', err);
+    }
+  };
+
+  // 필터 결과 무한 스크롤용 커서 감지
+  const filteredListMore = async () => {
+    if (searchCursor === null) return;
+
+    try {
+      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+        params: { cursor: searchCursor, ...params },
+      });
+
+      const filteredList = res.data.list || [];
+      setSearchResults((prev) => [...(prev ?? []), ...filteredList]);
+      setSearchCursor(res.data.nextCursor);
+    } catch (err) {
+      console.error('필터 데이터 호출 실패:', err);
+    }
+  };
+
+  const targetRef = useIntersectionObserver(() => {
+    fetchMoreItems();
+    handleSearchMore();
+    filteredListMore();
+  });
+
+  console.log(searchResults);
+  console.log(searchCursor);
   return (
     <div className='px-4 pt-[15px] pb-[100px] m-auto max-w-[1140px] md:pt-5 md:pb-[50px] md:px-5 lg:px-0'>
-      {/* <SliderSection /> */}
+      <SliderSection />
       <div className='flex gap-4 mt-5'>
         {/* 필터 열기 버튼 - 모바일/태블릿에서만 */}
         <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
-        {/* 키보드 등록하기 버튼 */}
-        <KeyboardsSearchBar onSearchResults={setSearchResults} />
+        {/* 검색창 */}
+        <KeyboardsSearchBar
+          onSearchResults={setSearchResults}
+          query={query}
+          onChange={setQuery}
+          setSearchCursor={setSearchCursor}
+        />
+        {/* 키보드 등록 버튼 */}
         <ButtonDefault
           onClick={() => setKeyboardOpen(true)}
           className='fixed bottom-[35px] left-4 right-4 w-auto h-12 text-md font-bold rounded-xl z-10 md:static md:w-[220px] md:rounded-2xl md:text-base md:shrink-0 md:z-auto lg:hidden'
@@ -229,6 +286,7 @@ const KeyboardsPage = () => {
           </div>
         )}
       </div>
+      {isLoading ? <LoadingSpinner className='w-full my-8' /> : <div ref={targetRef}></div>}
       {/* 하단영역 끝 부분 */}
       {/* 키보드 등록 모달 */}
       <Modal
