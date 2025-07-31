@@ -16,7 +16,8 @@ COPY package-lock.json /frontend
 RUN npm install
 
 # 환경 변수 파일 복사 (중요)
-COPY .env.local ./
+COPY .env.local /frontend
+COPY .env
 
 # 해당 디렉토리에 있는 모든 파일, 폴더를 도커 이미지로 복사합니다.
 # .dockerignore에 있는것은 제외
