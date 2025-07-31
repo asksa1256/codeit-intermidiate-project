@@ -71,7 +71,33 @@ const MyReviewArea = () => {
       const res = await apiClient.patch(`/${TEAM}/reviews/${reviewId}`, formValues);
 
       // 리뷰리스트 스키마와 동일한 스키마로 만들어주기 위해 teamId, wineId값 제외하고 적용
-      const { teamId, wineId, ...updateData } = res.data;
+      const {
+        id,
+        rating,
+        lightBold,
+        smoothTannic,
+        drySweet,
+        softAcidic,
+        aroma,
+        content,
+        createdAt,
+        updatedAt,
+        user,
+      } = res.data;
+
+      const updateData = {
+        id,
+        rating,
+        lightBold,
+        smoothTannic,
+        drySweet,
+        softAcidic,
+        aroma,
+        content,
+        createdAt,
+        updatedAt,
+        user,
+      };
 
       setReviewList((prev) => {
         if (prev === null) return prev;

@@ -34,7 +34,7 @@ const ReviewCard = ({ review }: Props) => {
     rating,
   } = review;
   const { id: userId, image, nickname } = user;
-  const [isReviewFolded, setIsReviewFolded] = useState(true);
+  const [isReviewFolded, setIsReviewFolded] = useState(false);
   const [isLikedReview, setIsLikedReview] = useState(isLiked);
   const [isPending, startTransition] = useTransition();
   const [optimisticIsLiked, toggleOptimisticLiked] = useOptimistic(
@@ -116,6 +116,7 @@ const ReviewCard = ({ review }: Props) => {
       {isReviewFolded ? (
         <div className='text-center h-[30px]'>
           <Button
+            className='transition-all duration-200 ease-in-out hover:scale-150'
             onClick={() => {
               setIsReviewFolded(false);
             }}
@@ -131,7 +132,7 @@ const ReviewCard = ({ review }: Props) => {
         </div>
       ) : (
         <>
-          <div className='text-md md:text-base'>{content}</div>
+          <div className='whitespace-pre-line text-md md:text-base'>{content}</div>
           <KeyboardProperties
             lightBold={lightBold}
             smoothTannic={smoothTannic}
@@ -140,6 +141,7 @@ const ReviewCard = ({ review }: Props) => {
           />
           <div className='text-center'>
             <Button
+              className='transition-all duration-200 ease-in-out hover:scale-150'
               onClick={() => {
                 setIsReviewFolded(true);
               }}

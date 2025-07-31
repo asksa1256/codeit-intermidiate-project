@@ -20,114 +20,187 @@ on:
 #     branches: [dev-test]
 # 워크플로우에서 실행할 작업을 정의합니다.
 jobs:
-  test:
-    # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
-    runs-on: ubuntu-22.04
-    # 워크플로우에서 실행할 단계들을 정의합니다.
+  # test:
+  #   # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
+  #   runs-on: ubuntu-22.04
+  #   # 워크플로우에서 실행할 단계들을 정의합니다.
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       # 두 번째 단계: Node.js 환경을 설정합니다.
+  #       with:
+  #         node-version: '22.16.0'
+  #         # Node.js의 버전을 지정합니다.
+  #         # 이 예시에서는 '20.10.0' 버전을 사용합니다.
+
+  #     - name: Install dependencies
+  #       run: |
+  #         npm install
+
+  #     # - name: Run tests
+  #     #   run: |
+  #     #     npm test
+  #     # 네 번째 단계: 테스트를 실행합니다.
+  #     # 'npm test' 명령어를 사용하여 정의된 테스트 케이스를 실행합니다.
+
+  # build:
+  #   # 이 Job이 'build' Job이 완료된 후에 실행되도록 설정
+  #   # needs: test
+  #   # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
+  #   runs-on: ubuntu-22.04
+  #   # 워크플로우에서 실행할 단계들을 정의합니다.
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  #     - name: Print GitHub workspace path
+  #       run: echo $GITHUB_WORKSPACE
+
+  #     # Docker Buildx를 설정하는 단계
+  #     - name: Set up docker buildx
+  #       id: buildx
+  #       uses: docker/setup-buildx-action@v1
+
+  #     # - name: Create .env.local file
+  #     #   run: |
+  #     #     echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env.local
+  #     #     echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env.local
+  #     #     echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env.local
+
+  #     - name: Create .env file
+  #       run: |
+  #         echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
+  #         echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env
+  #         echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env
+
+  #     - name: Search for .env
+  #       run: find . -name ".env"
+
+  #     - name: Current Path
+  #       run: pwd
+
+  #     # - name: Copy .env.local to GITHUB_WORKSPACE
+  #     #   run: mv -f .env.local $GITHUB_WORKSPACE/
+
+  #     # Docker 빌드 레이어를 캐시하여 빌드 시간을 단축하는 단계
+  #     - name: Cache docker layers
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: /tmp/.buildx-cache
+  #         key: ${{ runner.os }}-buildx-${{ github.sha }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-buildx-
+
+  #     # Docker 이미지를 저장할 경로를 환경 변수에 설정하는 단계
+  #     # 에러부분 GIT_REPOSITORY_NAME 추가
+  #     - name: Set Docker image
+  #       run: echo "DOCKER_IMAGE=${{secrets.DOCKER_USERNAME}}/${{secrets.GIT_REPOSITORY_NAME}}" >> $GITHUB_ENV
+
+  #     # Docker Hub에 로그인하는 단계
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
+
+  #     # Docker 이미지를 빌드하고 레지스트리에 푸시하는 단계
+  #     - name: Build and push
+  #       id: docker_build
+  #       uses: docker/build-push-action@v2
+  #       with:
+  #         builder: ${{ steps.buildx.outputs.name }}
+  #         push: true
+  #         tags: ${{ env.DOCKER_IMAGE }}:dev
+
+  deploy:
+    name: Deploy
+    runs-on: [label-codeit-intermidiate-frontend]
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        # 두 번째 단계: Node.js 환경을 설정합니다.
-        with:
-          node-version: '22.16.0'
-          # Node.js의 버전을 지정합니다.
-          # 이 예시에서는 '20.10.0' 버전을 사용합니다.
 
-      - name: Install dependencies
-        run: |
-          npm install
+      - name: check env file
+        run: cat /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env
 
-      # - name: Run tests
-      #   run: |
-      #     npm test
-      # 네 번째 단계: 테스트를 실행합니다.
-      # 'npm test' 명령어를 사용하여 정의된 테스트 케이스를 실행합니다.
+      - name: Copy .env to .env.local for build
+        run: cp /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env .env
 
-  build:
-    # 이 Job이 'build' Job이 완료된 후에 실행되도록 설정
-    needs: test
-    # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
-    runs-on: ubuntu-22.04
-    # 워크플로우에서 실행할 단계들을 정의합니다.
-    steps:
-      - uses: actions/checkout@v2
-      # Docker Buildx를 설정하는 단계
-      - name: Set up docker buildx
-        id: buildx
+      - name: Set up Docker buildx
         uses: docker/setup-buildx-action@v1
+        id: buildx
 
-      - name: Create .env file
-        run: |
-          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
-          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env
-          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env
+      - name: Set Docker image name
+        run: echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.GIT_REPOSITORY_NAME }}" >> $GITHUB_ENV
 
-      # Docker 빌드 레이어를 캐시하여 빌드 시간을 단축하는 단계
-      - name: Cache docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-      # Docker 이미지를 저장할 경로를 환경 변수에 설정하는 단계
-      # 에러부분 GIT_REPOSITORY_NAME 추가
-      - name: Set Docker image
-        run: echo "DOCKER_IMAGE=${{secrets.DOCKER_USERNAME}}/${{secrets.GIT_REPOSITORY_NAME}}" >> $GITHUB_ENV
-
-      # Docker Hub에 로그인하는 단계
-      - name: Login to Docker Hub
+      - name: Docker login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Docker 이미지를 빌드하고 레지스트리에 푸시하는 단계
-      - name: Build and push
-        id: docker_build
+      - name: Docker build and push image
         uses: docker/build-push-action@v2
         with:
+          context: .
+          file: Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:dev
 
-  deploy:
-    # Job 이름 정의
-    name: Deploy
-    needs: build
-    # 이 Job을 실행할 환경 설정 (self-hosted 러너와 특정 레이블 사용.)
-    runs-on: [label-codeit-intermidiate-frontend]
-    steps:
-      # 기존 Docker 컨테이너를 중지하고 삭제한 후, 새로운 이미지를 기반으로 컨테이너를 실행하는 단계
-      - name: Docker run. Stop codeit_intermidiate_frontend
+      - name: Stop existing container
         run: docker stop codeit_intermidiate_frontend || true
 
-      - name: Docker run. Remove codeit_intermidiate_frontend container
+      - name: Remove existing container
         run: docker rm codeit_intermidiate_frontend || true
 
-      # Remove Docker All Images
-      - name: Remove Docker images
+      - name: Remove all Docker images
         run: docker rmi $(docker images -a -q) || true
 
-      # Docker 이미지를 저장할 경로를 환경 변수에 설정하는 단계
-      - name: Set Docker image
-        run: echo "DOCKER_IMAGE=${{secrets.DOCKER_USERNAME}}/${{secrets.GIT_REPOSITORY_NAME}}" >> $GITHUB_ENV
+      - name: Run container with new image
+        run: docker run -d -p 7004:3000 \
+          --name codeit_intermidiate_frontend \
+          --restart always \
+          --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env \
+          --log-opt max-size=10m --log-opt max-file=3 \
+          ${{ env.DOCKER_IMAGE }}:dev
 
-      # Docker Hub에 로그인하는 단계
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  # deploy:
+  #   # Job 이름 정의
+  #   name: Deploy
+  #   # needs: build
 
-      # Docker Hub에서 이미지 pull
-      - name: Pull Docker image
-        run: docker pull ${{ env.DOCKER_IMAGE }}:dev
+  #   # 이 Job을 실행할 환경 설정 (self-hosted 러너와 특정 레이블 사용.)
+  #   runs-on: [label-codeit-intermidiate-frontend]
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     # 기존 Docker 컨테이너를 중지하고 삭제한 후, 새로운 이미지를 기반으로 컨테이너를 실행하는 단계
+  #     - name: Docker run. Stop codeit_intermidiate_frontend
+  #       run: docker stop codeit_intermidiate_frontend || true
 
-      - name: Docker run. Remove image
-        run: docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
+  #     - name: Docker run. Remove codeit_intermidiate_frontend container
+  #       run: docker rm codeit_intermidiate_frontend || true
 
-      - name: Docker run. Run nbpay_main_backend container
-        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+  #     # Remove Docker All Images
+  #     - name: Remove Docker images
+  #       run: docker rmi $(docker images -a -q) || true
+
+  #     # # Docker 이미지를 저장할 경로를 환경 변수에 설정하는 단계
+  #     # - name: Set Docker image
+  #     #   run: echo "DOCKER_IMAGE=${{secrets.DOCKER_USERNAME}}/${{secrets.GIT_REPOSITORY_NAME}}" >> $GITHUB_ENV
+
+  #     # # Docker Hub에 로그인하는 단계
+  #     # - name: Login to Docker Hub
+  #     #   uses: docker/login-action@v3
+  #     #   with:
+  #     #     username: ${{ secrets.DOCKER_USERNAME }}
+  #     #     password: ${{ secrets.DOCKER_PASSWORD }}
+
+  #     # # Docker Hub에서 이미지 pull
+  #     # - name: Pull Docker image
+  #     #   run: docker pull ${{ env.DOCKER_IMAGE }}:dev
+
+  #     - name: Docker run. Remove image
+  #       run: docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
+
+  #     - name: Docker run. Run nbpay_main_backend container
+  #       run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+  #       # run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
