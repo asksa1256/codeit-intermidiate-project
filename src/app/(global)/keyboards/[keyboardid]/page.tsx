@@ -14,8 +14,11 @@ import { KeyboardDetailType } from '@/types/keyboardTypes';
 const KeyboardDetailsPage = () => {
   const [keyboardInfo, setKeyboardInfo] = useState<KeyboardDetailType | null>(null);
   const [updateTrigger, setUpdateTrigger] = useState(0);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const params = useParams();
   const { keyboardid } = params;
+
+  console.log(isCreateModalOpen);
 
   const getKeyboardInfo = useCallback(async () => {
     try {
@@ -43,8 +46,17 @@ const KeyboardDetailsPage = () => {
         <>
           <KeyboardInfoCard keyboardInfo={keyboardInfo} />
           <div className='lg:flex lg:items-start lg:gap-15 lg:justify-between'>
-            <RatingsInfo keyboardInfo={keyboardInfo} updateTrigger={setUpdateTrigger} />
-            <ReviewList keyboardInfo={keyboardInfo} updateTrigger={setUpdateTrigger} />
+            <RatingsInfo
+              keyboardInfo={keyboardInfo}
+              isCreateModalOpen={isCreateModalOpen}
+              onCreateModalOpen={setIsCreateModalOpen}
+              updateTrigger={setUpdateTrigger}
+            />
+            <ReviewList
+              keyboardInfo={keyboardInfo}
+              onCreateModalOpen={setIsCreateModalOpen}
+              updateTrigger={setUpdateTrigger}
+            />
           </div>
         </>
       )}

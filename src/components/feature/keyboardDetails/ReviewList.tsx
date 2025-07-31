@@ -11,12 +11,13 @@ import ReviewCard from './ReviewCard';
 
 interface Props {
   keyboardInfo: KeyboardDetailType;
+  onCreateModalOpen: Dispatch<SetStateAction<boolean>>;
   updateTrigger: Dispatch<SetStateAction<number>>;
 }
 
 const LIMIT = 10;
 
-const ReviewList = ({ keyboardInfo, updateTrigger }: Props) => {
+const ReviewList = ({ keyboardInfo, onCreateModalOpen, updateTrigger }: Props) => {
   const [cursor, setCursor] = useState(LIMIT);
   const [isLoading, setIsLoading] = useState(false);
   const reviewList = keyboardInfo.reviews;
@@ -54,7 +55,12 @@ const ReviewList = ({ keyboardInfo, updateTrigger }: Props) => {
       ) : (
         <div className='lg:mt-38 lg:w-275 mb-30 lg:mb-63'>
           <EmptyList desc='작성된 리뷰가 없어요'>
-            <ButtonDefault className='font-medium w-34 md:w-42 h-12 px-7 py-[14px] rounded-xl'>
+            <ButtonDefault
+              className='font-medium w-34 md:w-42 h-12 px-7 py-[14px] rounded-xl'
+              onClick={() => {
+                onCreateModalOpen(true);
+              }}
+            >
               리뷰 남기기
             </ButtonDefault>
           </EmptyList>
