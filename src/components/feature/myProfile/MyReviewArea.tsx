@@ -14,7 +14,7 @@ import { apiClient } from '@/lib/api/apiClient';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 4;
 
 const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType> => {
   const res = await apiClient.get(
@@ -24,16 +24,14 @@ const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType>
 };
 
 const MyReviewArea = () => {
-  const [isFetching, setIsFetching] = useState(false);
   const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
   const [cursor, setCursor] = useState<number | null>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
   const isListEmpty = reviewList?.length === 0;
 
   const getReviewList = async () => {
-    if (cursor === null || isFetching) return;
+    if (cursor === null) return;
 
-    setIsFetching(true);
     try {
       const data = await fetchReviewList(cursor);
       const { list, nextCursor, totalCount } = data;
@@ -43,8 +41,6 @@ const MyReviewArea = () => {
       setCursor(nextCursor);
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsFetching(false);
     }
   };
 
@@ -53,6 +49,8 @@ const MyReviewArea = () => {
   useEffect(() => {
     getReviewList();
   }, []);
+
+  console.log(cursor);
 
   // 리뷰 삭제
   const handleDeleteReview = async (reviewId: number) => {
@@ -157,7 +155,7 @@ const MyReviewArea = () => {
             onReviewDelete={handleDeleteReview}
             onReviewEdit={handleEditReview}
             endRef={targetRef}
-            cursor={cursor}
+            hasNextPage={reviewList.length !== totalCount}
           />
         )}
       </div>
