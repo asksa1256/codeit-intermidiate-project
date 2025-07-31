@@ -48,7 +48,7 @@ const ToastContainer = () => {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`flex gap-4 py-4 px-6 rounded-xl shadow-lg text-gray-800 bg-white ${t.isClosing ? 'fade-down' : 'fade-up'}`}
+          className={`flex gap-4 py-4 px-6 rounded-xl shadow-lg text-gray-800 bg-white ${t.isClosing ? 'fade-down' : 'bounce-in'}`}
         >
           {t.type === 'success' ? (
             <SuccessIcon className='w-6 h-6 text-emerald-500' />
