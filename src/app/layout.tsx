@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 
 import RequireAuth from '@/components/feature/RequireAuth';
+import ScrollToTopButton from '@/components/feature/ScrollToTopButton';
 
 import type { Metadata } from 'next';
 
@@ -47,6 +48,7 @@ export default function RootLayout({
     <html lang='ko'>
       <body className={pretendard.className}>
         <RequireAuth>{children}</RequireAuth>
+        <ScrollToTopButton />
       </body>
     </html>
   );
