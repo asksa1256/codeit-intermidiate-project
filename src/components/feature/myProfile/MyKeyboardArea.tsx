@@ -3,39 +3,53 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
-import { KeyboardFormValues } from '@/components/feature/Form/KeyboardForm';
+import KeyboardForm, { KeyboardFormValues } from '@/components/feature/Form/KeyboardForm';
+import Modal from '@/components/feature/Modal';
 import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
 import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
+import { KEYBOARD_TYPES_MAP } from '@/constants';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { apiClient } from '@/lib/api/apiClient';
+import useToastStore from '@/stores/toastStore';
 import { MyKeyboardItemType, MyKeyboardListType } from '@/types/keyboardTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
 
+const fetchKeyboardList = async (cursor: number | null): Promise<MyKeyboardListType> => {
+  const res = await apiClient.get(
+    `/${TEAM}/users/me/wines?limit=${DEFAULT_LIMIT}&cursor=${cursor}`,
+  );
+  return res.data;
+};
+
 const MyKeyboardArea = () => {
+  const addToast = useToastStore((state) => state.addToast);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
   const [keyboardList, setKeyboardList] = useState<MyKeyboardItemType[] | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const [nextCursor, setNextCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | null>(0);
   const isListEmpty = keyboardList?.length === 0;
 
+  const getKeyboardList = async () => {
+    try {
+      const data = await fetchKeyboardList(cursor);
+      const { list, nextCursor, totalCount } = data;
+
+      setKeyboardList((prev) => (prev === null ? list : [...prev, ...list]));
+      setTotalCount(totalCount);
+      setCursor(nextCursor);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const targetRef = useIntersectionObserver(getKeyboardList);
+
   useEffect(() => {
-    const getReviewList = async () => {
-      try {
-        const res = await apiClient.get(`/${TEAM}/users/me/wines?limit=${DEFAULT_LIMIT}`);
-        const data: MyKeyboardListType = res.data;
-        const { list, nextCursor, totalCount } = data;
-
-        setKeyboardList(list);
-        setTotalCount(totalCount);
-        setNextCursor(nextCursor);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getReviewList();
+    getKeyboardList();
   }, []);
 
   const handleDeleteKeyboard = async (keyboardId: number) => {
@@ -47,15 +61,19 @@ const MyKeyboardArea = () => {
         return prev.filter((keyboard) => keyboard.id !== keyboardId);
       });
       setTotalCount((totalCount) => totalCount - 1);
+      addToast({ message: '키보드 삭제 성공', type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response?.status === 403) {
-        alert('삭제 권한이 없습니다.');
+        addToast({
+          message: '본인이 추가한 키보드만 삭제 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
         return;
       }
-
-      alert('키보드 삭제에 실패 하였습니다.');
+      addToast({ message: '키보드 삭제 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
@@ -85,10 +103,46 @@ const MyKeyboardArea = () => {
           keyboard.id === keyboardId ? { ...keyboard, ...updateData } : keyboard,
         );
       });
+      addToast({ message: '키보드 수정 성공', type: 'success', duration: 2000 });
     } catch (error) {
+      const err = error as AxiosError;
+
+      if (err.response?.status === 403) {
+        addToast({
+          message: '본인이 추가한 키보드만 수정 가능합니다.',
+          type: 'error',
+          duration: 2000,
+        });
+        return;
+      }
+      addToast({ message: '키보드 수정 실패', type: 'error', duration: 2000 });
       throw error;
     }
   };
+
+  const handleAddKeyboard = async (formData: KeyboardFormValues) => {
+    const payload = {
+      ...formData,
+      price: +formData.price,
+      type: formData.type ?? KEYBOARD_TYPES_MAP[0].type,
+    };
+    // 키보드 등록 api
+    try {
+      const res = await apiClient.post(`/${TEAM}/wines`, payload);
+      const data = res?.data;
+
+      setKeyboardList((prev) => (prev === null ? [data] : [...prev, data]));
+      setTotalCount((totalCount) => totalCount + 1);
+      handleKeyboardModalClose();
+      addToast({ message: '키보드 등록 성공', type: 'success', duration: 2000 });
+    } catch (err) {
+      addToast({ message: '키보드 등록 실패', type: 'error', duration: 2000 });
+      throw err; // 폼에 에러 전달
+    }
+  };
+
+  const handleKeyboardModalOpen = () => setKeyboardOpen(true);
+  const handleKeyboardModalClose = () => setKeyboardOpen(false);
 
   // 데이터 로딩시
   if (keyboardList === null) return <MyListLoading />;
@@ -100,7 +154,10 @@ const MyKeyboardArea = () => {
       </span>
       {isListEmpty ? (
         <EmptyList desc='등록된 키보드가 없어요.'>
-          <ButtonDefault className='inline-flex items-center justify-center px-[15px] w-auto h-[48px] font-semibold text-white bg-primary rounded-xl md:px-[24px]'>
+          <ButtonDefault
+            onClick={handleKeyboardModalOpen}
+            className='inline-flex items-center justify-center px-[15px] w-auto h-[48px] font-semibold text-white bg-primary rounded-xl md:px-[24px]'
+          >
             키보드 등록 하기
           </ButtonDefault>
         </EmptyList>
@@ -109,8 +166,19 @@ const MyKeyboardArea = () => {
           keyboardList={keyboardList}
           onDelete={handleDeleteKeyboard}
           onEdit={handleEditKeyboard}
+          endRef={targetRef}
+          hasNextPage={keyboardList.length !== totalCount && cursor !== null}
         />
       )}
+
+      <Modal
+        open={keyboardOpen}
+        onClose={handleKeyboardModalClose}
+        title='키보드 등록'
+        showCloseButton={true}
+      >
+        <KeyboardForm onSubmit={handleAddKeyboard} onClose={() => setKeyboardOpen(false)} />
+      </Modal>
     </>
   );
 };

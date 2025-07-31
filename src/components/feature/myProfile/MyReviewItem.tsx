@@ -81,8 +81,13 @@ const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
         onConfirm={handleDeleteReview}
       />
       {/* 리뷰 모달 */}
-      <Modal open={isEditModal} onClose={handleEditModalClose} title='수정하기'>
-        <ReviewForm keyboardTitle={wine.name} initReview={review} onSubmit={handleEditReview} />
+      <Modal open={isEditModal} onClose={handleEditModalClose} title='수정하기' size='lg'>
+        <ReviewForm
+          keyboardImage={wine.image}
+          keyboardTitle={wine.name}
+          initReview={review}
+          onSubmit={handleEditReview}
+        />
       </Modal>
     </>
   );

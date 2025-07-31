@@ -22,10 +22,11 @@ import ReviewForm, { ReviewFormValues } from '../reviewForm/ReviewForm';
 interface Props {
   review: ReviewItemType;
   keyboardName: string;
+  keyboardImage: string;
   updateTrigger: Dispatch<SetStateAction<number>>;
 }
 
-const ReviewCard = ({ review, keyboardName, updateTrigger }: Props) => {
+const ReviewCard = ({ review, keyboardName, keyboardImage, updateTrigger }: Props) => {
   const {
     id: reviewId,
     user,
@@ -201,9 +202,15 @@ const ReviewCard = ({ review, keyboardName, updateTrigger }: Props) => {
         onClose={() => {
           setIsEditModalOpen(false);
         }}
+        size='lg'
         title='수정하기'
       >
-        <ReviewForm keyboardTitle={keyboardName} initReview={review} onSubmit={handleEditReview} />
+        <ReviewForm
+          keyboardImage={keyboardImage}
+          keyboardTitle={keyboardName}
+          initReview={review}
+          onSubmit={handleEditReview}
+        />
       </Modal>
     </section>
   );
