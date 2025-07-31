@@ -23,12 +23,13 @@ export interface ReviewFormValues {
 }
 
 interface Props {
+  keyboardImage: string;
   keyboardTitle: string;
   initReview?: MyReviewItemType | ReviewItemType | null;
   onSubmit: (value: ReviewFormValues) => void;
 }
 
-const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
+const ReviewForm = ({ keyboardImage, keyboardTitle, initReview = null, onSubmit }: Props) => {
   const {
     register,
     handleSubmit,
@@ -62,12 +63,7 @@ const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
         <div className='mb-10'>
           <div className='flex items-center gap-4'>
             <figure className='flex items-center justify-center w-[65px] h-[65px] bg-gray-100 shrink-0 rounded-lg md:w-[68px] md:h-[68px]'>
-              <Image
-                src='/images/KeyboardReviewIcon.svg'
-                alt='키보드 아이콘'
-                width={52}
-                height={52}
-              />
+              <Image src={keyboardImage} alt='키보드 아이콘' width={52} height={52} />
             </figure>
             <div className='grow'>
               <h3 className='font-bold break-keep md:text-lg md:font-semibold'>{keyboardTitle}</h3>
@@ -118,7 +114,7 @@ const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
           </div>
         </div>
 
-        <div className='mb-[29px] md:mb-12'>
+        <div className='mb-[5px] md:mb-0'>
           <h4 className='mb-6 text-lg font-bold'>키보드에 포함된 색상들을 선택해주세요.</h4>
           <div className='flex flex-wrap gap-2 md:gap-[10px]'>
             <ReviewFormCheckbox name='aroma' control={control} />

@@ -47,6 +47,7 @@ const ReviewList = ({ keyboardInfo, onCreateModalOpen, updateTrigger }: Props) =
             <ReviewCard
               key={review.id}
               review={review}
+              keyboardImage={keyboardInfo.image}
               keyboardName={keyboardInfo.name}
               updateTrigger={updateTrigger}
             />

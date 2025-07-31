@@ -31,7 +31,7 @@ const RatingsInfo = ({
   updateTrigger,
 }: Props) => {
   const { isFixedOnTop, stickyRef } = useSticky(STICKY_TOP, TABLET_STICKY_TOP);
-  const { id, name, avgRating, reviewCount, avgRatings } = keyboardInfo;
+  const { id, name, image, avgRating, reviewCount, avgRatings } = keyboardInfo;
 
   const handleCreateReview = async (formValues: ReviewFormValues) => {
     const reviewData = { ...formValues, wineId: id };
@@ -98,7 +98,7 @@ const RatingsInfo = ({
         size='lg'
         title='리뷰 등록'
       >
-        <ReviewForm keyboardTitle={name} onSubmit={handleCreateReview} />
+        <ReviewForm keyboardImage={image} keyboardTitle={name} onSubmit={handleCreateReview} />
       </Modal>
     </>
   );
