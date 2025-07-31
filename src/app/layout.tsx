@@ -4,6 +4,7 @@ import './globals.css';
 
 import RequireAuth from '@/components/feature/RequireAuth';
 import ScrollToTopButton from '@/components/feature/ScrollToTopButton';
+import ToastContainer from '@/components/ui/Toast';
 
 import type { Metadata } from 'next';
 
@@ -49,6 +50,8 @@ export default function RootLayout({
       <body className={pretendard.className}>
         <RequireAuth>{children}</RequireAuth>
         <ScrollToTopButton />
+        <ToastContainer />
+        <div id='overlay-root'></div>
       </body>
     </html>
   );
