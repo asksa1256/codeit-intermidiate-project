@@ -9,33 +9,48 @@ import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import MyReviewList from '@/components/feature/myProfile/MyReviewList';
 import { ReviewFormValues } from '@/components/feature/reviewForm/ReviewForm';
 import EmptyList from '@/components/ui/EmptyList';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { apiClient } from '@/lib/api/apiClient';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 5;
+
+const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType> => {
+  const res = await apiClient.get(
+    `/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}&cursor=${cursor}`,
+  );
+  return res.data;
+};
 
 const MyReviewArea = () => {
+  const [isFetching, setIsFetching] = useState(false);
   const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
-  const [nextCursor, setNextCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | null>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
   const isListEmpty = reviewList?.length === 0;
 
+  const getReviewList = async () => {
+    if (cursor === null || isFetching) return;
+
+    setIsFetching(true);
+    try {
+      const data = await fetchReviewList(cursor);
+      const { list, nextCursor, totalCount } = data;
+
+      setReviewList((prev) => (prev === null ? list : [...prev, ...list]));
+      setTotalCount(totalCount);
+      setCursor(nextCursor);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const targetRef = useIntersectionObserver(getReviewList);
+
   useEffect(() => {
-    const getReviewList = async () => {
-      try {
-        const res = await apiClient.get(`/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}`);
-        const data: MyReviewListType = res.data;
-        const { list, nextCursor, totalCount } = data;
-
-        setReviewList(list);
-        setTotalCount(totalCount);
-        setNextCursor(nextCursor);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     getReviewList();
   }, []);
 
@@ -118,9 +133,6 @@ const MyReviewArea = () => {
     }
   };
 
-  // 나중에 사용할 상태값들입니다. 빌드시 에러가 뜨는거 같아서 임시로 추가해둘게요!
-  console.log(nextCursor);
-
   // 데이터 로딩시
   if (reviewList === null) return <MyListLoading />;
 
@@ -144,6 +156,8 @@ const MyReviewArea = () => {
             reviewList={reviewList}
             onReviewDelete={handleDeleteReview}
             onReviewEdit={handleEditReview}
+            endRef={targetRef}
+            cursor={cursor}
           />
         )}
       </div>

@@ -6,9 +6,12 @@ interface Props {
   reviewList: MyReviewItemType[];
   onReviewDelete: (value: number) => void;
   onReviewEdit: (reviewId: number, formValues: ReviewFormValues) => void;
+  endRef: React.ForwardedRef<HTMLDivElement>;
+  cursor: number | null;
 }
 
-const MyReviewList = ({ reviewList, onReviewDelete, onReviewEdit }: Props) => {
+const MyReviewList = ({ reviewList, onReviewDelete, onReviewEdit, endRef, cursor }: Props) => {
+  console.log(cursor !== null);
   return (
     <>
       <ul>
@@ -21,6 +24,11 @@ const MyReviewList = ({ reviewList, onReviewDelete, onReviewEdit }: Props) => {
           />
         ))}
       </ul>
+      <div ref={endRef}>
+        {cursor !== null ? (
+          <div className='w-8 h-8 mx-auto border-4 border-gray-300 border-t-primary rounded-full animate-spin' />
+        ) : null}
+      </div>
     </>
   );
 };
