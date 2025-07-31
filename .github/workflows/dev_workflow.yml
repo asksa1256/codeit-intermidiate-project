@@ -66,6 +66,9 @@ jobs:
       - name: Search for .env.local
         run: find . -name ".env.local"
 
+      - name: Create Directory frontend
+        run: mkdir frontend
+
       - name: Copy .env.local to Docker context
         run: cp .env.local frontend/.env.local
 
