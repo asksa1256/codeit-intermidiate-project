@@ -7,8 +7,12 @@ import useToastStore from '@/stores/toastStore';
 
 const ToastContainer = () => {
   const [mounted, setMounted] = useState(false);
-  const { toasts, removeToast } = useToastStore(
-    useShallow((state) => ({ toasts: state.toasts, removeToast: state.removeToast })),
+  const { toasts, removeToast, startRemoving } = useToastStore(
+    useShallow((state) => ({
+      toasts: state.toasts,
+      removeToast: state.removeToast,
+      startRemoving: state.startRemoving,
+    })),
   );
 
   useEffect(() => {
@@ -19,12 +23,16 @@ const ToastContainer = () => {
     toasts.forEach((t) => {
       if (t.duration && t.duration > 0) {
         const timer = setTimeout(() => {
-          removeToast(t.id);
+          startRemoving(t.id);
+
+          setTimeout(() => {
+            removeToast(t.id);
+          }, 300);
         }, t.duration);
         return () => clearTimeout(timer);
       }
     });
-  }, [toasts, removeToast]);
+  }, [toasts, removeToast, startRemoving]);
 
   if (!mounted) return null; // hydration 이후 overlayRoot에 접근
 
@@ -36,7 +44,7 @@ const ToastContainer = () => {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`flex py-3 px-6 rounded-xl text-white ${t.type === 'success' ? 'bg-emerald-700' : t.type === 'error' ? 'bg-red-500' : 'bg-gray-600'}`}
+          className={`flex py-3 px-6 rounded-xl shadow-lg text-white ${t.type === 'success' ? 'bg-emerald-700' : t.type === 'error' ? 'bg-red-500' : 'bg-gray-600'} ${t.isClosing ? 'fade-down' : 'fade-up'}`}
         >
           {t.message}
           <button className='ml-4 text-sm text-white' onClick={() => removeToast}>

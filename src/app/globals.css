@@ -63,6 +63,19 @@
     }
   }
 
+  .fade-down {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeDown 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeDown {
+    to {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+  }
+
   /* custom modal animation */
   .fade {
     opacity: 0;

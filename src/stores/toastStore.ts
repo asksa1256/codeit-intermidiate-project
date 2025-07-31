@@ -6,12 +6,14 @@ interface Toast {
   message: string;
   type?: 'success' | 'error';
   duration?: number;
+  isClosing?: boolean;
 }
 
 interface ToastStore {
   toasts: Toast[];
   addToast: (toast: Omit<Toast, 'id'>) => void;
   removeToast: (id: string) => void;
+  startRemoving: (id: string) => void;
 }
 
 const useToastStore = create<ToastStore>((set) => ({
@@ -22,6 +24,10 @@ const useToastStore = create<ToastStore>((set) => ({
   removeToast: (id) => {
     set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) }));
   },
+  startRemoving: (id) =>
+    set((state) => ({
+      toasts: state.toasts.map((t) => (t.id === id ? { ...t, isClosing: true } : t)),
+    })),
 }));
 
 export default useToastStore;
