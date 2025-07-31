@@ -61,11 +61,17 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
+      # - name: Create .env.local file
+      #   run: |
+      #     echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env.local
+      #     echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env.local
+      #     echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env.local
+
       - name: Create .env.local file
         run: |
-          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env.local
-          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env.local
-          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env.local
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}"
+          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}"
+          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}"
 
       - name: Search for .env.local
         run: find . -name ".env.local"
@@ -73,14 +79,8 @@ jobs:
       - name: Current Path
         run: pwd
 
-      # - name: Create Directory frontend
-      #   run: mkdir codeit-intermidiate-project
-
-      - name: Copy .env.local to GITHUB_WORKSPACE
-        run: mv -f .env.local $GITHUB_WORKSPACE/
-
-      # - name: Copy .env.local to Docker context
-      #   run: cp .env.local ./codeit-intermidiate-project/codeit-intermidiate-project/
+      # - name: Copy .env.local to GITHUB_WORKSPACE
+      #   run: mv -f .env.local $GITHUB_WORKSPACE/
 
       # Docker 빌드 레이어를 캐시하여 빌드 시간을 단축하는 단계
       - name: Cache docker layers
