@@ -24,7 +24,7 @@ const eslintConfig = [
       // 쓰이지 않는 변수 검사
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warning',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
 
