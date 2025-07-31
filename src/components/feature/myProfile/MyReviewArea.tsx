@@ -14,7 +14,7 @@ import { apiClient } from '@/lib/api/apiClient';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
-const DEFAULT_LIMIT = 4;
+const DEFAULT_LIMIT = 10;
 
 const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType> => {
   const res = await apiClient.get(
@@ -49,8 +49,6 @@ const MyReviewArea = () => {
   useEffect(() => {
     getReviewList();
   }, []);
-
-  console.log(cursor);
 
   // 리뷰 삭제
   const handleDeleteReview = async (reviewId: number) => {
