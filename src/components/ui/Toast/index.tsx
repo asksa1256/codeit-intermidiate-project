@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useShallow } from 'zustand/shallow';
 
+import CloseIcon from '@/assets/icons/CloseIcon.svg';
+import InfoIcon from '@/assets/icons/InfoIcon.svg';
+import SuccessIcon from '@/assets/icons/SuccessIcon.svg';
+import WarningIcon from '@/assets/icons/WarningIcon.svg';
 import useToastStore from '@/stores/toastStore';
 
 const ToastContainer = () => {
@@ -44,11 +48,18 @@ const ToastContainer = () => {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`flex py-3 px-6 rounded-xl shadow-lg text-white ${t.type === 'success' ? 'bg-emerald-700' : t.type === 'error' ? 'bg-red-500' : 'bg-gray-600'} ${t.isClosing ? 'fade-down' : 'fade-up'}`}
+          className={`flex gap-4 py-4 px-6 rounded-xl shadow-lg text-gray-800 bg-white ${t.isClosing ? 'fade-down' : 'fade-up'}`}
         >
+          {t.type === 'success' ? (
+            <SuccessIcon className='w-6 h-6 text-emerald-500' />
+          ) : t.type === 'error' ? (
+            <WarningIcon className='w-6 h-6 text-red-500' />
+          ) : (
+            <InfoIcon className='w-6 h-6 text-gray-500' />
+          )}
           {t.message}
-          <button className='ml-4 text-sm text-white' onClick={() => removeToast}>
-            x
+          <button className='ml-4' onClick={() => removeToast}>
+            <CloseIcon className='text-gray-500' />
           </button>
         </div>
       ))}

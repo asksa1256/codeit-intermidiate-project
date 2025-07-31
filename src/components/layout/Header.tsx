@@ -30,7 +30,7 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
   const handleSignOut = () => {
     signOut(); // user 전역 상태 초기화
     tokenService.clearTokens(); // 토큰 제거
-    addToast({ message: '로그아웃 되었습니다.', duration: 1000, type: 'success' });
+    addToast({ message: '로그아웃 되었습니다.', duration: 2000, type: 'success' });
   };
 
   return (

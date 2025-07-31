@@ -55,7 +55,15 @@ const LoginForm = () => {
         router.push('/');
       }
 
-      addToast({ message: `안녕하세요, ${user.nickname}님!`, type: 'success', duration: 2000 });
+      addToast({
+        message: (
+          <span>
+            안녕하세요, <b>{user.nickname}</b>님!
+          </span>
+        ),
+        type: 'success',
+        duration: 2000,
+      });
     } catch (error) {
       const err = error as AxiosError;
       if (err.response?.status === 400) {

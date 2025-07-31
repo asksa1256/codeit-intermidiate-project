@@ -1,9 +1,10 @@
+import { ReactNode } from 'react';
 import { v4 } from 'uuid';
 import { create } from 'zustand';
 
 interface Toast {
   id: string;
-  message: string;
+  message: ReactNode;
   type?: 'success' | 'error';
   duration?: number;
   isClosing?: boolean;
