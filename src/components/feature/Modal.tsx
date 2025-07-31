@@ -4,6 +4,7 @@ import { CloseButton, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@
 import { ReactNode } from 'react';
 
 import CloseIcon from '@/assets/icons/CloseIcon.svg';
+import { cn } from '@/utils/style';
 
 interface ModalProps {
   open: boolean;
@@ -14,13 +15,31 @@ interface ModalProps {
   children: ReactNode;
 }
 
-const Modal = ({ open, onClose, title, showCloseButton = true, children }: ModalProps) => {
+const ModalContent = ({ children }: { children: ReactNode }) => {
+  return <div className='p-6 pt-0 grow-1 overflow-y-auto'>{children}</div>;
+};
+
+const ModalFoot = ({ children }: { children: ReactNode }) => {
+  return <div className='shrink-0 m-6'>{children}</div>;
+};
+
+const Modal = ({
+  open,
+  onClose,
+  title,
+  showCloseButton = true,
+  size = 'md',
+  children,
+}: ModalProps) => {
   return (
     <Dialog open={open} className='relative z-50' onClose={onClose}>
       {/* 모달 배경 */}
       <DialogBackdrop
         transition
-        className='fixed inset-0 bg-black/50 backdrop-blur-sm transition duration-300 ease-out data-closed:opacity-0 data-closed:delay-300'
+        className={cn(
+          'fixed inset-0 bg-black/50 backdrop-blur-sm',
+          'transition duration-300 ease-out data-closed:opacity-0 data-closed:delay-300',
+        )}
       />
 
       {/* {모달 박스 위치} */}
@@ -28,7 +47,11 @@ const Modal = ({ open, onClose, title, showCloseButton = true, children }: Modal
         {/* {모달 본체} */}
         <DialogPanel
           transition
-          className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl transition duration-300 ease-out data-closed:translate-y-full md:max-w-[460px] md:rounded-2xl md:overflow-hidden md:data-closed:translate-y-0 md:data-closed:scale-[0.9] md:data-closed:opacity-0'
+          className={cn(
+            'flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl overflow-hidden md:rounded-2xl',
+            size === 'md' ? 'md:max-w-[460px]' : 'md:max-w-[528px]',
+            'transition duration-300 ease-out data-closed:translate-y-full md:data-closed:translate-y-0 md:data-closed:scale-[0.9] md:data-closed:opacity-0',
+          )}
         >
           {(title || showCloseButton) && (
             <div className='flex justify-between shrink-0 p-6 pb-0 mb-8'>
@@ -48,8 +71,7 @@ const Modal = ({ open, onClose, title, showCloseButton = true, children }: Modal
             </div>
           )}
 
-          {/* {모달 내부 컨텐츠} */}
-          <div className='p-6 pt-0 overflow-y-auto grow-1'>{children}</div>
+          {children}
         </DialogPanel>
       </div>
     </Dialog>
@@ -57,3 +79,6 @@ const Modal = ({ open, onClose, title, showCloseButton = true, children }: Modal
 };
 
 export default Modal;
+
+Modal.Content = ModalContent;
+Modal.Foot = ModalFoot;

@@ -89,6 +89,7 @@ const RatingsInfo = ({ keyboardInfo, updateTrigger }: Props) => {
         onClose={() => {
           setIsCreateModalOpen(false);
         }}
+        size='lg'
         title='리뷰 등록'
       >
         <ReviewForm keyboardTitle={name} onSubmit={handleCreateReview} />

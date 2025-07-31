@@ -121,7 +121,7 @@
   }
 
   .form-btm-actions {
-    @apply flex flex-col w-full mt-10 md:mt-10 mb-6 md:mb-8 gap-4;
+    @apply flex flex-col w-full gap-4;
   }
 
   .btn-outlined {
@@ -165,6 +165,10 @@
 
   .modal-open {
     overflow: hidden;
+  }
+
+  .modal-body {
+    @apply flex flex-col max-h-full grow-1 overflow-hidden;
   }
 }
 
