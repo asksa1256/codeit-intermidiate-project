@@ -1,8 +1,6 @@
 // 목록 페이지 검색바 컴포넌트
 'use client';
 
-import Image from 'next/image';
-
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -36,42 +34,26 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
     }
   };
 
-  // 검색 트리거 이벤트 (입력/버튼 공통)
-  const handleTriggerSearch = (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent) => {
-    if ('key' in e && e.key !== 'Enter') return;
+  // 검색 트리거 이벤트
+  const handleTriggerSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return;
     handleSearch();
   };
 
   return (
-    <div className='flex justify-center'>
+    <>
       {/* 검색바 */}
-      <section
-        className='
-          flex items-center
-          w-[343px] h-[38px]
-          md:w-[704px] md:h-[48px]
-          lg:w-[400px] lg:h-[48px]
-          rounded-full border border-gray-300 bg-white px-[15px]
-        '
-      >
+      <section>
         <input
           type='text'
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleTriggerSearch}
           placeholder='키보드를 검색해보세요'
-          className='flex-1 text-sm placeholder:text-gray-400 outline-none border-none bg-transparent'
-        />
-        <Image
-          src='/images/SearchIcon.svg'
-          width={40}
-          height={40}
-          alt='검색 아이콘'
-          className='w-6 md:w-[26px] cursor-pointer'
-          onClick={handleTriggerSearch}
+          className='h-[38px] border border-gray-300 rounded-[50px] grow-1 pl-[45px] pr-[15px] bg-[url(/images/SearchIcon.svg)] bg-position-[center_left_15px] bg-no-repeat text-md outline-none focus:ring-2 focus:ring-primary hover:border-primary md:h-12 md:pl-[55px] md:pr-5 md:bg-position-[center_left_20px] md:text-base lg:max-w-200 lg:ml-auto'
         />
       </section>
-    </div>
+    </>
   );
 };
 

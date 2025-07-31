@@ -12,11 +12,30 @@ import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import StarRating from '@/components/ui/StarRating';
 
+import IndexKeyboardsCard from './IndexKeyboardsCard';
+
 const KeyboardsArea = () => {
   const [isFilterModal, setIsFilterModal] = useState(false); // 필터 모달
   const [isKeyboardModal, setIsKeyboardModal] = useState(false); // 키보드 등록 모달
 
   // 아마 여기서 리스트 api
+  const [items, setItems] = useState<KeyboardItemType[] | null>(null);
+  const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
+  const [selectedType, setSelectedType] = useState<KeyboardCategoryType | null>(null);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]);
+  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+
+  const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
+
+  const isSearching = searchResults !== null;
+  const isSearchEmpty = isSearching && searchResults?.length === 0;
+
+  const isFiltering =
+    selectedType !== null || priceRange[0] > 0 || priceRange[1] < 300000 || selectedRating !== null;
+
+  const emptyMessage = isFiltering
+    ? '선택한 필터 조건에 맞는 키보드가 없습니다.'
+    : '검색 결과가 없습니다.';
 
   return (
     <div>
@@ -65,149 +84,20 @@ const KeyboardsArea = () => {
         {/* 리스트 영역 :: S */}
         <div className='grow-1'>
           {/* 키보드 카드 영역 :: S */}
-          <Link
-            href={`/keyboards/1345`}
-            className='block mb-5 border border-gray-300 rounded-xl md:rounded-2xl'
-          >
-            <div className='flex'>
-              {/* 이미지 */}
-              <div className='w-[126px] px-3 shrink-0 self-center md:w-[160px] md:pl-0 md:self-end lg:w-[168px]'>
-                <KeyboardThumbnail
-                  imgSrc='https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1643/1753845442347/image_1753845442269.png'
-                  keyboardName='Office Master 3모드 저소음 펜타그래프 유무선겸용 일반형 키보드'
-                  className='pt-[200%] md:w-[60%] md:ml-10 md:pt-[180%] lg:ml-12'
-                  ratioClass='w-[200%] aspect-[200/100] md:w-[250%] md:aspect-[250/100]'
-                />
-              </div>
-              {/* 컨텐츠 */}
-              <div className='pt-[30px] pr-5 pb-7 grow md:flex md:gap-[45px] md:pt-10 md:pr-10 md:pb-6 lg:pt-9 lg:pr-[53px] lg:pb-6 lg:gap-[70px]'>
-                {/* 컨텐츠 상단 */}
-                <div>
-                  {/* 키보드명 */}
-                  <h3 className='text-xl font-semibold line-clamp-2 md:mb-5 md:text-3xl'>
-                    Office Master 3모드 저소음 펜타그래프 유무선겸용 일반형 키보드
-                  </h3>
-                  {/* 제조사 */}
-                  <span className='block mb-2 text-md text-gray-500 md:mb-3 md:text-base lg:mb-4'>
-                    한성컴퓨터
-                  </span>
-                  {/* 가격 */}
-                  <RatingAndPrice
-                    label='price'
-                    value={64990}
-                    className='rounded-[10px] py-[2.5px] px-[10px] md:rounded-xl md:py-[8px] md:px-[15px]'
-                  />
-                </div>
-                {/* 컨텐츠 하단 */}
-                <div className='flex items-center gap-[15px] mt-[22px] md:shrink-0 md:flex-col md:items-start md:mt-0 md:gap-[10px]'>
-                  {/* 평점 숫자 */}
-                  <strong className='text-[28px] font-extrabold md:text-5xl'>4.8</strong>
-                  <div className='md:mb-[10px]'>
-                    {/* 별점 5개 */}
-                    <StarRating value={4} className='w-[14px] md:w-6' />
-                    {/* 리뷰 개수 */}
-                    <div className='mt-[5px] text-xs text-gray-500 md:mt-[10px] md:text-md'>
-                      47개의 후기
-                    </div>
-                  </div>
-                  {/* 오른쪽: 화살표 아이콘 */}
-                  <Image
-                    src='/images/RightArrowIcon.svg'
-                    alt='오른쪽 이동'
-                    width={32}
-                    height={32}
-                    className='ml-auto w-[32px] md:w-[36px] md:mt-auto'
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='border-t border-gray-300 py-[7px] px-5 text-md md:py-5 md:px-10 md:text-base lg:px-12'>
-              {/* 최신 후기 있을 때 :: S */}
-              <h4 className='mb-2 font-semibold'>최신 후기</h4>
-              <p className='text-gray-500 line-clamp-3'>내용 내용 내용</p>
-              {/* 최신 후기 있을 때 :: E */}
-
-              {/* 최신 후기 없을 때 :: S*/}
-              <p className='py-3 text-gray-600 text-center'>최신 후기가 없습니다.</p>
-              {/* 최신 후기 없을 때 :: E*/}
-            </div>
-          </Link>
+          {dataToRender?.map((item) => (
+            <IndexKeyboardsCard
+              key={item.id}
+              name={item.name}
+              region={item.region}
+              image={item.image}
+              price={item.price}
+              avgRating={item.avgRating}
+              reviewCount={item.reviewCount}
+              recentReview={item.recentReview}
+              keyboardId={item.id}
+            />
+          ))}
           {/* 키보드 카드 영역 :: E */}
-          {/* 키보드 카드 영역 - 더미 :: S */}
-          <Link
-            href={`/keyboards/1345`}
-            className='block mb-5 border border-gray-300 rounded-xl md:rounded-2xl'
-          >
-            <div className='flex'>
-              {/* 이미지 */}
-              <div className='w-[126px] px-3 shrink-0 self-center md:w-[160px] md:pl-0 md:self-end lg:w-[168px]'>
-                <KeyboardThumbnail
-                  imgSrc='https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/1643/1753774074265/image_1753774074024.png'
-                  keyboardName='몬스타기어 위캣6 앨리스 어고노믹 매크로 단축키 한손 조약돌 스플릿 블루투스 유무선 텐키리스 키보드'
-                  className='pt-[200%] md:w-[60%] md:ml-10 md:pt-[180%] lg:ml-12'
-                  ratioClass='w-[200%] aspect-[200/100] md:w-[250%] md:aspect-[250/100]'
-                />
-              </div>
-              {/* 컨텐츠 */}
-              <div className='pt-[30px] pr-5 pb-7 grow md:flex md:gap-[45px] md:pt-10 md:pr-10 md:pb-6 lg:pt-9 lg:pr-[53px] lg:pb-6 lg:gap-[70px]'>
-                {/* 컨텐츠 상단 */}
-                <div>
-                  {/* 키보드명 */}
-                  <h3 className='text-xl font-semibold line-clamp-2 md:mb-5 md:text-3xl'>
-                    몬스타기어 위캣6 앨리스 어고노믹 매크로 단축키 한손 조약돌 스플릿 블루투스
-                    유무선 텐키리스 키보드
-                  </h3>
-                  {/* 제조사 */}
-                  <span className='block mb-2 text-md text-gray-500 md:mb-3 md:text-base lg:mb-4'>
-                    몬스타기어
-                  </span>
-                  {/* 가격 */}
-                  <RatingAndPrice
-                    label='price'
-                    value={162000}
-                    className='rounded-[10px] py-[2.5px] px-[10px] md:rounded-xl md:py-[8px] md:px-[15px]'
-                  />
-                </div>
-                {/* 컨텐츠 하단 */}
-                <div className='flex items-center gap-[15px] mt-[22px] md:shrink-0 md:flex-col md:items-start md:mt-0 md:gap-[10px]'>
-                  {/* 평점 숫자 */}
-                  <strong className='text-[28px] font-extrabold md:text-5xl'>4.8</strong>
-                  <div className='md:mb-[10px]'>
-                    {/* 별점 5개 */}
-                    <StarRating value={4} className='w-[14px] md:w-6' />
-                    {/* 리뷰 개수 */}
-                    <div className='mt-[5px] text-xs text-gray-500 md:mt-[10px] md:text-md'>
-                      47개의 후기
-                    </div>
-                  </div>
-                  {/* 오른쪽: 화살표 아이콘 */}
-                  <Image
-                    src='/images/RightArrowIcon.svg'
-                    alt='오른쪽 이동'
-                    width={32}
-                    height={32}
-                    className='ml-auto w-[32px] md:w-[36px] md:mt-auto'
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='border-t border-gray-300 py-[7px] px-5 text-md md:py-5 md:px-10 md:text-base lg:px-12'>
-              {/* 최신 후기 있을 때 :: S */}
-              <h4 className='mb-2 font-semibold'>최신 후기</h4>
-              <p className='text-gray-500 line-clamp-3'>
-                내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용
-                내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용
-                내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용
-                내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용
-              </p>
-              {/* 최신 후기 있을 때 :: E */}
-
-              {/* 최신 후기 없을 때 :: S*/}
-              <p className='py-3 text-gray-600 text-center'>최신 후기가 없습니다.</p>
-              {/* 최신 후기 없을 때 :: E*/}
-            </div>
-          </Link>
-          {/* 키보드 카드 영역 - 더미 :: E */}
         </div>
         {/* 리스트 영역 :: E */}
       </div>
