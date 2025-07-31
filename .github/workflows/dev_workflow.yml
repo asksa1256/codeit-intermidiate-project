@@ -76,8 +76,11 @@ jobs:
       # - name: Create Directory frontend
       #   run: mkdir codeit-intermidiate-project
 
-      - name: Copy .env.local to Docker context
-        run: cp .env.local ./codeit-intermidiate-project/codeit-intermidiate-project/
+      - name: Copy .env.local to GITHUB_WORKSPACE
+        run: cp .env.local $GITHUB_WORKSPACE/
+
+      # - name: Copy .env.local to Docker context
+      #   run: cp .env.local ./codeit-intermidiate-project/codeit-intermidiate-project/
 
       # Docker 빌드 레이어를 캐시하여 빌드 시간을 단축하는 단계
       - name: Cache docker layers
