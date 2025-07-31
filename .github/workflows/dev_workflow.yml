@@ -77,7 +77,7 @@ jobs:
       #   run: mkdir codeit-intermidiate-project
 
       - name: Copy .env.local to GITHUB_WORKSPACE
-        run: cp .env.local $GITHUB_WORKSPACE/
+        run: mv .env.local $GITHUB_WORKSPACE/
 
       # - name: Copy .env.local to Docker context
       #   run: cp .env.local ./codeit-intermidiate-project/codeit-intermidiate-project/
