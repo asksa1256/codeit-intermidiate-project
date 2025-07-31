@@ -57,11 +57,11 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Create .env file
+      - name: Create .env.local file
         run: |
-          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
-          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env
-          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env
+          echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env.local
+          echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env.local
+          echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env.local
 
       # Docker 빌드 레이어를 캐시하여 빌드 시간을 단축하는 단계
       - name: Cache docker layers
@@ -130,4 +130,5 @@ jobs:
         run: docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
 
       - name: Docker run. Run nbpay_main_backend container
-        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+        # run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
