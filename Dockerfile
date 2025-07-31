@@ -1,4 +1,4 @@
-FROM node:22.9.0-alpine
+FROM node:22.9.0
 
 # Install tzdata package
 RUN apk add --no-cache tzdata
