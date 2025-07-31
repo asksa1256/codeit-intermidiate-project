@@ -56,7 +56,7 @@ const ReviewForm = ({ keyboardTitle, initReview = null, onSubmit }: Props) => {
   const isEditLoading = isEdit ? '리뷰 수정중....' : '리뷰 등록중...';
 
   return (
-    <form className='mt-10 -mb-4' onSubmit={handleSubmit(handleSubmitForm)}>
+    <form onSubmit={handleSubmit(handleSubmitForm)}>
       <div className='mb-10'>
         <div className='flex items-center gap-4'>
           <figure className='flex items-center justify-center w-[65px] h-[65px] bg-gray-100 shrink-0 rounded-lg md:w-[68px] md:h-[68px]'>
