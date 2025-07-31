@@ -6,22 +6,18 @@ RUN apk add --no-cache tzdata
 ENV TZ="Asia/Seoul"
 
 # Docker Container안의 디렉토리를 설정합니다. 설정을 안할시 Root리렉토리로 설정됩니다.
-WORKDIR /frontend
+WORKDIR /app
+
+COPY .env.local .env.local
 
 # package.json을 도커 이미지에 복사합니다.
-COPY package.json /frontend
-
-COPY package-lock.json /frontend
+COPY package.json package-lock.json ./
 
 RUN npm install
 
-# 환경 변수 파일 복사 (중요)
-COPY .env.local /frontend
-COPY .env ./
-
 # 해당 디렉토리에 있는 모든 파일, 폴더를 도커 이미지로 복사합니다.
 # .dockerignore에 있는것은 제외
-COPY . /frontend
+COPY . .
 
 # 해당 도커 이미지에서 build를 해서 dist폴더를 생성합니다.
 RUN npm run build
