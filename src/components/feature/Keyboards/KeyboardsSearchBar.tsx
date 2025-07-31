@@ -10,41 +10,27 @@ import type { KeyboardItemType } from '@/types/keyboardTypes';
 
 // 부모에게 결과를 전달하기 위한 props 타입
 interface KeyboardsSearchBarProps {
-  onSearchResults: (results: KeyboardItemType[]) => void;
+  onSearchResults: (results: KeyboardItemType[] | null) => void;
 }
 
 const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
   const [query, setQuery] = useState('');
 
-  // 검색 수행 함수 (API 호출 및 결과 처리, 서버 필터링, 클라이언트 보정 필터링)
+  // 검색 수행 함수 (API 호출, 서버 필터링)
   const handleSearch = async () => {
-    const cleanQuery = query.trim().toLowerCase();
+    const SearchedQuery = query;
 
-    if (!cleanQuery) {
-      onSearchResults([]); // 검색어 없으면 빈 배열 전달
+    if (!SearchedQuery) {
+      onSearchResults(null);
       return;
     }
     try {
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-        params: { limit: 30, name: cleanQuery },
+        params: { limit: 30, name: SearchedQuery },
       });
 
       const dataArray: KeyboardItemType[] = res.data.list || [];
-
-      //  클라이언트 추가 보정 필터
-      const normalizedQuery = cleanQuery.normalize('NFC');
-      const filtered = dataArray.filter((item) =>
-        item.name.toLowerCase().normalize('NFC').includes(normalizedQuery),
-      );
-
-      // 검색어 위치(indexOf) 기준 정렬
-      const sorted = [...filtered].sort((a, b) => {
-        const aPos = a.name.toLowerCase().indexOf(normalizedQuery);
-        const bPos = b.name.toLowerCase().indexOf(normalizedQuery);
-        return aPos - bPos;
-      });
-
-      onSearchResults(sorted); // 결과 전달
+      onSearchResults(dataArray); // 서버 응답 그대로 전달
     } catch (err) {
       console.error('검색 중 오류 발생:', err);
     }

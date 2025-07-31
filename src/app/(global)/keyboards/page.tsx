@@ -24,7 +24,7 @@ interface FilterParams {
 }
 
 const KeyboardsPage = () => {
-  const [items, setItems] = useState<KeyboardItemType[]>([]);
+  const [items, setItems] = useState<KeyboardItemType[] | null>(null);
   const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedType, setSelectedType] = useState<KeyboardCategoryType | null>(null); // 키보드 타입 필터용
@@ -144,24 +144,25 @@ const KeyboardsPage = () => {
         onChangeRating={handleRatingChange}
       />
 
-      {/* 검색 결과 */}
+      {/* 검색 결과 dataToRender가 null이 아닐 때만 map을 실행 */}
       {isSearchEmpty ? (
         <EmptyList desc={emptyMessage} />
       ) : (
         <div className='mt-4 grid grid-cols-1 gap-4 md:gap-6 lg:gap-8'>
-          {dataToRender.map((item) => (
-            <IndexKeyboardsCard
-              key={item.id}
-              name={item.name}
-              region={item.region}
-              image={item.image}
-              price={item.price}
-              avgRating={item.avgRating}
-              reviewCount={item.reviewCount}
-              recentReview={item.recentReview}
-              keyboardId={item.id}
-            />
-          ))}
+          {dataToRender &&
+            dataToRender.map((item) => (
+              <IndexKeyboardsCard
+                key={item.id}
+                name={item.name}
+                region={item.region}
+                image={item.image}
+                price={item.price}
+                avgRating={item.avgRating}
+                reviewCount={item.reviewCount}
+                recentReview={item.recentReview}
+                keyboardId={item.id}
+              />
+            ))}
         </div>
       )}
     </div>
