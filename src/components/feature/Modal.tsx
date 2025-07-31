@@ -28,7 +28,7 @@ const Modal = ({ open, onClose, title, showCloseButton = true, children }: Modal
         {/* {모달 본체} */}
         <DialogPanel
           transition
-          className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl transition duration-500 ease-out data-closed:translate-y-full md:max-w-[460px] md:rounded-2xl md:overflow-hidden md:data-closed:translate-y-0 md:data-closed:scale-[0.8] md:data-closed:opacity-0'
+          className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl transition duration-300 ease-out data-closed:translate-y-full md:max-w-[460px] md:rounded-2xl md:overflow-hidden md:data-closed:translate-y-0 md:data-closed:scale-[0.9] md:data-closed:opacity-0'
         >
           {(title || showCloseButton) && (
             <div className='flex justify-between shrink-0 p-6 pb-0 mb-8'>
