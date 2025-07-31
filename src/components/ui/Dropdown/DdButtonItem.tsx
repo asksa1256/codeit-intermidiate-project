@@ -4,7 +4,7 @@ import { DropdownButtonItemProps } from '@/types/dropdownTypes';
 
 const DdButtonItem = ({ children, ...props }: DropdownButtonItemProps) => {
   return (
-    <MenuItem as='button' {...props}>
+    <MenuItem as='button' type='button' {...props}>
       {children}
     </MenuItem>
   );

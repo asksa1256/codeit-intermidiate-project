@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import ConfirmModal from '@/components/feature/ConfirmModal';
+import KeyboardForm, { KeyboardFormValues } from '@/components/feature/Form/KeyboardForm';
 import Modal from '@/components/feature/Modal';
 import KebabMenu from '@/components/ui/Dropdown/KebabMenu/KebabMenu';
 import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
@@ -12,15 +13,16 @@ import { MyKeyboardItemType } from '@/types/keyboardTypes';
 interface MyKeyboardItemProps {
   keyboard: MyKeyboardItemType;
   onDelete: (id: number) => void;
+  onEdit: (keyboardId: number, value: KeyboardFormValues) => void;
 }
 
-const MyKeyboardItem = ({ keyboard, onDelete }: MyKeyboardItemProps) => {
+const MyKeyboardItem = ({ keyboard, onDelete, onEdit }: MyKeyboardItemProps) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
 
   const { id, name, image, region, price } = keyboard;
 
-  // 리뷰 삭제
+  // 키보드 삭제
   const handleDelete = async () => {
     try {
       await onDelete(id);
@@ -35,10 +37,30 @@ const MyKeyboardItem = ({ keyboard, onDelete }: MyKeyboardItemProps) => {
   // 삭제 모달 닫기
   const handleDeleteConfirmClose = () => setIsConfirmOpen(false);
 
+  // 키보드 수정
+  const handleEdit = async (value: KeyboardFormValues) => {
+    const updateValues = { ...value, avgRating: keyboard.avgRating };
+
+    try {
+      await onEdit(keyboard.id, updateValues);
+      // 에러 발생시 모달창 유지
+      setIsEditModal(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // 수정 모달 열기
   const handleEditOpen = () => setIsEditModal(true);
   // 수정 모달 닫기
   const handleEditClose = () => setIsEditModal(false);
+
+  const initData: KeyboardFormValues = {
+    name: keyboard.name,
+    price: String(keyboard.price),
+    region: keyboard.region,
+    type: keyboard.type,
+    image: keyboard.image,
+  };
 
   return (
     <>
@@ -69,7 +91,7 @@ const MyKeyboardItem = ({ keyboard, onDelete }: MyKeyboardItemProps) => {
       />
       {/* 수정 모달 */}
       <Modal open={isEditModal} onClose={handleEditClose} title='내가 등록한 와인'>
-        여기에 상달님이 만들어준 모달을 넣어주거나, 폼을 넣어줄거 같음.
+        <KeyboardForm onSubmit={handleEdit} onClose={handleEditClose} initialValues={initData} />
       </Modal>
     </>
   );

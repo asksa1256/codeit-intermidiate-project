@@ -3,6 +3,7 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
+import { KeyboardFormValues } from '@/components/feature/Form/KeyboardForm';
 import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
 import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import ButtonDefault from '@/components/ui/ButtonDefault';
@@ -59,7 +60,35 @@ const MyKeyboardArea = () => {
     }
   };
 
-  console.log(nextCursor);
+  const handleEditKeyboard = async (keyboardId: number, values: KeyboardFormValues) => {
+    const updateBody = { ...values, price: Number(values.price) };
+    try {
+      const res = await apiClient.patch(`/${TEAM}/wines/${keyboardId}`, updateBody);
+
+      const { id, name, region, image, price, type, avgRating, reviewCount, userId } = res.data;
+
+      const updateData = {
+        id,
+        name,
+        region,
+        image,
+        price,
+        type,
+        avgRating,
+        reviewCount,
+        userId,
+      };
+
+      setKeyboardList((prev) => {
+        if (prev === null) return prev;
+        return prev.map((keyboard) =>
+          keyboard.id === keyboardId ? { ...keyboard, ...updateData } : keyboard,
+        );
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
 
   // 데이터 로딩시
   if (keyboardList === null) return <MyListLoading />;
@@ -76,7 +105,11 @@ const MyKeyboardArea = () => {
           </ButtonDefault>
         </EmptyList>
       ) : (
-        <MyKeyboardList keyboardList={keyboardList} onDelete={handleDeleteKeyboard} />
+        <MyKeyboardList
+          keyboardList={keyboardList}
+          onDelete={handleDeleteKeyboard}
+          onEdit={handleEditKeyboard}
+        />
       )}
     </>
   );

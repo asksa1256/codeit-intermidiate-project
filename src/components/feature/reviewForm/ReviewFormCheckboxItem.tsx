@@ -24,7 +24,7 @@ const ReviewFormCheckboxItem = ({ color, label, value, onChange }: Props) => {
 
   return (
     <>
-      <label className='py-[5px] px-[10px] border border-gray-300 font-medium text-md rounded-4xl has-[:checked]:text-white has-[:checked]:border-primary has-[:checked]:bg-primary'>
+      <label className='py-[5px] px-[10px] border border-gray-300 font-medium text-md rounded-4xl cursor-pointer has-[:checked]:text-white has-[:checked]:border-primary has-[:checked]:bg-primary'>
         <input
           type='checkbox'
           className='hidden'
