@@ -18,6 +18,7 @@
     "react-hook-form": "^7.60.0",
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.1",
+    "uuid": "^11.1.0",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
