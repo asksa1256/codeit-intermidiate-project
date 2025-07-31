@@ -13,6 +13,7 @@ import FilterOpenButton from '@/components/feature/Keyboards/Filter/FilterOpenBu
 import IndexKeyboardsCard from '@/components/feature/Keyboards/IndexKeyboardsCard';
 import KeyboardsSearchBar from '@/components/feature/Keyboards/KeyboardsSearchBar';
 import Modal from '@/components/feature/Modal';
+import SliderSection from '@/components/feature/Slider/SliderSection';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
 import { TEAM_ID } from '@/constants';
@@ -171,7 +172,7 @@ const KeyboardsPage = () => {
 
   return (
     <div className='px-4 pt-[15px] pb-[100px] m-auto max-w-[1140px] md:pt-5 md:pb-[50px] md:px-5 lg:px-0'>
-      <div>슬라이드바 영역</div>
+      <SliderSection />
       <div className='flex gap-4 mt-5'>
         {/* 필터 열기 버튼 - 모바일/태블릿에서만 */}
         <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
@@ -183,16 +184,6 @@ const KeyboardsPage = () => {
         >
           키보드 등록하기
         </ButtonDefault>
-        {/* 키보드 등록 모달 */}
-        <Modal
-          open={keyboardOpen}
-          onClose={() => setKeyboardOpen(false)}
-          title='키보드 등록'
-          size='md'
-          showCloseButton={true}
-        >
-          <KeyboardForm onSubmit={handleSubmit} onClose={() => setKeyboardOpen(false)} />
-        </Modal>
       </div>
 
       {/* 하단 영역 시작 부분 */}
@@ -234,6 +225,16 @@ const KeyboardsPage = () => {
         )}
       </div>
       {/* 하단영역 끝 부분 */}
+      {/* 키보드 등록 모달 */}
+      <Modal
+        open={keyboardOpen}
+        onClose={() => setKeyboardOpen(false)}
+        title='키보드 등록'
+        size='md'
+        showCloseButton={true}
+      >
+        <KeyboardForm onSubmit={handleSubmit} onClose={() => setKeyboardOpen(false)} />
+      </Modal>
     </div>
   );
 };
