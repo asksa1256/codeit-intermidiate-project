@@ -5,7 +5,7 @@ import { TEAM_ID } from '@/constants';
 import { apiClient } from '@/lib/api/apiClient';
 
 const SliderSection = async ({ title }: { title?: string | ReactNode }) => {
-  const res = await apiClient.get(`/${TEAM_ID}/wines/recommended?limit=10`);
+  const res = await apiClient.get(`/16-3/wines/recommended?limit=10`);
   const data = res.data;
 
   return (
