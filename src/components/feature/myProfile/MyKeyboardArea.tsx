@@ -167,7 +167,7 @@ const MyKeyboardArea = () => {
           onDelete={handleDeleteKeyboard}
           onEdit={handleEditKeyboard}
           endRef={targetRef}
-          hasNextPage={keyboardList.length !== totalCount}
+          hasNextPage={keyboardList.length !== totalCount && cursor !== null}
         />
       )}
 

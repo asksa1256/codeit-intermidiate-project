@@ -15,7 +15,7 @@ import useToastStore from '@/stores/toastStore';
 import { MyReviewItemType, MyReviewListType } from '@/types/reviewTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
-const DEFAULT_LIMIT = 10;
+const DEFAULT_LIMIT = 1;
 
 const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType> => {
   const res = await apiClient.get(
@@ -165,7 +165,7 @@ const MyReviewArea = () => {
             onReviewDelete={handleDeleteReview}
             onReviewEdit={handleEditReview}
             endRef={targetRef}
-            hasNextPage={reviewList.length !== totalCount}
+            hasNextPage={reviewList.length !== totalCount && cursor !== null}
           />
         )}
       </div>
