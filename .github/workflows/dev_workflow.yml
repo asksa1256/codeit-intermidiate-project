@@ -20,48 +20,67 @@ on:
 #     branches: [dev-test]
 # 워크플로우에서 실행할 작업을 정의합니다.
 jobs:
-  test:
-    # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
-    runs-on: ubuntu-22.04
-    # 워크플로우에서 실행할 단계들을 정의합니다.
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        # 두 번째 단계: Node.js 환경을 설정합니다.
-        with:
-          node-version: '22.16.0'
-          # Node.js의 버전을 지정합니다.
-          # 이 예시에서는 '20.10.0' 버전을 사용합니다.
+  # test:
+  #   # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
+  #   runs-on: ubuntu-22.04
+  #   # 워크플로우에서 실행할 단계들을 정의합니다.
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       # 두 번째 단계: Node.js 환경을 설정합니다.
+  #       with:
+  #         node-version: '22.16.0'
+  #         # Node.js의 버전을 지정합니다.
+  #         # 이 예시에서는 '20.10.0' 버전을 사용합니다.
 
-      - name: Install dependencies
-        run: |
-          npm install
+  #     - name: Install dependencies
+  #       run: |
+  #         npm install
 
-      # - name: Run tests
-      #   run: |
-      #     npm test
-      # 네 번째 단계: 테스트를 실행합니다.
-      # 'npm test' 명령어를 사용하여 정의된 테스트 케이스를 실행합니다.
+  #     # - name: Run tests
+  #     #   run: |
+  #     #     npm test
+  #     # 네 번째 단계: 테스트를 실행합니다.
+  #     # 'npm test' 명령어를 사용하여 정의된 테스트 케이스를 실행합니다.
 
   build:
     # 이 Job이 'build' Job이 완료된 후에 실행되도록 설정
-    needs: test
+    # needs: test
     # 워크플로우가 실행될 가상 환경을 지정합니다. 여기서는 Ubuntu 22.04를 사용합니다.
     runs-on: ubuntu-22.04
     # 워크플로우에서 실행할 단계들을 정의합니다.
     steps:
       - uses: actions/checkout@v2
+
+      - name: Print GitHub workspace path
+        run: echo $GITHUB_WORKSPACE
+
       # Docker Buildx를 설정하는 단계
       - name: Set up docker buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Create .env file
+      # - name: Create .env.local file
+      #   run: |
+      #     echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env.local
+      #     echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env.local
+      #     echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env.local
+
+      - name: Create .env.local file
         run: |
           echo "NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}" >> .env
           echo "NEXT_PUBLIC_TEAM=${{ secrets.NEXT_PUBLIC_TEAM }}" >> .env
           echo "NEXT_PUBLIC_KAKAO_APP_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_APP_KEY }}" >> .env
+
+      - name: Search for .env.local
+        run: find . -name ".env.local"
+
+      - name: Current Path
+        run: pwd
+
+      # - name: Copy .env.local to GITHUB_WORKSPACE
+      #   run: mv -f .env.local $GITHUB_WORKSPACE/
 
       # Docker 빌드 레이어를 캐시하여 빌드 시간을 단축하는 단계
       - name: Cache docker layers
@@ -130,4 +149,5 @@ jobs:
         run: docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
 
       - name: Docker run. Run nbpay_main_backend container
-        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+        run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
+        # run: docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env.local --log-opt max-size=10m --log-opt max-file=3 ${{ env.DOCKER_IMAGE }}:dev
