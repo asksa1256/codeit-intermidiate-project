@@ -24,6 +24,7 @@ const ReviewCard = ({ review }: Props) => {
     id: reviewId,
     user,
     isLiked,
+    createdAt,
     updatedAt,
     aroma,
     content,
@@ -91,6 +92,7 @@ const ReviewCard = ({ review }: Props) => {
             <span className='font-semibold md:text-lg'>{nickname}</span>
             <span className='text-md md:text-base text-gray-500'>
               {formatRelativeTime(updatedAt)}
+              {createdAt !== updatedAt ? '(수정됨)' : ''}
             </span>
           </div>
         </div>
