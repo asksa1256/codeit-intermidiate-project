@@ -122,9 +122,6 @@ jobs:
         uses: docker/setup-buildx-action@v1
         id: buildx
 
-      - name: Move .env.local to frontend
-        run: mv /mnt/6e4aaae4-e3d2-44de-a7a4-9743477e48be/Coding/codeit/codeit-intermidiate-project/.env.local ~/codeit-intermidiate-project/.env.local
-
       - name: Set Docker image name
         run: echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.GIT_REPOSITORY_NAME }}" >> $GITHUB_ENV
 
@@ -156,6 +153,7 @@ jobs:
         run: docker run -d -p 7004:3000 \
           --name codeit_intermidiate_frontend \
           --restart always \
+          --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env. \
           --log-opt max-size=10m --log-opt max-file=3 \
           ${{ env.DOCKER_IMAGE }}:dev
 
