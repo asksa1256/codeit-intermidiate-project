@@ -36,16 +36,18 @@ const RatingsInfo = ({ keyboardInfo, updateTrigger }: Props) => {
     try {
       await apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/reviews`, reviewData);
       updateTrigger((prev) => prev + 1);
+      setIsCreateModalOpen(false);
     } catch (e) {
       console.log('리뷰 작성 실패', e);
     }
   };
 
   return (
+    //z인덱스-5
     <section
       ref={stickyRef}
       className={cn(
-        'sticky top-[50px] md:top-[70px] lg:order-1 bg-white lg:shadow-none pt-5 pb-[10px] px-4 lg:p-0 lg:pt-5 -mx-5 lg:m-0 z-1',
+        'sticky top-[50px] md:top-[70px] lg:order-1 bg-white lg:shadow-none pt-5 pb-[10px] px-4 lg:p-0 lg:pt-5 -mx-5 lg:m-0 z-5',
         {
           'shadow-[0_5px_10px_rgba(0,0,0,0.04)]': isFixedOnTop,
         },
@@ -72,7 +74,12 @@ const RatingsInfo = ({ keyboardInfo, updateTrigger }: Props) => {
           </ButtonDefault>
         </div>
         <RatingRangeBars reviewCount={reviewCount} avgRatings={avgRatings} />
-        <ButtonDefault className='text-md md:text-base font-medium w-25 md:w-28 h-10 md:h-[42px] px-[18px] py-4 rounded-xl hidden lg:flex'>
+        <ButtonDefault
+          className='text-md md:text-base font-medium w-25 md:w-28 h-10 md:h-[42px] px-[18px] py-4 rounded-xl hidden lg:flex'
+          onClick={() => {
+            setIsCreateModalOpen(true);
+          }}
+        >
           리뷰 남기기
         </ButtonDefault>
       </div>

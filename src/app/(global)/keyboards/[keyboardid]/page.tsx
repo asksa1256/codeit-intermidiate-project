@@ -13,22 +13,18 @@ import { KeyboardDetailType } from '@/types/keyboardTypes';
 
 const KeyboardDetailsPage = () => {
   const [keyboardInfo, setKeyboardInfo] = useState<KeyboardDetailType | null>(null);
-  // const [reviewList,setReviewList] = useState([]);
   const [updateTrigger, setUpdateTrigger] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const params = useParams();
   const { keyboardid } = params;
 
   const getKeyboardInfo = useCallback(async () => {
     try {
-      setIsLoading(true);
       const res = await apiClient(`/${process.env.NEXT_PUBLIC_TEAM}/wines/${keyboardid}`);
       setKeyboardInfo(res.data);
     } catch (e) {
       console.log('키보드 상세 데이터 받아오기 실패');
       throw e;
     } finally {
-      setIsLoading(false);
     }
   }, [keyboardid]);
 
@@ -37,14 +33,12 @@ const KeyboardDetailsPage = () => {
     getKeyboardInfo();
   }, [getKeyboardInfo, updateTrigger]);
 
-  if (!keyboardInfo) {
-    return;
-  }
-
   return (
     <main className='lg:max-w-285 px-4 pt-[30px] pb-10 md:px-5 lg:px-0 md:pt-10 md:pb-20 lg:pt-10 lg:mx-auto'>
-      {isLoading ? (
-        <LoadingSpinner />
+      {!keyboardInfo ? (
+        <div className='w-full pt-50 md:pt-100'>
+          <LoadingSpinner />
+        </div>
       ) : (
         <>
           <KeyboardInfoCard keyboardInfo={keyboardInfo} />

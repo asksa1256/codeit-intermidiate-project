@@ -6,20 +6,17 @@ import EmptyList from '@/components/ui/EmptyList';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { KeyboardDetailType } from '@/types/keyboardTypes';
-import { ReviewItemType } from '@/types/reviewTypes';
 
 import ReviewCard from './ReviewCard';
 
 interface Props {
   keyboardInfo: KeyboardDetailType;
-  // reviewList: ReviewItemType[];
   updateTrigger: Dispatch<SetStateAction<number>>;
 }
 
 const LIMIT = 10;
 
 const ReviewList = ({ keyboardInfo, updateTrigger }: Props) => {
-  // const [reviewList,setReviewList] = useState(reviewList);
   const [cursor, setCursor] = useState(LIMIT);
   const [isLoading, setIsLoading] = useState(false);
   const reviewList = keyboardInfo.reviews;

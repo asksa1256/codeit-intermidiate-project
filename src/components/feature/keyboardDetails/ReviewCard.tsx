@@ -53,7 +53,6 @@ const ReviewCard = ({ review, keyboardName, updateTrigger }: Props) => {
   const me = useAuthStore((state) => state.user);
   const isMyReview = userId === me?.id;
 
-  const KEBAB_ICON_URL = '/images/KebabIcon.svg';
   const DOWN_ARROW_ICON_URL = '/images/DownArrowIcon.svg';
   const UP_ARROW_ICON_URL = '/images/UpArrowIcon.svg';
 
@@ -95,6 +94,7 @@ const ReviewCard = ({ review, keyboardName, updateTrigger }: Props) => {
     try {
       await apiClient.patch(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`, formValues);
       updateTrigger((prev) => prev + 1);
+      setIsEditModalOpen(false);
     } catch (e) {
       console.log('리뷰 수정 실패', e);
     }
@@ -127,17 +127,13 @@ const ReviewCard = ({ review, keyboardName, updateTrigger }: Props) => {
             onEdit={() => {
               setIsEditModalOpen(true);
             }}
-            onDelete={() => {}}
-            className='inline-block ml-auto'
+            onDelete={() => {
+              setIsDeleteModalOpen(true);
+            }}
+            className='inline-block ml-auto z-1'
+            iconSize='w-8 md:w-[38px] h-8 md:h-[38px]'
           />
         ) : (
-          // <Image
-          //   className='md:w-[38px] md:h-[38px]'
-          //   src={KEBAB_ICON_URL}
-          //   alt='리뷰 수정과 삭제 메뉴 버튼'
-          //   width={32}
-          //   height={32}
-          // />
           <LikeButton onClick={toggleLike} isPending={isPending} isLiked={optimisticIsLiked} />
         )}
       </div>
