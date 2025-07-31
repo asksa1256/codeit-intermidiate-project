@@ -3,14 +3,16 @@ import Image from 'next/image';
 import React from 'react';
 
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
+import { cn } from '@/utils/style';
 
 interface Props {
   onEdit: () => void;
   onDelete: () => void;
   className?: string;
+  iconSize?: string;
 }
 
-const KebabMenu = ({ onEdit, onDelete, className }: Props) => {
+const KebabMenu = ({ onEdit, onDelete, className, iconSize }: Props) => {
   return (
     <Dropdown className={className}>
       <Dropdown.Trigger className='block'>
@@ -19,7 +21,7 @@ const KebabMenu = ({ onEdit, onDelete, className }: Props) => {
           width={40}
           height={40}
           alt='케밥 메뉴 아이콘'
-          className='w-6 md:w-[26px]'
+          className={cn('w-6 md:w-[26px]', iconSize)}
         />
       </Dropdown.Trigger>
       <Dropdown.List className='mt-2 lg:mt-4'>
