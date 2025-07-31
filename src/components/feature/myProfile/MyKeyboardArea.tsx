@@ -8,34 +8,43 @@ import MyKeyboardList from '@/components/feature/myProfile/MyKeyboardList';
 import MyListLoading from '@/components/feature/myProfile/MyListLoading';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { apiClient } from '@/lib/api/apiClient';
 import { MyKeyboardItemType, MyKeyboardListType } from '@/types/keyboardTypes';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
 
+const fetchKeyboardList = async (cursor: number | null): Promise<MyKeyboardListType> => {
+  const res = await apiClient.get(
+    `/${TEAM}/users/me/wines?limit=${DEFAULT_LIMIT}&cursor=${cursor}`,
+  );
+  return res.data;
+};
+
 const MyKeyboardArea = () => {
   const [keyboardList, setKeyboardList] = useState<MyKeyboardItemType[] | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const [nextCursor, setNextCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | null>(0);
   const isListEmpty = keyboardList?.length === 0;
 
+  const getKeyboardList = async () => {
+    try {
+      const data = await fetchKeyboardList(cursor);
+      const { list, nextCursor, totalCount } = data;
+
+      setKeyboardList((prev) => (prev === null ? list : [...prev, ...list]));
+      setTotalCount(totalCount);
+      setCursor(nextCursor);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const targetRef = useIntersectionObserver(getKeyboardList);
+
   useEffect(() => {
-    const getReviewList = async () => {
-      try {
-        const res = await apiClient.get(`/${TEAM}/users/me/wines?limit=${DEFAULT_LIMIT}`);
-        const data: MyKeyboardListType = res.data;
-        const { list, nextCursor, totalCount } = data;
-
-        setKeyboardList(list);
-        setTotalCount(totalCount);
-        setNextCursor(nextCursor);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getReviewList();
+    getKeyboardList();
   }, []);
 
   const handleDeleteKeyboard = async (keyboardId: number) => {
@@ -109,6 +118,8 @@ const MyKeyboardArea = () => {
           keyboardList={keyboardList}
           onDelete={handleDeleteKeyboard}
           onEdit={handleEditKeyboard}
+          endRef={targetRef}
+          hasNextPage={keyboardList.length !== totalCount}
         />
       )}
     </>
