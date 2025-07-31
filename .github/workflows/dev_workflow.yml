@@ -113,51 +113,51 @@ jobs:
   #         tags: ${{ env.DOCKER_IMAGE }}:dev
 
   deploy:
-  name: Deploy
-  runs-on: [label-codeit-intermidiate-frontend]
-  steps:
-    - uses: actions/checkout@v2
+    name: Deploy
+    runs-on: [label-codeit-intermidiate-frontend]
+    steps:
+      - uses: actions/checkout@v2
 
-    - name: Set up Docker buildx
-      uses: docker/setup-buildx-action@v1
-      id: buildx
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v1
+        id: buildx
 
-    - name: Move .env.local to frontend
-      run: mv /mnt/6e4aaae4-e3d2-44de-a7a4-9743477e48be/Coding/codeit/codeit-intermidiate-project/.env.local ~/codeit-intermidiate-project/.env.local
+      - name: Move .env.local to frontend
+        run: mv /mnt/6e4aaae4-e3d2-44de-a7a4-9743477e48be/Coding/codeit/codeit-intermidiate-project/.env.local ~/codeit-intermidiate-project/.env.local
 
-    - name: Set Docker image name
-      run: echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.GIT_REPOSITORY_NAME }}" >> $GITHUB_ENV
+      - name: Set Docker image name
+        run: echo "DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.GIT_REPOSITORY_NAME }}" >> $GITHUB_ENV
 
-    - name: Docker login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Docker login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Docker build and push image
-      uses: docker/build-push-action@v2
-      with:
-        context: ./frontend
-        file: ./frontend/Dockerfile
-        builder: ${{ steps.buildx.outputs.name }}
-        push: true
-        tags: ${{ env.DOCKER_IMAGE }}:dev
+      - name: Docker build and push image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ${{ env.DOCKER_IMAGE }}:dev
 
-    - name: Stop existing container
-      run: docker stop codeit_intermidiate_frontend || true
+      - name: Stop existing container
+        run: docker stop codeit_intermidiate_frontend || true
 
-    - name: Remove existing container
-      run: docker rm codeit_intermidiate_frontend || true
+      - name: Remove existing container
+        run: docker rm codeit_intermidiate_frontend || true
 
-    - name: Remove all Docker images
-      run: docker rmi $(docker images -a -q) || true
+      - name: Remove all Docker images
+        run: docker rmi $(docker images -a -q) || true
 
-    - name: Run container with new image
-      run: docker run -d -p 7004:3000 \
-        --name codeit_intermidiate_frontend \
-        --restart always \
-        --log-opt max-size=10m --log-opt max-file=3 \
-        ${{ env.DOCKER_IMAGE }}:dev
+      - name: Run container with new image
+        run: docker run -d -p 7004:3000 \
+          --name codeit_intermidiate_frontend \
+          --restart always \
+          --log-opt max-size=10m --log-opt max-file=3 \
+          ${{ env.DOCKER_IMAGE }}:dev
 
   # deploy:
   #   # Job 이름 정의
