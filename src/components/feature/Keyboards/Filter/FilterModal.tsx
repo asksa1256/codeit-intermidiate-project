@@ -1,3 +1,4 @@
+// 모바일/태블릿용 필터 모달
 'use client';
 
 import Modal from '@/components/feature/Modal';
@@ -8,30 +9,31 @@ import FilterCheckbox from './FilterCheckbox';
 import FilterFooterButton from './FilterFooterButton';
 
 import type { KeyboardCategoryType } from '@/types/keyboardTypes';
-import type { MultihandleSliderProps } from '@/types/rangeSliderTypes';
 
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  selectedTypes: KeyboardCategoryType[];
+  selectedType: KeyboardCategoryType | null;
   onToggleType: (type: KeyboardCategoryType) => void;
   onReset: () => void;
   onApply: () => void;
   priceRange: [number, number];
-  onChangePrice: MultihandleSliderProps['valueUpdater'];
-  rating: number | null;
+  onChangePrice: (range: [number, number]) => void;
+  selectedRating: number | null;
   onChangeRating: (value: number | null) => void;
 }
 
 const FilterModal = ({
   open,
   onClose,
-  selectedTypes,
+  selectedType,
   onToggleType,
   onReset,
   onApply,
   priceRange,
   onChangePrice,
+  selectedRating,
+  onChangeRating,
 }: FilterModalProps) => {
   return (
     <Modal open={open} onClose={onClose} title='필터'>
@@ -45,19 +47,19 @@ const FilterModal = ({
             <FilterCheckbox
               label='멤브레인'
               value='WHITE'
-              isChecked={selectedTypes.includes('WHITE')}
+              isChecked={selectedType === 'WHITE'}
               onChange={onToggleType}
             />
             <FilterCheckbox
               label='기계식'
               value='RED'
-              isChecked={selectedTypes.includes('RED')}
+              isChecked={selectedType === 'RED'}
               onChange={onToggleType}
             />
             <FilterCheckbox
               label='펜타그래프'
               value='SPARKLING'
-              isChecked={selectedTypes.includes('SPARKLING')}
+              isChecked={selectedType === 'SPARKLING'}
               onChange={onToggleType}
             />
           </div>
@@ -69,7 +71,7 @@ const FilterModal = ({
         <section>
           <h3 className='text-xl font-semibold mb-2'>PRICE</h3>
           <div className='flex justify-between text-xs text-gray-500 mt-1'>
-            <MultihandleSlider valueUpdater={onChangePrice} initialRange={priceRange} />
+            <MultihandleSlider value={priceRange} onChange={onChangePrice} />
           </div>
         </section>
 
@@ -79,7 +81,7 @@ const FilterModal = ({
         <section>
           <h3 className='text-xl font-semibold mb-2'>RATING</h3>
           <div className='flex flex-col gap-1'>
-            <FilterRating value={null} onChange={() => {}} />
+            <FilterRating value={selectedRating} onChange={onChangeRating} />
           </div>
         </section>
       </div>

@@ -13,7 +13,7 @@ const FilterRatingItem = ({ rating }: { rating: RatingOption }) => {
   return (
     <Field className='flex items-center gap-[15px] cursor-pointer'>
       <Radio
-        value={value}
+        value={value as number | null}
         className='group peer flex size-5 items-center justify-center rounded-md border border-gray-300 bg-gray-100 outline-none'
       >
         <span className='invisible size-2.5 rounded-[3px] bg-primary group-data-checked:visible' />
@@ -25,7 +25,7 @@ const FilterRatingItem = ({ rating }: { rating: RatingOption }) => {
   );
 };
 
-const RATING_LIST = [
+const RATING_LIST: { label: string; value: number | null }[] = [
   { label: '전체', value: null },
   { label: '4.5 - 5.0', value: 4.5 },
   { label: '4.0 - 4.5', value: 4.0 },

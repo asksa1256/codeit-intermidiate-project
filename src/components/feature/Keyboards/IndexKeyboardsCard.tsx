@@ -1,12 +1,14 @@
 // 목록 페이지의 키보드 카드 컴포넌트
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import React from 'react';
 
 import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import StarRating from '@/components/ui/StarRating';
+import { formatRating } from '@/utils/formatters';
 
 import type { KeyboardItemRecentReview } from '@/types/keyboardTypes';
 
@@ -18,6 +20,7 @@ interface IndexKeyboardsCardProps {
   avgRating: number;
   reviewCount: number;
   recentReview: KeyboardItemRecentReview | null;
+  keyboardId: number;
 }
 
 const IndexKeyboardsCard = ({
@@ -28,53 +31,72 @@ const IndexKeyboardsCard = ({
   reviewCount,
   avgRating,
   recentReview,
+  keyboardId,
 }: IndexKeyboardsCardProps) => {
-  return (
-    <div className='w-[343px] rounded-xl border border-gray-300 shadow-sm flex flex-col bg-white overflow-hidden'>
-      <div className='flex  overflow-hidden'>
-        {/* 이미지 */}
-        <div className='w-[126px] shrink-0 self-end px-4'>
-          <KeyboardThumbnail imgSrc={image} keyboardName={name} />
-        </div>
-        {/* 컨텐츠 */}
-        <div className='grow overflow-hidden pt-[30px] pr-5'>
-          {/* 키보드명 */}
-          <h3 className='text-xl font-semibold text-gray-800 line-clamp-2 mb-2 truncate'>{name}</h3>
-          {/* 제조사 */}
-          <div className='text-xs text-gray-500 mb-2'>{region}</div>
-          {/* 가격 */}
-          <span className='w-auto'>
-            <RatingAndPrice label='price' value={price} />
-          </span>
-          <div className='items-center justify-between flex mt-[22px]'>
-            {/* 평점 숫자 */}
-            <div className='text-xl font-bold'>{avgRating}</div>
-            <div className='items-center gap-2'>
-              {/* 별점 5개 */}
-              <StarRating value={avgRating} />
-              {/* 리뷰 개수 */}
-              <div className='text-xs text-gray-500'>{reviewCount}개의 후기</div>
-            </div>
+  const router = useRouter();
 
-            {/* 오른쪽: 화살표 아이콘 */}
+  const handleClick = () => {
+    router.push(`/keyboards/${keyboardId}`); // 상세 페이지로 이동
+  };
+
+  return (
+    <div className='block mb-5 border border-gray-300 rounded-xl md:rounded-2xl bg-white'>
+      <div className='flex'>
+        {/* 이미지 영역 */}
+        <div className='w-[126px] px-3 shrink-0 self-center md:w-[160px] md:pl-0 md:self-end lg:w-[168px]'>
+          <KeyboardThumbnail
+            imgSrc={image}
+            keyboardName={name}
+            className='pt-[200%] md:w-[60%] md:ml-10 md:pt-[180%] lg:ml-12'
+            ratioClass='w-[200%] aspect-[200/100] md:w-[250%] md:aspect-[250/100]'
+          />
+        </div>
+
+        {/* 본문 컨텐츠 */}
+        <div className='pt-[30px] pr-5 pb-7 grow md:flex md:gap-[45px] md:pt-10 md:pr-10 md:pb-6 lg:pt-9 lg:pr-[53px] lg:pb-6 lg:gap-[70px]'>
+          <div>
+            <h3 className='text-xl font-semibold line-clamp-2 md:mb-5 md:text-3xl'>{name}</h3>
+            <span className='block mb-2 text-md text-gray-500 md:mb-3 md:text-base lg:mb-4'>
+              {region}
+            </span>
+            <RatingAndPrice
+              label='price'
+              value={price}
+              className='rounded-[10px] py-[2.5px] px-[10px] md:rounded-xl md:py-[8px] md:px-[15px]'
+            />
+          </div>
+
+          <div className='flex items-center gap-[15px] mt-[22px] md:shrink-0 md:flex-col md:items-start md:mt-0 md:gap-[10px]'>
+            <strong className='text-[28px] font-extrabold md:text-5xl'>
+              {formatRating(avgRating)}
+            </strong>
+            <div className='md:mb-[10px]'>
+              <StarRating value={avgRating} className='w-[14px] md:w-6' />
+              <div className='mt-[5px] text-xs text-gray-500 md:mt-[10px] md:text-md'>
+                {reviewCount}개의 후기
+              </div>
+            </div>
             <Image
               src='/images/RightArrowIcon.svg'
               alt='오른쪽 이동'
-              width={20}
-              height={20}
-              className='cursor-pointer'
+              width={32}
+              height={32}
+              className='ml-auto w-[32px] md:w-[36px] md:mt-auto cursor-pointer'
+              onClick={handleClick}
             />
           </div>
         </div>
       </div>
-      {/* 최근 리뷰 */}
-      <div className='mt-2 pt-2 border-t border-gray-300'>
+
+      {/* 최신 후기 영역 */}
+      <div className='border-t border-gray-300 py-[7px] px-5 text-md md:py-5 md:px-10 md:text-base lg:px-12'>
         {recentReview ? (
-          <div className='text-xs text-gray-600 mb-2'>
-            <span className='font-semibold'>최신 후기:</span> {recentReview.content}
-          </div>
+          <>
+            <h4 className='mb-2 font-semibold'>최신 후기</h4>
+            <p className='text-gray-500 line-clamp-3'>{recentReview.content}</p>
+          </>
         ) : (
-          <div className='text-xs text-gray-600 mb-2'>최신 후기가 없습니다.</div>
+          <p className='py-3 text-gray-600 text-center'>최신 후기가 없습니다.</p>
         )}
       </div>
     </div>

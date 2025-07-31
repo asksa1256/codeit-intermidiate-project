@@ -1,83 +1,64 @@
 // 목록 페이지 검색바 컴포넌트
 'use client';
 
-import Image from 'next/image';
-
 import axios from 'axios';
-import { useState } from 'react';
+import { Dispatch } from 'react';
 
 import type { KeyboardItemType } from '@/types/keyboardTypes';
 
 // 부모에게 결과를 전달하기 위한 props 타입
 interface KeyboardsSearchBarProps {
-  onSearchResults: (results: KeyboardItemType[]) => void;
+  onSearchResults: (results: KeyboardItemType[] | null) => void;
+  query: string;
+  onChange: Dispatch<React.SetStateAction<string>>;
+  setSearchCursor: Dispatch<React.SetStateAction<number | null>>;
 }
 
-const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
-  const [query, setQuery] = useState('');
-
+const KeyboardsSearchBar = ({
+  onSearchResults,
+  query,
+  onChange,
+  setSearchCursor,
+}: KeyboardsSearchBarProps) => {
+  // 검색 수행 함수 (API 호출, 서버 필터링)
   const handleSearch = async () => {
-    const cleanQuery = query.trim().toLowerCase();
-    if (!cleanQuery) {
-      onSearchResults([]); // 검색어 없으면 빈 배열 전달
+    if (!query) {
+      onSearchResults(null);
       return;
     }
-    // TODO name 파라미터 params에 다시 사용하기
     try {
-      // limit 값대로 불러와서 필터링
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-        params: { limit: 20 },
+        params: { limit: 1, name: query },
       });
 
       const dataArray: KeyboardItemType[] = res.data.list || [];
-
-      const filtered = dataArray.filter((item) => item.name.toLowerCase().includes(cleanQuery));
-
-      // name 필드의 indexOf 순서로 정렬
-      const sorted = [...filtered].sort((a, b) => {
-        const aPos = a.name.toLowerCase().indexOf(cleanQuery);
-        const bPos = b.name.toLowerCase().indexOf(cleanQuery);
-        return aPos - bPos;
-      });
-
-      // 결과를 페이지에 전달
-      onSearchResults(sorted);
+      onSearchResults(dataArray); // 서버 응답 그대로 전달
+      setSearchCursor(res.data.nextCursor); // 검색 커서 업데이트
     } catch (err) {
       console.error('검색 중 오류 발생:', err);
     }
   };
 
+  // 검색 트리거 이벤트
+  const handleTriggerSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return;
+    handleSearch();
+  };
+
   return (
-    <div className='flex justify-center'>
+    <>
       {/* 검색바 */}
-      <section
-        className='
-          flex items-center
-          w-[343px] h-[38px]
-          md:w-[704px] md:h-[48px]
-          lg:w-[400px] lg:h-[48px]
-          rounded-full border border-gray-300 bg-white px-[15px]
-        '
-      >
+      <>
         <input
           type='text'
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          onChange={(e) => onChange(e.target.value)}
+          onKeyDown={handleTriggerSearch}
           placeholder='키보드를 검색해보세요'
-          className='flex-1 text-sm placeholder:text-gray-400 outline-none border-none bg-transparent'
+          className='h-[38px] border border-gray-300 rounded-[50px] grow-1 pl-[45px] pr-[15px] bg-[url(/images/SearchIcon.svg)] bg-position-[center_left_15px] bg-no-repeat text-md outline-none focus:ring-2 focus:ring-primary hover:border-primary md:h-12 md:pl-[55px] md:pr-5 md:bg-position-[center_left_20px] md:text-base lg:max-w-200 lg:ml-auto'
         />
-        {/*TODO 함수로 분리 */}
-        <Image
-          src='/images/SearchIcon.svg'
-          width={40}
-          height={40}
-          alt='검색 아이콘'
-          className='w-6 md:w-[26px] cursor-pointer'
-          onClick={handleSearch}
-        />
-      </section>
-    </div>
+      </>
+    </>
   );
 };
 
