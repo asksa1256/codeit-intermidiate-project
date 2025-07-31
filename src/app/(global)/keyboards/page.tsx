@@ -16,8 +16,10 @@ import Modal from '@/components/feature/Modal';
 import SliderSection from '@/components/feature/Slider/SliderSection';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { TEAM_ID } from '@/constants';
 import { KEYBOARD_TYPES_MAP } from '@/constants';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { apiClient } from '@/lib/api/apiClient';
 
 import type { KeyboardItemType, KeyboardCategoryType } from '@/types/keyboardTypes';
@@ -42,6 +44,9 @@ const KeyboardsPage = () => {
   const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const [tempInitialValues, setTempInitialValues] = useState<KeyboardFormValues>(); // 키보드 등록용
+  //무한 스크롤용
+  const [cursor, setCursor] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -172,7 +177,7 @@ const KeyboardsPage = () => {
 
   return (
     <div className='px-4 pt-[15px] pb-[100px] m-auto max-w-[1140px] md:pt-5 md:pb-[50px] md:px-5 lg:px-0'>
-      <SliderSection />
+      {/* <SliderSection /> */}
       <div className='flex gap-4 mt-5'>
         {/* 필터 열기 버튼 - 모바일/태블릿에서만 */}
         <FilterOpenButton onClick={() => setIsFilterOpen(true)} />

@@ -1,33 +1,53 @@
 'use client';
 
+import { Dispatch, SetStateAction, useState } from 'react';
+
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import RatingRangeBars from '@/components/ui/RangeSlider/RatingRangeBars';
 import StarRating from '@/components/ui/StarRating';
 import useSticky from '@/hooks/useSticky';
+import { apiClient } from '@/lib/api/apiClient';
 import { KeyboardDetailType } from '@/types/keyboardTypes';
 import { formatPrice, formatRating } from '@/utils/formatters';
 import { cn } from '@/utils/style';
 
+import Modal from '../Modal';
+import ReviewForm, { ReviewFormValues } from '../reviewForm/ReviewForm';
+
 interface Props {
   keyboardInfo: KeyboardDetailType;
+  updateTrigger: Dispatch<SetStateAction<number>>;
 }
 
 const STICKY_TOP = 50;
 const TABLET_STICKY_TOP = 70;
 
-const RatingsInfo = ({ keyboardInfo }: Props) => {
+const RatingsInfo = ({ keyboardInfo, updateTrigger }: Props) => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { isFixedOnTop, stickyRef } = useSticky(STICKY_TOP, TABLET_STICKY_TOP);
-  const { avgRating, reviewCount, avgRatings } = keyboardInfo;
+  const { id, name, avgRating, reviewCount, avgRatings } = keyboardInfo;
 
   if (reviewCount === 0) {
     return;
   }
 
+  const handleCreateReview = async (formValues: ReviewFormValues) => {
+    const reviewData = { ...formValues, wineId: id };
+    try {
+      await apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/reviews`, reviewData);
+      updateTrigger((prev) => prev + 1);
+      setIsCreateModalOpen(false);
+    } catch (e) {
+      console.log('리뷰 작성 실패', e);
+    }
+  };
+
   return (
+    //z인덱스-5
     <section
       ref={stickyRef}
       className={cn(
-        'sticky top-[50px] md:top-[70px] lg:order-1 bg-white lg:shadow-none pt-5 pb-[10px] px-4 lg:p-0 lg:pt-5 -mx-5 lg:m-0 z-1',
+        'sticky top-[50px] md:top-[70px] lg:order-1 bg-white lg:shadow-none pt-5 pb-[10px] px-4 lg:p-0 lg:pt-5 -mx-5 lg:m-0 z-5',
         {
           'shadow-[0_5px_10px_rgba(0,0,0,0.04)]': isFixedOnTop,
         },
@@ -44,15 +64,35 @@ const RatingsInfo = ({ keyboardInfo }: Props) => {
               <div className='text-md text-gray-500'>{formatPrice(reviewCount)}개의 후기</div>
             </div>
           </div>
-          <ButtonDefault className='text-md md:text-base font-medium w-25 md:w-28 h-10 md:h-[42px] px-[18px] py-4 rounded-xl lg:hidden'>
+          <ButtonDefault
+            className='text-md md:text-base font-medium w-25 md:w-28 h-10 md:h-[42px] px-[18px] py-4 rounded-xl lg:hidden'
+            onClick={() => {
+              setIsCreateModalOpen(true);
+            }}
+          >
             리뷰 남기기
           </ButtonDefault>
         </div>
         <RatingRangeBars reviewCount={reviewCount} avgRatings={avgRatings} />
-        <ButtonDefault className='text-md md:text-base font-medium w-25 md:w-28 h-10 md:h-[42px] px-[18px] py-4 rounded-xl hidden lg:flex'>
+        <ButtonDefault
+          className='text-md md:text-base font-medium w-25 md:w-28 h-10 md:h-[42px] px-[18px] py-4 rounded-xl hidden lg:flex'
+          onClick={() => {
+            setIsCreateModalOpen(true);
+          }}
+        >
           리뷰 남기기
         </ButtonDefault>
       </div>
+      {/* 리뷰 생성 모달 */}
+      <Modal
+        open={isCreateModalOpen}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+        }}
+        title='리뷰 등록'
+      >
+        <ReviewForm keyboardTitle={name} onSubmit={handleCreateReview} />
+      </Modal>
     </section>
   );
 };

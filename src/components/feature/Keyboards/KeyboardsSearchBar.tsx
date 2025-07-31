@@ -43,7 +43,7 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
   return (
     <>
       {/* 검색바 */}
-      <section>
+      <>
         <input
           type='text'
           value={query}
@@ -52,7 +52,7 @@ const KeyboardsSearchBar = ({ onSearchResults }: KeyboardsSearchBarProps) => {
           placeholder='키보드를 검색해보세요'
           className='h-[38px] border border-gray-300 rounded-[50px] grow-1 pl-[45px] pr-[15px] bg-[url(/images/SearchIcon.svg)] bg-position-[center_left_15px] bg-no-repeat text-md outline-none focus:ring-2 focus:ring-primary hover:border-primary md:h-12 md:pl-[55px] md:pr-5 md:bg-position-[center_left_20px] md:text-base lg:max-w-200 lg:ml-auto'
         />
-      </section>
+      </>
     </>
   );
 };

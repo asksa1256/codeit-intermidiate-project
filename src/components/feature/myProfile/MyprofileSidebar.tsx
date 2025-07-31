@@ -12,12 +12,14 @@ import { DEFAULT_PROFILE_IMG_URL } from '@/constants';
 import useImageUpload from '@/hooks/useImageUpload';
 import { apiClient } from '@/lib/api/apiClient';
 import useAuthStore from '@/stores/authStore';
+import useToastStore from '@/stores/toastStore';
 import { UserType } from '@/types/userTypes';
 
 const MyprofileSidebar = () => {
   const nicknameRef = useRef<HTMLInputElement | null>(null);
   const [isSameNickname, setIsSameNickname] = useState(true);
   const { handleChangeImage, fileRef, isUploading } = useImageUpload();
+  const addToast = useToastStore((state) => state.addToast);
 
   // 유저 전역 상태 가져오기
   const { user, updateUser } = useAuthStore(
@@ -46,15 +48,17 @@ const MyprofileSidebar = () => {
 
       const { data } = await apiClient.patch(URL, updateUserData);
       updateUser(data); // 유저 전역 상태 업데이트
+
+      addToast({ message: '프로필 수정 완료!', type: 'success', duration: 2000 });
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response?.status === 400) {
-        alert('이미 사용중인 닉네임입니다.');
+        addToast({ message: '이미 사용중인 닉네임입니다.', type: 'error', duration: 2000 });
         return;
       }
 
-      alert('프로필 수정에 실패하였습니다.');
+      addToast({ message: '프로필 수정에 실패했습니다.', type: 'error', duration: 2000 });
       console.error();
     }
   };
@@ -66,7 +70,7 @@ const MyprofileSidebar = () => {
 
       if (url) await handleUserUpdate({ image: url });
     } catch (error) {
-      alert('이미지 업로드에 실패하였습니다.');
+      addToast({ message: '이미지 업로드에 실패했습니다.', type: 'error', duration: 2000 });
       console.error(error);
       return;
     }
@@ -76,7 +80,7 @@ const MyprofileSidebar = () => {
     if (!nicknameRef.current) return;
 
     if (nicknameRef.current.value === user?.nickname) {
-      alert('기존 닉네임과 동일합니다.');
+      addToast({ message: '기존 닉네임과 동일합니다.', type: 'error', duration: 2000 });
       nicknameRef.current!.value = '';
       return;
     }

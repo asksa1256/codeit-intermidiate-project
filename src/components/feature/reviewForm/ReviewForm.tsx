@@ -9,7 +9,7 @@ import ReviewFormRating from '@/components/feature/reviewForm/ReviewFormRating';
 import ReviewFormSlider from '@/components/feature/reviewForm/ReviewFormSlider';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import { KeyboardColorType } from '@/types/keyboardTypes';
-import { MyReviewItemType } from '@/types/reviewTypes';
+import { MyReviewItemType, ReviewItemType } from '@/types/reviewTypes';
 
 export interface ReviewFormValues {
   rating: number;
@@ -23,7 +23,7 @@ export interface ReviewFormValues {
 
 interface Props {
   keyboardTitle: string;
-  initReview?: MyReviewItemType | null;
+  initReview?: MyReviewItemType | ReviewItemType | null;
   onSubmit: (value: ReviewFormValues) => void;
 }
 

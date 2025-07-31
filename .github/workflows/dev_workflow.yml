@@ -118,6 +118,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Stop existing container
+        run: docker stop codeit_intermidiate_frontend || true
+
+      - name: Remove existing container
+        run: docker rm codeit_intermidiate_frontend || true
+
+      - name: Remove all Docker images
+        run: docker rmi $(docker images -a -q) || true
+
       - name: check env file
         run: cat /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env
 
@@ -146,21 +155,9 @@ jobs:
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:dev
 
-      - name: Stop existing container
-        run: docker stop codeit_intermidiate_frontend || true
-
-      - name: Remove existing container
-        run: docker rm codeit_intermidiate_frontend || true
-
-      - name: Remove all Docker images
-        run: docker rmi $(docker images -a -q) || true
-
       - name: Run container with new image
-        run: docker run -d -p 7004:3000 \
-          --name codeit_intermidiate_frontend \
-          --restart always \
-          --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env \
-          --log-opt max-size=10m --log-opt max-file=3 \
+        run:
+          docker run -d -p 7004:3000 --name codeit_intermidiate_frontend --restart always --env-file /home/alex-main-server/envDoc/test/codeit-intermidiate-project/.env --log-opt max-size=10m --log-opt max-file=3
           ${{ env.DOCKER_IMAGE }}:dev
 
   # deploy:

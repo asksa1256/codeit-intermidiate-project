@@ -8,6 +8,7 @@ import UserThumbnail from '@/components/ui/UserThumbnail';
 import useSticky from '@/hooks/useSticky';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
+import useToastStore from '@/stores/toastStore';
 import { cn } from '@/utils/style';
 
 interface HeaderProps {
@@ -24,10 +25,12 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
       signOut: state.signOut,
     })),
   );
+  const addToast = useToastStore((state) => state.addToast);
 
   const handleSignOut = () => {
     signOut(); // user 전역 상태 초기화
     tokenService.clearTokens(); // 토큰 제거
+    addToast({ message: '로그아웃 되었습니다.', duration: 2000, type: 'success' });
   };
 
   return (
