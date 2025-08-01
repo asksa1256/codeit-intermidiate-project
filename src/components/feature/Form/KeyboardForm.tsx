@@ -11,6 +11,7 @@ import Modal from '@/components/feature/Modal';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import DropdownWithSelectButton from '@/components/ui/Dropdown/DropdownWithSelectButton';
 import HintTextWithIcon from '@/components/ui/HintTextWithIcon';
+import InfoGuide from '@/components/ui/InfoGuide';
 import InputField from '@/components/ui/Input';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { KEYBOARD_TYPES_MAP } from '@/constants';
@@ -134,8 +135,33 @@ const KeyboardForm = ({ initialValues, onSubmit, onClose }: KeyboardFormProps) =
           </Field>
 
           <Field>
-            <Label className='block mb-2 md:mb-4 font-medium text-sm md:text-base'>
+            <Label className='flex items-center gap-1 mb-2 md:mb-4 font-medium text-sm md:text-base'>
               키보드 사진
+              <InfoGuide>
+                <strong className='block mb-2 text-xs text-[#1D202E] font-semibold leading-[16px]'>
+                  키보드 이미지 등록 가이드
+                </strong>
+                <dl className='flex items-center gap-2 mb-1 text-xs font-normal leading-[18px]'>
+                  <dt className='w-11 text-center text-gray-500 bg-gray-100 rounded-md'>해상도</dt>
+                  <dd className='text-[#1D202E]'>권장 900*300 / 최소 300*100</dd>
+                </dl>
+                <dl className='flex items-center gap-2 mb-1 text-xs font-normal leading-[18px]'>
+                  <dt className='w-11 text-center text-gray-500 bg-gray-100 rounded-md'>비율</dt>
+                  <dd className='text-[#1D202E]'>3:1 (가로:세로)</dd>
+                </dl>
+                <dl className='flex items-center gap-2 mb-1 text-xs font-normal leading-[18px]'>
+                  <dt className='w-11 text-center text-gray-500 bg-gray-100 rounded-md'>배경</dt>
+                  <dd className='text-[#1D202E]'>투명 배경 권장</dd>
+                </dl>
+                <dl className='flex items-center gap-2 mb-1 text-xs font-normal leading-[18px]'>
+                  <dt className='w-11 text-center text-gray-500 bg-gray-100 rounded-md'>형식</dt>
+                  <dd className='text-[#1D202E]'>JPG, PNG</dd>
+                </dl>
+                <dl className='flex items-center gap-2 text-xs font-normal leading-[18px]'>
+                  <dt className='w-11 text-center text-gray-500 bg-gray-100 rounded-md'>용량</dt>
+                  <dd className='text-[#1D202E]'>1MB 이하 권장</dd>
+                </dl>
+              </InfoGuide>
             </Label>
             <Controller
               name='image'

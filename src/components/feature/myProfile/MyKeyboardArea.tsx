@@ -20,9 +20,8 @@ const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
 
 const fetchKeyboardList = async (cursor: number | null): Promise<MyKeyboardListType> => {
-  const res = await apiClient.get(
-    `/${TEAM}/users/me/wines?limit=${DEFAULT_LIMIT}&cursor=${cursor}`,
-  );
+  const cursorQuery = cursor ? `&cursor=${cursor}` : '';
+  const res = await apiClient.get(`/${TEAM}/users/me/wines?limit=${DEFAULT_LIMIT}${cursorQuery}`);
   return res.data;
 };
 
