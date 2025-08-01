@@ -8,7 +8,7 @@ interface FilterFooterButtonProps {
 
 const FilterFooterButton = ({ onReset, onApply }: FilterFooterButtonProps) => {
   return (
-    <div className='flex gap-2 mt-10 lg:gap-3'>
+    <div className='flex gap-2 lg:gap-3'>
       {/* 초기화 버튼 */}
       <ButtonDefault
         onClick={onReset}

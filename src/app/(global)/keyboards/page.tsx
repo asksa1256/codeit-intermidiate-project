@@ -230,75 +230,84 @@ const KeyboardsPage = () => {
   return (
     <div className='px-4 pt-[15px] pb-[100px] m-auto max-w-[1140px] md:pt-5 md:pb-[50px] md:px-5 lg:px-0'>
       <SliderSection />
-      <div className='flex gap-4 mt-5'>
-        {/* 필터 열기 버튼 - 모바일/태블릿에서만 */}
-        <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
-        {/* 검색창 */}
-        <KeyboardsSearchBar
-          onSearchResults={setSearchResults}
-          query={query}
-          onChange={setQuery}
-          setSearchCursor={setSearchCursor}
-        />
-        {/* 키보드 등록 버튼 */}
-        <ButtonDefault
-          onClick={() => setKeyboardOpen(true)}
-          className='fixed bottom-[35px] left-4 right-4 w-auto h-12 text-md font-bold rounded-xl z-10 md:static md:w-[220px] md:rounded-2xl md:text-base md:shrink-0 md:z-auto lg:hidden'
-        >
-          키보드 등록하기
-        </ButtonDefault>
-      </div>
+      <div>
+        {/* 검색 영역 :: S */}
+        <div className='flex gap-4 mt-5'>
+          {/* 필터 열기 버튼 - 모바일/태블릿에서만 */}
+          <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
+          {/* 검색창 */}
+          <KeyboardsSearchBar
+            onSearchResults={setSearchResults}
+            query={query}
+            onChange={setQuery}
+            setSearchCursor={setSearchCursor}
+          />
+          {/* 키보드 등록 버튼 */}
+          <ButtonDefault
+            onClick={() => setKeyboardOpen(true)}
+            className='fixed bottom-[35px] left-4 right-4 w-auto h-12 text-md font-bold rounded-xl z-10 md:static md:w-[220px] md:rounded-2xl md:text-base md:shrink-0 md:z-auto lg:hidden'
+          >
+            키보드 등록하기
+          </ButtonDefault>
+        </div>
+        {/* 검색 영역 :: E */}
 
-      {/* 하단 영역 시작 부분 */}
-      <div className='flex items-start gap-10 mt-6'>
-        {/* 필터 모달 영역 */}
-        <FilterModal
-          open={isFilterOpen}
-          onClose={() => setIsFilterOpen(false)}
-          selectedType={selectedType}
-          onToggleType={handleToggle}
-          onReset={handleResetFilters}
-          onApply={handleApplyFilters}
-          priceRange={priceRange}
-          onChangePrice={handlePriceChange}
-          selectedRating={selectedRating}
-          onChangeRating={handleRatingChange}
-        />
+        {/* 하단 영역 :: S */}
+        <div className='flex items-start gap-10 mt-6'>
+          {/* 필터 영역 :: S */}
+          <FilterModal
+            open={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            selectedType={selectedType}
+            onToggleType={handleToggle}
+            onReset={handleResetFilters}
+            onApply={handleApplyFilters}
+            priceRange={priceRange}
+            onChangePrice={handlePriceChange}
+            selectedRating={selectedRating}
+            onChangeRating={handleRatingChange}
+            setKeyboardOpen={setKeyboardOpen}
+          />
 
-        {/* 검색 결과 dataToRender가 null이 아닐 때만 map을 실행 */}
-        {isSearchEmpty ? (
-          <EmptyList desc={emptyMessage} />
-        ) : (
+          {/* 리스트 영역 :: S */}
+          {/* 검색 결과 dataToRender가 null이 아닐 때만 map을 실행 */}
           <div className='grow-1'>
-            {dataToRender &&
-              dataToRender.map((item) => (
-                <IndexKeyboardsCard
-                  key={item.id}
-                  name={item.name}
-                  region={item.region}
-                  image={item.image}
-                  price={item.price}
-                  avgRating={item.avgRating}
-                  reviewCount={item.reviewCount}
-                  recentReview={item.recentReview}
-                  keyboardId={item.id}
-                />
-              ))}
+            {isSearchEmpty ? (
+              <EmptyList desc={emptyMessage} />
+            ) : (
+              <>
+                {dataToRender &&
+                  dataToRender.map((item) => (
+                    <IndexKeyboardsCard
+                      key={item.id}
+                      name={item.name}
+                      region={item.region}
+                      image={item.image}
+                      price={item.price}
+                      avgRating={item.avgRating}
+                      reviewCount={item.reviewCount}
+                      recentReview={item.recentReview}
+                      keyboardId={item.id}
+                    />
+                  ))}
+              </>
+            )}
+            {isLoading ? <LoadingSpinner className='w-full my-8' /> : <div ref={targetRef}></div>}
           </div>
-        )}
+        </div>
+        {/* 하단 영역 :: E */}
+
+        {/* 키보드 등록 모달 */}
+        <Modal
+          open={keyboardOpen}
+          onClose={() => setKeyboardOpen(false)}
+          title='키보드 등록'
+          size='md'
+          showCloseButton={true}
+        >
+          <KeyboardForm onSubmit={handleSubmit} onClose={() => setKeyboardOpen(false)} />
+        </Modal>
       </div>
-      {isLoading ? <LoadingSpinner className='w-full my-8' /> : <div ref={targetRef}></div>}
-      {/* 하단영역 끝 부분 */}
-      {/* 키보드 등록 모달 */}
-      <Modal
-        open={keyboardOpen}
-        onClose={() => setKeyboardOpen(false)}
-        title='키보드 등록'
-        size='md'
-        showCloseButton={true}
-      >
-        <KeyboardForm onSubmit={handleSubmit} onClose={() => setKeyboardOpen(false)} />
-      </Modal>
     </div>
   );
 };
