@@ -24,29 +24,29 @@ import { apiClient } from '@/lib/api/apiClient';
 
 import type { KeyboardItemType, KeyboardCategoryType } from '@/types/keyboardTypes';
 
-interface FilterParams {
-  teamId: string;
-  limit: number;
-  cursor?: number;
-  type?: KeyboardCategoryType;
-  minPrice?: number;
-  maxPrice?: number;
-  rating?: number;
-  name?: string;
-}
+const LIST_LIMIT = 10;
+
+const getKeyboardList = async (queryString: string) => {
+  const q = queryString ? `&${queryString}` : '';
+  const res = await apiClient.get(`/${TEAM_ID}/wines?limit=${LIST_LIMIT}${q}`);
+  return res.data;
+};
 
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[] | null>(null);
-  const [searchResults, setSearchResults] = useState<KeyboardItemType[] | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMoreFetchLoading, setIsMoreFetchLoading] = useState(false);
+
   const [selectedType, setSelectedType] = useState<KeyboardCategoryType | null>(null); // 키보드 타입 필터용
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
   const [selectedRating, setSelectedRating] = useState<number | null>(null); // 평점 필터용
+
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+
   const [cursor, setCursor] = useState<number | null>(null); // 일반 무한 스크롤용
-  const [searchCursor, setSearchCursor] = useState<number | null>(null); // 검색 결과 무한 스크롤용
-  const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState('');
+
   const router = useRouter();
 
   const ScrollLimit = 10; // 스크롤 시 불러올 데이터 개수
@@ -69,11 +69,6 @@ const KeyboardsPage = () => {
     }
   };
 
-  const dataToRender = searchResults && searchResults.length > 0 ? searchResults : items;
-
-  const isSearching = searchResults !== null;
-  const isSearchEmpty = isSearching && searchResults?.length === 0;
-
   const isFiltering =
     selectedType !== null || priceRange[0] > 0 || priceRange[1] < 300000 || selectedRating !== null;
 
@@ -83,25 +78,34 @@ const KeyboardsPage = () => {
 
   // 필터 초기화 버튼 함수
   const handleResetFilters = () => {
-    console.log('필터 초기화');
     setSelectedType(null);
     setPriceRange([0, 300000]);
     setSelectedRating(null);
   };
-  const params: FilterParams = {
-    teamId: '16-3',
-    limit: 1,
-    type: selectedType ?? undefined,
-    minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
-    maxPrice: priceRange[1] < 300000 ? priceRange[1] : undefined,
-    rating: selectedRating ?? undefined,
+
+  const getQueryString = () => {
+    const params = new URLSearchParams();
+
+    const [min, max] = priceRange;
+
+    if (selectedType) params.append('type', selectedType); // type
+    if (min !== 0) params.append('minPrice', String(min)); // minPrice
+    if (max !== 300000) params.append('maxPrice', String(max)); // maxPrice
+    if (selectedRating) params.append('rating', String(selectedRating)); // rating
+    if (query) params.append('name', query); // name 검색어
+
+    return params.toString();
   };
+
   // 필터 적용 버튼 함수
   const handleApplyFilters = async () => {
-    try {
-      console.log('필터 적용하기');
-      setIsFilterOpen(false); // 모달 닫기
+    const q = getQueryString();
 
+    try {
+      setIsLoading(true);
+      const { list, nextCursor } = await getKeyboardList(q);
+
+<<<<<<< HEAD
       // const params: FilterParams = {
       //   teamId: '16-3',
       //   limit: 1,
@@ -130,12 +134,20 @@ const KeyboardsPage = () => {
       const filteredList = res.data.list || [];
       setSearchResults(filteredList);
       setSearchCursor(res.data.nextCursor);
+=======
+      // 필터 변경 시 기존 데이터, 커서 초기화
+      setItems(list);
+      setCursor(nextCursor ?? null);
+      setIsFilterOpen(false);
+>>>>>>> dev
     } catch (error) {
-      console.error('필터 적용 실패:', error);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // 키보드 타입 필터 체크박스 함수
+  // 키보드 타입 필터 라디오 함수
   const handleToggle = (type: KeyboardCategoryType) => {
     setSelectedType((prev) => (prev === type ? null : type));
   };
@@ -153,7 +165,8 @@ const KeyboardsPage = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+        setIsLoading(true);
+        const res = await apiClient.get(`/${TEAM_ID}/wines`, {
           params: { limit: ScrollLimit },
         });
 
@@ -162,18 +175,23 @@ const KeyboardsPage = () => {
         setCursor(res.data.nextCursor);
       } catch (err) {
         console.error('기본 데이터 호출 실패:', err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchItems();
   }, []);
 
-  // 기본 상품 무한 스크롤용 커서 감지
+  // 무한 스크롤
   const fetchMoreItems = async () => {
     if (cursor === null) return;
 
+    const q = getQueryString();
+
     try {
-      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
+      setIsMoreFetchLoading(true);
+      const res = await apiClient.get(`/${TEAM_ID}/wines?${q}`, {
         params: { limit: ScrollLimit, cursor },
       });
 
@@ -182,6 +200,7 @@ const KeyboardsPage = () => {
       setCursor(res.data.nextCursor);
     } catch (err) {
       console.error('기본 데이터 호출 실패:', err);
+<<<<<<< HEAD
     }
   };
 
@@ -223,10 +242,17 @@ const KeyboardsPage = () => {
     fetchMoreItems();
     handleSearchMore();
     // filteredListMore();
+=======
+    } finally {
+      setIsMoreFetchLoading(false);
+    }
+  };
+
+  const targetRef = useIntersectionObserver(() => {
+    fetchMoreItems();
+>>>>>>> dev
   });
 
-  console.log(searchResults);
-  console.log(searchCursor);
   return (
     <div className='px-4 pt-[15px] pb-[100px] m-auto max-w-[1140px] md:pt-5 md:pb-[50px] md:px-5 lg:px-0'>
       <SliderSection />
@@ -237,10 +263,9 @@ const KeyboardsPage = () => {
           <FilterOpenButton onClick={() => setIsFilterOpen(true)} />
           {/* 검색창 */}
           <KeyboardsSearchBar
-            onSearchResults={setSearchResults}
             query={query}
             onChange={setQuery}
-            setSearchCursor={setSearchCursor}
+            handleApplyFilters={handleApplyFilters}
           />
           {/* 키보드 등록 버튼 */}
           <ButtonDefault
@@ -270,29 +295,31 @@ const KeyboardsPage = () => {
           />
 
           {/* 리스트 영역 :: S */}
-          {/* 검색 결과 dataToRender가 null이 아닐 때만 map을 실행 */}
           <div className='grow-1'>
-            {isSearchEmpty ? (
+            {!items ? (
+              <LoadingSpinner />
+            ) : items.length === 0 ? (
               <EmptyList desc={emptyMessage} />
             ) : (
-              <>
-                {dataToRender &&
-                  dataToRender.map((item) => (
-                    <IndexKeyboardsCard
-                      key={item.id}
-                      name={item.name}
-                      region={item.region}
-                      image={item.image}
-                      price={item.price}
-                      avgRating={item.avgRating}
-                      reviewCount={item.reviewCount}
-                      recentReview={item.recentReview}
-                      keyboardId={item.id}
-                    />
-                  ))}
-              </>
+              items.map((item) => (
+                <IndexKeyboardsCard
+                  key={item.id}
+                  name={item.name}
+                  region={item.region}
+                  image={item.image}
+                  price={item.price}
+                  avgRating={item.avgRating}
+                  reviewCount={item.reviewCount}
+                  recentReview={item.recentReview}
+                  keyboardId={item.id}
+                />
+              ))
             )}
-            {isLoading ? <LoadingSpinner className='w-full my-8' /> : <div ref={targetRef}></div>}
+            {isMoreFetchLoading ? (
+              <LoadingSpinner className='w-full my-8' />
+            ) : (
+              <div ref={targetRef}></div>
+            )}
           </div>
         </div>
         {/* 하단 영역 :: E */}

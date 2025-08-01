@@ -51,7 +51,7 @@ const IndexKeyboardsCard = ({
 
         {/* 본문 컨텐츠 */}
         <div className='pt-[30px] pr-5 pb-7 grow md:flex md:gap-[45px] md:pt-10 md:pr-10 md:pb-6 lg:pt-9 lg:pr-[53px] lg:pb-6 lg:gap-[70px]'>
-          <div>
+          <div className='grow-1'>
             <h3 className='text-xl font-semibold line-clamp-2 md:mb-5 md:text-3xl'>{name}</h3>
             <span className='block mb-2 text-md text-gray-500 md:mb-3 md:text-base lg:mb-4'>
               {region}
