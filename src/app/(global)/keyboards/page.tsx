@@ -105,41 +105,10 @@ const KeyboardsPage = () => {
       setIsLoading(true);
       const { list, nextCursor } = await getKeyboardList(q);
 
-<<<<<<< HEAD
-      // const params: FilterParams = {
-      //   teamId: '16-3',
-      //   limit: 1,
-      // };
-
-      // if (selectedType) {
-      //   params.type = selectedType;
-      // }
-
-      // if (priceRange[0] > 0) {
-      //   params.minPrice = priceRange[0];
-      // }
-
-      // if (priceRange[1] < 300000) {
-      //   params.maxPrice = priceRange[1];
-      // }
-
-      // if (selectedRating !== null) {
-      //   params.rating = selectedRating;
-      // }
-      // 필터링된 키보드 데이터 요청
-      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-        params,
-      });
-
-      const filteredList = res.data.list || [];
-      setSearchResults(filteredList);
-      setSearchCursor(res.data.nextCursor);
-=======
       // 필터 변경 시 기존 데이터, 커서 초기화
       setItems(list);
       setCursor(nextCursor ?? null);
       setIsFilterOpen(false);
->>>>>>> dev
     } catch (error) {
       console.error(error);
     } finally {
@@ -200,49 +169,6 @@ const KeyboardsPage = () => {
       setCursor(res.data.nextCursor);
     } catch (err) {
       console.error('기본 데이터 호출 실패:', err);
-<<<<<<< HEAD
-    }
-  };
-
-  // 검색 결과 무한 스크롤용 커서 감지
-  const handleSearchMore = async () => {
-    if (searchCursor === null) return;
-
-    try {
-      const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-        params: { limit: ScrollLimit, cursor: searchCursor, name: query },
-      });
-
-      const dataArray: KeyboardItemType[] = res.data.list || [];
-      setSearchResults((prev) => [...(prev ?? []), ...dataArray]);
-      setSearchCursor(res.data.nextCursor);
-    } catch (err) {
-      console.error('검색 데이터 호출 실패:', err);
-    }
-  };
-
-  // 필터 결과 무한 스크롤용 커서 감지
-  // const filteredListMore = async () => {
-  //   if (searchCursor === null) return;
-
-  //   try {
-  //     const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
-  //       params: { cursor: searchCursor, ...params },
-  //     });
-
-  //     const filteredList = res.data.list || [];
-  //     setSearchResults((prev) => [...(prev ?? []), ...filteredList]);
-  //     setSearchCursor(res.data.nextCursor);
-  //   } catch (err) {
-  //     console.error('필터 데이터 호출 실패:', err);
-  //   }
-  // };
-
-  const targetRef = useIntersectionObserver(() => {
-    fetchMoreItems();
-    handleSearchMore();
-    // filteredListMore();
-=======
     } finally {
       setIsMoreFetchLoading(false);
     }
@@ -250,7 +176,6 @@ const KeyboardsPage = () => {
 
   const targetRef = useIntersectionObserver(() => {
     fetchMoreItems();
->>>>>>> dev
   });
 
   return (
