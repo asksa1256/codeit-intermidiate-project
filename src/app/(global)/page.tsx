@@ -33,7 +33,7 @@ const Home = () => {
         <section className='overflow-hidden bg-[#171a21] rounded-2xl lg:max-w-285 h-101 lg:h-134 pt-14 md:pt-18 lg:pt-21 mx-auto'>
           <div className='relative w-65 h-full mx-auto'>
             <div className='flex flex-col items-center gap-6 lg:gap-3'>
-              <Image src='images/logo.svg' alt='타닥 로고' width={120} height={38} />
+              <Image src='images/Logo.svg' alt='타닥 로고' width={120} height={38} />
               <h2 className='text-center text-gray-100 text-xl leading-[30px] md:text-3xl md:leading-12 font-semibold'>
                 한눈에 둘러 보는
                 <br />
