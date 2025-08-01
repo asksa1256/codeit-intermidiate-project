@@ -122,7 +122,7 @@ const KeyboardsPage = () => {
       // if (selectedRating !== null) {
       //   params.rating = selectedRating;
       // }
-
+      // 필터링된 키보드 데이터 요청
       const res = await axios.get('https://winereview-api.vercel.app/16-3/wines', {
         params,
       });
@@ -149,6 +149,7 @@ const KeyboardsPage = () => {
     setSelectedRating(value);
   };
 
+  // 기본 키보드 데이터 요청
   useEffect(() => {
     const fetchItems = async () => {
       try {
