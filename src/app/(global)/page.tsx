@@ -18,7 +18,6 @@ const Home = () => {
     hidden: { opacity: 0, x: -100 },
     visible: { opacity: 1, x: 0 },
   };
-
   const rightVariant = {
     hidden: { opacity: 0, x: 100 },
     visible: { opacity: 1, x: 0 },
