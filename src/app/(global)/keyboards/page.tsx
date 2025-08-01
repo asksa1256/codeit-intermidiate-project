@@ -45,6 +45,7 @@ const KeyboardsPage = () => {
   const [keyboardOpen, setKeyboardOpen] = useState(false);
 
   const [cursor, setCursor] = useState<number | null>(null); // 일반 무한 스크롤용
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [query, setQuery] = useState('');
 
   const router = useRouter();
@@ -142,6 +143,7 @@ const KeyboardsPage = () => {
         const dataArray: KeyboardItemType[] = res.data.list || [];
         setItems(dataArray);
         setCursor(res.data.nextCursor);
+        setTotalCount(res.data.totalCount);
       } catch (err) {
         console.error('기본 데이터 호출 실패:', err);
       } finally {
@@ -154,7 +156,8 @@ const KeyboardsPage = () => {
 
   // 무한 스크롤
   const fetchMoreItems = async () => {
-    if (cursor === null) return;
+    if (!items) return;
+    if (items.length === totalCount) return;
 
     const q = getQueryString();
 
