@@ -108,6 +108,7 @@ const KeyboardsPage = () => {
       // 필터 변경 시 기존 데이터, 커서 초기화
       setItems(list);
       setCursor(nextCursor ?? null);
+      setIsFilterOpen(false);
     } catch (error) {
       console.error(error);
     } finally {
