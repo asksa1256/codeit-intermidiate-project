@@ -18,9 +18,8 @@ const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
 
 const fetchReviewList = async (cursor: number | null): Promise<MyReviewListType> => {
-  const res = await apiClient.get(
-    `/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}&cursor=${cursor}`,
-  );
+  const cursorQuery = cursor ? `&cursor=${cursor}` : '';
+  const res = await apiClient.get(`/${TEAM}/users/me/reviews?limit=${DEFAULT_LIMIT}${cursorQuery}`);
   return res.data;
 };
 
