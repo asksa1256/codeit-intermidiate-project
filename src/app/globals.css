@@ -170,6 +170,11 @@
   .modal-body {
     @apply flex flex-col max-h-full grow-1 overflow-hidden;
   }
+
+  /* header */
+  .link {
+    @apply py-1 px-2.5 md:py-2.5 md:px-4 hover:bg-white hover:text-black rounded-lg transition-colors;
+  }
 }
 
 @layer base {

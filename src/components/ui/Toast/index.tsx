@@ -20,14 +20,14 @@ const ToastContainer = () => {
   );
 
   const removeWithAnim = useCallback(
-    (id: string, duration?: number) => {
+    (id: string, duration: number) => {
       const timer = setTimeout(() => {
         startRemoving(id);
 
         setTimeout(() => {
           removeToast(id);
         }, 300);
-      }, duration ?? 0);
+      }, duration);
       return () => clearTimeout(timer);
     },
     [startRemoving, removeToast],
@@ -65,7 +65,7 @@ const ToastContainer = () => {
             <InfoIcon className='w-6 h-6 text-gray-500' />
           )}
           {t.message}
-          <button className='ml-4' onClick={() => removeWithAnim(t.id, t.duration)}>
+          <button className='ml-4' onClick={() => removeWithAnim(t.id, 0)}>
             <CloseIcon className='text-gray-500' />
           </button>
         </div>
