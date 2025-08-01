@@ -1,11 +1,13 @@
 import { AvgRatings } from '@/types/keyboardTypes';
+import { cn } from '@/utils/style';
 
 interface Props {
+  className?: string;
   reviewCount: number;
   avgRatings: AvgRatings;
 }
 
-const RatingRangeBars = ({ reviewCount, avgRatings }: Props) => {
+const RatingRangeBars = ({ className, reviewCount, avgRatings }: Props) => {
   const RATING_LABEL = ['5', '4', '3', '2', '1'];
   const FLEX_STYLE = 'flex gap-4 items-center my-2';
   const calcPercentage = (label: keyof AvgRatings): number => {
@@ -19,7 +21,12 @@ const RatingRangeBars = ({ reviewCount, avgRatings }: Props) => {
   };
 
   return (
-    <div className='whitespace-nowrap text-gray-500 font-medium leading-[26px] w-full md:w-70'>
+    <div
+      className={cn(
+        'whitespace-nowrap text-gray-500 font-medium leading-[26px] w-full md:w-70',
+        className,
+      )}
+    >
       {RATING_LABEL.map((label) => (
         <div key={label} className={FLEX_STYLE}>
           {label}점 <RangeBar percentage={calcPercentage(label as keyof AvgRatings)} />

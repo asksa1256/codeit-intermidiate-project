@@ -1,7 +1,11 @@
 'use client';
 
-import { Dispatch, SetStateAction } from 'react';
+import { useRouter } from 'next/navigation';
 
+import { Dispatch, SetStateAction, useState } from 'react';
+
+import ContentFoldButton from '@/components/ui/Button/ContentFoldButton';
+import ContentUnFoldButton from '@/components/ui/Button/ContentUnfoldButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import RatingRangeBars from '@/components/ui/RangeSlider/RatingRangeBars';
 import StarRating from '@/components/ui/StarRating';
@@ -30,8 +34,10 @@ const RatingsInfo = ({
   onCreateModalOpen,
   updateTrigger,
 }: Props) => {
+  const [isContentFolded, setIsContentFolded] = useState(false);
   const { isFixedOnTop, stickyRef } = useSticky(STICKY_TOP, TABLET_STICKY_TOP);
   const { id, name, image, avgRating, reviewCount, avgRatings } = keyboardInfo;
+  const router = useRouter();
 
   const handleCreateReview = async (formValues: ReviewFormValues) => {
     const reviewData = { ...formValues, wineId: id };
@@ -57,7 +63,17 @@ const RatingsInfo = ({
             },
           )}
         >
-          <div className='flex flex-col md:flex-row lg:flex-col lg:items-start md:items-center md:justify-between gap-6 lg:gap-[20px] md:max-w-285 lg:max-w-200 md:px-21 lg:px-0 md:mx-auto'>
+          <div className='lg:hidden text-md md:text-base font-semibold w-full whitespace-nowrap overflow-hidden overflow-ellipsis pb-2 md:px-21'>
+            {name}
+          </div>
+          <div
+            className={cn(
+              'flex flex-col md:flex-row lg:flex-col lg:items-start md:items-center md:justify-between lg:gap-[20px] md:max-w-285 lg:max-w-200 md:px-21 lg:px-0 md:mx-auto',
+              {
+                'gap-6': !isContentFolded,
+              },
+            )}
+          >
             <div className='flex justify-between items-center md:flex-wrap md:gap-y-5'>
               <div className='flex items-center gap-4 md:gap-5 md:grow-1 md:basis-[300px]'>
                 <div className='text-4xl md:text-[54px] leading-[100%] font-extrabold'>
@@ -77,15 +93,42 @@ const RatingsInfo = ({
                 리뷰 남기기
               </ButtonDefault>
             </div>
-            <RatingRangeBars reviewCount={reviewCount} avgRatings={avgRatings} />
-            <ButtonDefault
-              className='text-md md:text-base font-medium w-25 md:w-28 h-10 md:h-[42px] px-[18px] py-4 rounded-xl hidden lg:flex'
-              onClick={() => {
-                onCreateModalOpen(true);
-              }}
-            >
-              리뷰 남기기
-            </ButtonDefault>
+            <RatingRangeBars
+              className='hidden md:block'
+              reviewCount={reviewCount}
+              avgRatings={avgRatings}
+            />
+
+            <div className='md:hidden'>
+              {isContentFolded ? (
+                <ContentUnFoldButton onClick={setIsContentFolded} />
+              ) : (
+                <>
+                  <RatingRangeBars reviewCount={reviewCount} avgRatings={avgRatings} />
+                  <ContentFoldButton onClick={setIsContentFolded} />
+                </>
+              )}
+            </div>
+
+            {/* 데스크탑 뷰에서만 보이는 버튼 */}
+            <div className='hidden lg:flex flex-col gap-4 w-full'>
+              <ButtonDefault
+                className='font-medium w-full h-[42px] px-[18px] py-4 rounded-xl'
+                onClick={() => {
+                  onCreateModalOpen(true);
+                }}
+              >
+                리뷰 남기기
+              </ButtonDefault>
+              <ButtonDefault
+                className='bg-white hover:bg-white text-gray-800 border-1 border-gray-300 font-medium w-full h-[42px] px-[18px] py-4 rounded-xl'
+                onClick={() => {
+                  router.push('/keyboards');
+                }}
+              >
+                목록으로 돌아가기
+              </ButtonDefault>
+            </div>
           </div>
         </section>
       ) : undefined}
