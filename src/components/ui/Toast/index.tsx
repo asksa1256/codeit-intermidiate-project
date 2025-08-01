@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useShallow } from 'zustand/shallow';
 
@@ -19,6 +19,20 @@ const ToastContainer = () => {
     })),
   );
 
+  const removeWithAnim = useCallback(
+    (id: string, duration: number) => {
+      const timer = setTimeout(() => {
+        startRemoving(id);
+
+        setTimeout(() => {
+          removeToast(id);
+        }, 300);
+      }, duration);
+      return () => clearTimeout(timer);
+    },
+    [startRemoving, removeToast],
+  );
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -26,17 +40,10 @@ const ToastContainer = () => {
   useEffect(() => {
     toasts.forEach((t) => {
       if (t.duration && t.duration > 0) {
-        const timer = setTimeout(() => {
-          startRemoving(t.id);
-
-          setTimeout(() => {
-            removeToast(t.id);
-          }, 300);
-        }, t.duration);
-        return () => clearTimeout(timer);
+        removeWithAnim(t.id, t.duration);
       }
     });
-  }, [toasts, removeToast, startRemoving]);
+  }, [toasts, removeToast, startRemoving, removeWithAnim]);
 
   if (!mounted) return null; // hydration 이후 overlayRoot에 접근
 
@@ -58,7 +65,7 @@ const ToastContainer = () => {
             <InfoIcon className='w-6 h-6 text-gray-500' />
           )}
           {t.message}
-          <button className='ml-4' onClick={() => removeToast}>
+          <button className='ml-4' onClick={() => removeWithAnim(t.id, 0)}>
             <CloseIcon className='text-gray-500' />
           </button>
         </div>

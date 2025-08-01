@@ -130,6 +130,7 @@ const KeyboardsPage = () => {
     setSelectedRating(value);
   };
 
+  // 기본 키보드 데이터 요청
   useEffect(() => {
     const fetchItems = async () => {
       try {
