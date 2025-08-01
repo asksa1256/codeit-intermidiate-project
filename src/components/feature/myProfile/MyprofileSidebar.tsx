@@ -79,25 +79,28 @@ const MyprofileSidebar = () => {
   const handleUpdateNickname = async () => {
     if (!nicknameRef.current) return;
 
-    if (nicknameRef.current.value === user?.nickname) {
+    const nickname = nicknameRef.current.value.trim();
+
+    if (nickname === user?.nickname) {
       addToast({ message: '기존 닉네임과 동일합니다.', type: 'error', duration: 2000 });
       nicknameRef.current!.value = '';
       return;
     }
 
-    await handleUserUpdate({ nickname: nicknameRef.current.value });
+    await handleUserUpdate({ nickname: nickname });
     nicknameRef.current.value = '';
     setIsSameNickname(true);
   };
 
   // onBlur일 때 닉네임 체크후 버튼 비활성화
   const checkSameNickname = (e: FocusEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
     // 입력값 없으면, 20자 초과하면 return
-    if (e.target.value.length <= 0 || e.target.value.length > 20) {
+    if (value.length <= 0 || value.length > 20) {
       setIsSameNickname(true);
       return;
     }
-    const isSame = e.target.value === user?.nickname;
+    const isSame = value === user?.nickname;
     setIsSameNickname(isSame);
   };
 
