@@ -55,14 +55,12 @@ const MultihandleSlider = ({
 
     if (activeHandleRef.current === 'min') {
       if (Math.abs(value - maxValue) < MINIMUM_HANDLE_GAP || value > maxValue) {
-        // isDragging.current = false;
         return;
       }
       //핸들이 트랙의 끝에 있을 때, 드래그를 해도 값이 바뀌지 않으면 상태 업데이트를 하지않도록 설정
       setMinValue((prev) => (prev === value ? prev : value));
     } else if (activeHandleRef.current === 'max') {
       if (Math.abs(value - minValue) < MINIMUM_HANDLE_GAP || value < minValue) {
-        // isDragging.current = false;
         return;
       }
       setMaxValue((prev) => (prev === value ? prev : value));
@@ -99,19 +97,16 @@ const MultihandleSlider = ({
     const RangesliderRect = RangesliderRef.current.getBoundingClientRect();
     const newX = event.touches[0].clientX - RangesliderRect.left; //touches[0]로 변경
     let mappedValue = (newX / RangesliderRect.width) * 300;
-
     mappedValue = Math.max(0, Math.min(300, mappedValue));
     const value = Math.round(mappedValue);
 
     if (activeHandleRef.current === 'min') {
-      if (Math.abs(value - maxValue) < MINIMUM_HANDLE_GAP) {
-        isDragging.current = false;
+      if (Math.abs(value - maxValue) < MINIMUM_HANDLE_GAP || value > maxValue) {
         return;
       }
       setMinValue((prev) => (prev === value ? prev : value));
     } else if (activeHandleRef.current === 'max') {
-      if (Math.abs(value - minValue) < MINIMUM_HANDLE_GAP) {
-        isDragging.current = false;
+      if (Math.abs(value - minValue) < MINIMUM_HANDLE_GAP || value < minValue) {
         return;
       }
       setMaxValue((prev) => (prev === value ? prev : value));
