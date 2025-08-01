@@ -27,10 +27,10 @@ const FilterRatingItem = ({ rating }: { rating: RatingOption }) => {
 
 const RATING_LIST: { label: string; value: number | null }[] = [
   { label: '전체', value: null },
-  { label: '4.5 - 5.0', value: 4.5 },
-  { label: '4.0 - 4.5', value: 4.0 },
-  { label: '3.5 - 4.0', value: 3.5 },
-  { label: '3.0 - 3.5', value: 3.0 },
+  { label: '4.5 - 5.0', value: 5.0 },
+  { label: '4.0 - 4.5', value: 4.5 },
+  { label: '3.5 - 4.0', value: 4.0 },
+  { label: '3.0 - 3.5', value: 3.5 },
 ];
 
 interface FilterRatingProps {
