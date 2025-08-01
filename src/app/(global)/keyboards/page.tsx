@@ -219,7 +219,7 @@ const KeyboardsPage = () => {
 
           {/* 리스트 영역 :: S */}
           <div className='grow-1'>
-            {items === null ? (
+            {!items ? (
               <LoadingSpinner />
             ) : items.length === 0 ? (
               <EmptyList desc={emptyMessage} />
