@@ -11,6 +11,7 @@ import RatingRangeBars from '@/components/ui/RangeSlider/RatingRangeBars';
 import StarRating from '@/components/ui/StarRating';
 import useSticky from '@/hooks/useSticky';
 import { apiClient } from '@/lib/api/apiClient';
+import useToastStore from '@/stores/toastStore';
 import { KeyboardDetailType } from '@/types/keyboardTypes';
 import { formatPrice, formatRating } from '@/utils/formatters';
 import { cn } from '@/utils/style';
@@ -37,6 +38,7 @@ const RatingsInfo = ({
   const [isContentFolded, setIsContentFolded] = useState(false);
   const { isFixedOnTop, stickyRef } = useSticky(STICKY_TOP, TABLET_STICKY_TOP);
   const { id, name, image, avgRating, reviewCount, avgRatings } = keyboardInfo;
+  const addToast = useToastStore((state) => state.addToast);
   const router = useRouter();
 
   const handleCreateReview = async (formValues: ReviewFormValues) => {
@@ -45,8 +47,10 @@ const RatingsInfo = ({
       await apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/reviews`, reviewData);
       updateTrigger((prev) => prev + 1);
       onCreateModalOpen(false);
+      addToast({ message: '리뷰 등록 성공', type: 'success', duration: 2000 });
     } catch (e) {
       console.log('리뷰 작성 실패', e);
+      addToast({ message: '리뷰 등록 실패', type: 'error', duration: 2000 });
     }
   };
 
