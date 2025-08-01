@@ -102,8 +102,8 @@ const FilterModal = ({
                 </button>
               </div>
               {/* filter modal body */}
-              <div className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl overflow-hidden md:rounded-2xl'>
-                <div className='p-6 pt-0 grow-1 overflow-y-auto lg:p-0'>
+              <div className='flex flex-col w-full max-h-[85dvh] bg-white rounded-t-2xl overflow-hidden md:rounded-2xl lg:max-h-none'>
+                <div className='p-6 pt-0 grow-1 overflow-y-auto lg:p-0 lg:overflow-visible'>
                   {/* 키보드 타입 필터 */}
                   <section>
                     <h3 className='text-xl font-bold uppercase'>types</h3>
