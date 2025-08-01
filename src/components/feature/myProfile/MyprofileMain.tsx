@@ -10,7 +10,7 @@ const MYPAGE_MENUS = [
 
 const MyprofileMain = () => {
   return (
-    <div className='lg:grow'>
+    <div className='pb-[120px] lg:grow lg:pb-[60px]'>
       <TabGroup defaultIndex={0}>
         <TabList className='flex gap-x-4 gap-y-1 flex-wrap mr-[50px] md:gap-x-8 md:gap-y-2 md:mr-[100px]'>
           {MYPAGE_MENUS.map(({ title }, idx) => (
