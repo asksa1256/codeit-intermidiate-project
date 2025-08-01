@@ -34,6 +34,8 @@ const MyKeyboardArea = () => {
   const isListEmpty = keyboardList?.length === 0;
 
   const getKeyboardList = async () => {
+    if (cursor === null) return;
+
     try {
       const data = await fetchKeyboardList(cursor);
       const { list, nextCursor, totalCount } = data;
