@@ -14,6 +14,7 @@ import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { apiClient } from '@/lib/api/apiClient';
 import useToastStore from '@/stores/toastStore';
 import { MyKeyboardItemType, MyKeyboardListType } from '@/types/keyboardTypes';
+import { cn } from '@/utils/style';
 
 const TEAM = process.env.NEXT_PUBLIC_TEAM;
 const DEFAULT_LIMIT = 10;
@@ -34,6 +35,8 @@ const MyKeyboardArea = () => {
   const isListEmpty = keyboardList?.length === 0;
 
   const getKeyboardList = async () => {
+    if (cursor === null) return;
+
     try {
       const data = await fetchKeyboardList(cursor);
       const { list, nextCursor, totalCount } = data;
@@ -162,13 +165,29 @@ const MyKeyboardArea = () => {
           </ButtonDefault>
         </EmptyList>
       ) : (
-        <MyKeyboardList
-          keyboardList={keyboardList}
-          onDelete={handleDeleteKeyboard}
-          onEdit={handleEditKeyboard}
-          endRef={targetRef}
-          hasNextPage={keyboardList.length !== totalCount && cursor !== null}
-        />
+        <>
+          <ButtonDefault
+            onClick={handleKeyboardModalOpen}
+            className={cn(
+              'fixed bottom-5 left-5 flex items-center justify-center w-[48px] h-[48px] z-1 rounded-full p-[2px] overflow-hidden bg-transparent',
+              'before:content-[""] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded-full before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 before:animate-spin before:duration-[10000ms]',
+              'md:w-[56px] md:h-[56px]',
+              'lg:static lg:flex lg:w-auto lg:ml-auto lg:mb-5 lg:h-12 lg:rounded-xl lg:px-[15px] lg:bg-primary',
+              'lg:before:hidden',
+            )}
+          >
+            <span className='relative block w-full h-full font-semibold text-white bg-[url(/images/KeyboardReviewIcon.svg)] bg-no-repeat bg-center -indent-[9999em] bg-size-[85%] bg-white rounded-full lg:w-auto lg:h-auto lg:indent-0 lg:bg-none lg:bg-transparent'>
+              키보드 등록 하기
+            </span>
+          </ButtonDefault>
+          <MyKeyboardList
+            keyboardList={keyboardList}
+            onDelete={handleDeleteKeyboard}
+            onEdit={handleEditKeyboard}
+            endRef={targetRef}
+            hasNextPage={keyboardList.length !== totalCount && cursor !== null}
+          />
+        </>
       )}
 
       <Modal
