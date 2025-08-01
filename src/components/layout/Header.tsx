@@ -47,13 +47,16 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
         <Link href='/' className='font-bold text-xl'>
           tadak
         </Link>
-        <div className='flex items-center gap-5 md:gap-10 font-medium text-md md:text-base'>
+        <nav className='flex ml-auto items-center md:gap-3 font-semibold text-md md:text-base'>
+          <Link href='/keyboards' className='link'>
+            모든 키보드
+          </Link>
           {user ? (
             <Dropdown className='flex'>
               <Dropdown.Trigger>
                 <UserThumbnail
                   imgSrc={user.image ?? imgSrc}
-                  className='w-6 h-6 md:w-11 md:h-11 border-0'
+                  className='w-7 h-7 md:w-11 md:h-11 border-0 ml-1'
                 />
               </Dropdown.Trigger>
               <Dropdown.List className='mt-10 md:mt-13'>
@@ -65,11 +68,15 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
             </Dropdown>
           ) : (
             <>
-              <Link href='/login'>로그인</Link>
-              <Link href='/signUp'>회원가입</Link>
+              <Link href='/login' className='link'>
+                로그인
+              </Link>
+              <Link href='/signUp' className='link'>
+                회원가입
+              </Link>
             </>
           )}
-        </div>
+        </nav>
       </div>
     </header>
   );
