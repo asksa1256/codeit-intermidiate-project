@@ -19,15 +19,11 @@ export interface RangeSliderReadonlyProps {
 
 // -- MultihandleSlider 타입 --
 
-type PriceDataRefCurrent = {
-  minPrice: number;
-  maxPrice: number;
-};
-
 // className: 슬라이더 컨테이너에 들어갈 className -> 슬라이더 너비 or 여백 등 커스텀 용도
-// valueUpdater: 슬라이더의 state인 value를 전달하는 함수
+// initialValue: 필터 쿼리값을 관리하는 상태로 부터 받아오는 초기 값
+// onChange: 슬라이더 value값 업데이트 외부 함수
 export interface MultihandleSliderProps {
   className?: string;
-  valueUpdater: (minPrice: number, maxPrice: number) => void;
-  initialRange?: [number, number];
+  initialValue: [number, number];
+  onChange: (range: [number, number]) => void;
 }

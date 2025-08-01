@@ -88,13 +88,13 @@ const RangeSlider = ({ className, valueUpdater, initValue }: RangeSliderProps) =
   return (
     <div className={clsx('flex items-center w-31 h-4 md:w-65', className)}>
       <div
-        className='w-full h-[6px] rounded-[50px] border-1 border-gray-300 bg-gray-100 relative'
+        className='w-full h-[10px] rounded-[50px] border-1 border-gray-300 bg-gray-100 relative'
         ref={RangesliderRef}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
       >
         <button
-          className='absolute top-[50%] translate-[-50%] w-6 h-6 cursor-grab'
+          className='absolute top-[50%] translate-[-50%] w-[28px] h-[28px] cursor-grab'
           type='button'
           style={handleStyle}
           onMouseDown={handleMouseDown}

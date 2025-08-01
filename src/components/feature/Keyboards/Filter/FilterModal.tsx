@@ -148,10 +148,15 @@ const FilterModal = ({
                   <section className='mt-6 pt-6 border-t border-gray-100 lg:mt-15 lg:pt-0 lg:border-white'>
                     <h3 className='text-xl font-bold uppercase'>price</h3>
                     <div className='mt-5 pl-[20px]'>
-                      <MultihandleSlider
+                      {/* <MultihandleSlider
                         value={priceRange}
                         onChange={onChangePrice}
                         className='lg:w-[80%]'
+                      /> */}
+                      <MultihandleSlider
+                        className='lg:w-[80%]'
+                        initialValue={priceRange}
+                        onChange={onChangePrice}
                       />
                     </div>
                   </section>

@@ -34,9 +34,9 @@ export default RatingRangeBars;
 const RangeBar = ({ percentage }: { percentage: number }) => {
   return (
     <div className='w-full'>
-      <div className='relative w-full h-[6px] rounded-[50px] bg-gray-100'>
+      <div className='relative w-full h-[10px] rounded-[50px] bg-gray-100'>
         <div
-          className='absolute h-[6px] rounded-[50px] bg-primary'
+          className='absolute h-[10px] rounded-[50px] bg-primary'
           style={{ width: `${percentage}%` }}
         />
       </div>
