@@ -12,7 +12,6 @@ import useOutsideClick from '@/hooks/useClickOutside';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import { cn } from '@/utils/style';
 
-import FilterCheckbox from './FilterCheckbox';
 import FilterFooterButton from './FilterFooterButton';
 
 import type { KeyboardCategoryType } from '@/types/keyboardTypes';
@@ -149,9 +148,9 @@ const FilterModal = ({
                     <h3 className='text-xl font-bold uppercase'>price</h3>
                     <div className='mt-5 pl-[20px]'>
                       <MultihandleSlider
-                        value={priceRange}
-                        onChange={onChangePrice}
                         className='lg:w-[80%]'
+                        initialValue={priceRange}
+                        onChange={onChangePrice}
                       />
                     </div>
                   </section>

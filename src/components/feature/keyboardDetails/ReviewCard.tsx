@@ -1,9 +1,9 @@
 'use client';
-import Image from 'next/image';
 
-import { Button } from '@headlessui/react';
 import { Dispatch, SetStateAction, useOptimistic, useState, useTransition } from 'react';
 
+import ContentFoldButton from '@/components/ui/Button/ContentFoldButton';
+import ContentUnFoldButton from '@/components/ui/Button/ContentUnfoldButton';
 import KebabMenu from '@/components/ui/Dropdown/KebabMenu/KebabMenu';
 import KeyboardColorTags from '@/components/ui/KeyboardColorTags';
 import KeyboardProperties from '@/components/ui/RangeSlider/KeyboardProperties';
@@ -11,6 +11,7 @@ import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import UserThumbnail from '@/components/ui/UserThumbnail';
 import { apiClient } from '@/lib/api/apiClient';
 import useAuthStore from '@/stores/authStore';
+import useToastStore from '@/stores/toastStore';
 import { ReviewItemType } from '@/types/reviewTypes';
 import { formatRelativeTime } from '@/utils/formatters';
 
@@ -52,10 +53,8 @@ const ReviewCard = ({ review, keyboardName, keyboardImage, updateTrigger }: Prop
     (currentState, changedState: boolean) => changedState,
   );
   const me = useAuthStore((state) => state.user);
+  const addToast = useToastStore((state) => state.addToast);
   const isMyReview = userId === me?.id;
-
-  const DOWN_ARROW_ICON_URL = '/images/DownArrowIcon.svg';
-  const UP_ARROW_ICON_URL = '/images/UpArrowIcon.svg';
 
   const addLike = (reviewId: number) => {
     startTransition(async () => {
@@ -96,8 +95,10 @@ const ReviewCard = ({ review, keyboardName, keyboardImage, updateTrigger }: Prop
       await apiClient.patch(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`, formValues);
       updateTrigger((prev) => prev + 1);
       setIsEditModalOpen(false);
+      addToast({ message: '리뷰 수정 성공', type: 'success', duration: 2000 });
     } catch (e) {
       console.log('리뷰 수정 실패', e);
+      addToast({ message: '리뷰 수정 실패', type: 'error', duration: 2000 });
     }
   };
 
@@ -105,8 +106,10 @@ const ReviewCard = ({ review, keyboardName, keyboardImage, updateTrigger }: Prop
     try {
       await apiClient.delete(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`);
       updateTrigger((prev) => prev + 1);
+      addToast({ message: '리뷰 삭제 성공', type: 'success', duration: 2000 });
     } catch (e) {
       console.log('리뷰 삭제 실패', e);
+      addToast({ message: '리뷰 삭제 실패', type: 'error', duration: 2000 });
     }
   };
 
@@ -146,22 +149,7 @@ const ReviewCard = ({ review, keyboardName, keyboardImage, updateTrigger }: Prop
         />
       </KeyboardColorTags>
       {isReviewFolded ? (
-        <div className='text-center h-[30px]'>
-          <Button
-            className='transition-all duration-200 ease-in-out hover:scale-150'
-            onClick={() => {
-              setIsReviewFolded(false);
-            }}
-          >
-            <Image
-              className='w-[30px] h-[30px]'
-              src={DOWN_ARROW_ICON_URL}
-              alt='리뷰 상세 펼치기 버튼'
-              width={30}
-              height={30}
-            />
-          </Button>
-        </div>
+        <ContentUnFoldButton onClick={setIsReviewFolded} />
       ) : (
         <>
           <div className='whitespace-pre-line text-md md:text-base'>{content}</div>
@@ -171,22 +159,7 @@ const ReviewCard = ({ review, keyboardName, keyboardImage, updateTrigger }: Prop
             drySweet={drySweet}
             softAcidic={softAcidic}
           />
-          <div className='text-center'>
-            <Button
-              className='transition-all duration-200 ease-in-out hover:scale-150'
-              onClick={() => {
-                setIsReviewFolded(true);
-              }}
-            >
-              <Image
-                className='w-[30px] h-[30px]'
-                src={UP_ARROW_ICON_URL}
-                alt='리뷰 상세 접기 버튼'
-                width={30}
-                height={30}
-              />
-            </Button>
-          </div>
+          <ContentFoldButton onClick={setIsReviewFolded} />
         </>
       )}
       <ConfirmModal

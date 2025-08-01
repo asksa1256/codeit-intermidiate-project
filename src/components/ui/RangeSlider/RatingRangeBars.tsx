@@ -1,11 +1,13 @@
 import { AvgRatings } from '@/types/keyboardTypes';
+import { cn } from '@/utils/style';
 
 interface Props {
+  className?: string;
   reviewCount: number;
   avgRatings: AvgRatings;
 }
 
-const RatingRangeBars = ({ reviewCount, avgRatings }: Props) => {
+const RatingRangeBars = ({ className, reviewCount, avgRatings }: Props) => {
   const RATING_LABEL = ['5', '4', '3', '2', '1'];
   const FLEX_STYLE = 'flex gap-4 items-center my-2';
   const calcPercentage = (label: keyof AvgRatings): number => {
@@ -19,7 +21,12 @@ const RatingRangeBars = ({ reviewCount, avgRatings }: Props) => {
   };
 
   return (
-    <div className='whitespace-nowrap text-gray-500 font-medium leading-[26px] w-full md:w-70'>
+    <div
+      className={cn(
+        'whitespace-nowrap text-gray-500 font-medium leading-[26px] w-full md:w-70',
+        className,
+      )}
+    >
       {RATING_LABEL.map((label) => (
         <div key={label} className={FLEX_STYLE}>
           {label}점 <RangeBar percentage={calcPercentage(label as keyof AvgRatings)} />
@@ -34,9 +41,9 @@ export default RatingRangeBars;
 const RangeBar = ({ percentage }: { percentage: number }) => {
   return (
     <div className='w-full'>
-      <div className='relative w-full h-[6px] rounded-[50px] bg-gray-100'>
+      <div className='relative w-full h-[10px] rounded-[50px] bg-gray-100'>
         <div
-          className='absolute h-[6px] rounded-[50px] bg-primary'
+          className='absolute h-[10px] rounded-[50px] bg-primary'
           style={{ width: `${percentage}%` }}
         />
       </div>
