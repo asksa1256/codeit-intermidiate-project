@@ -28,12 +28,16 @@ const MyReviewArea = () => {
   const [reviewList, setReviewList] = useState<MyReviewItemType[] | null>(null);
   const [cursor, setCursor] = useState<number | null>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
   const isListEmpty = reviewList?.length === 0;
 
   const getReviewList = async () => {
     if (cursor === null) return;
+    if (isLoading) return;
 
     try {
+      setIsLoading(true);
+
       const data = await fetchReviewList(cursor);
       const { list, nextCursor, totalCount } = data;
 
@@ -42,6 +46,8 @@ const MyReviewArea = () => {
       setCursor(nextCursor);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

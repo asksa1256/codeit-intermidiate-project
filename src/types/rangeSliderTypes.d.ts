@@ -26,4 +26,5 @@ export interface MultihandleSliderProps {
   className?: string;
   initialValue: [number, number];
   onChange: (range: [number, number]) => void;
+  resetTrigger: number;
 }

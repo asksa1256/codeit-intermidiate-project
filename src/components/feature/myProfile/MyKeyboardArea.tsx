@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import KeyboardForm, { KeyboardFormValues } from '@/components/feature/Form/KeyboardForm';
 import Modal from '@/components/feature/Modal';
@@ -31,20 +31,30 @@ const MyKeyboardArea = () => {
   const [keyboardList, setKeyboardList] = useState<MyKeyboardItemType[] | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [cursor, setCursor] = useState<number | null>(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const groupRef = useRef<number>(0);
+
   const isListEmpty = keyboardList?.length === 0;
 
   const getKeyboardList = async () => {
     if (cursor === null) return;
+    if (isLoading) return;
 
+    console.log('loading');
     try {
+      setIsLoading(true);
       const data = await fetchKeyboardList(cursor);
       const { list, nextCursor, totalCount } = data;
 
       setKeyboardList((prev) => (prev === null ? list : [...prev, ...list]));
       setTotalCount(totalCount);
       setCursor(nextCursor);
+      groupRef.current++;
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -128,12 +138,18 @@ const MyKeyboardArea = () => {
       price: +formData.price,
       type: formData.type ?? KEYBOARD_TYPES_MAP[0].type,
     };
+
     // 키보드 등록 api
     try {
       const res = await apiClient.post(`/${TEAM}/wines`, payload);
       const data = res?.data;
 
-      setKeyboardList((prev) => (prev === null ? [data] : [...prev, data]));
+      setKeyboardList((prev) => {
+        if (prev === null) return [data];
+        if (prev.length >= DEFAULT_LIMIT * groupRef.current) return prev;
+        // 현재 렌더링 된 키보드리스트 개수가 LIMIT * 무한스크롤API요청횟수(LIMIT 10 * CURRENT 1) 초과시 키보드리스트에 추가하지 않음. -> 무한 스크롤을 완료하면 가장 마지막에 나오므로
+        return [...prev, data];
+      });
       setTotalCount((totalCount) => totalCount + 1);
       handleKeyboardModalClose();
       addToast({ message: '키보드 등록 성공', type: 'success', duration: 2000 });
@@ -148,6 +164,8 @@ const MyKeyboardArea = () => {
 
   // 데이터 로딩시
   if (keyboardList === null) return <MyListLoading />;
+
+  console.log(groupRef.current);
 
   return (
     <>

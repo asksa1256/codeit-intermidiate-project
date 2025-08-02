@@ -2,9 +2,10 @@
 'use client';
 
 import { Radio, RadioGroup, Transition, TransitionChild } from '@headlessui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import CloseIcon from '@/assets/icons/CloseIcon.svg';
+import { KeyboardListQueryParams } from '@/components/feature/Keyboards/KeyboardBottom';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import FilterRating from '@/components/ui/FilterRating';
 import MultihandleSlider from '@/components/ui/RangeSlider/MultihandleSlider';
@@ -18,15 +19,15 @@ import type { KeyboardCategoryType } from '@/types/keyboardTypes';
 
 interface FilterModalProps {
   open: boolean;
-  onClose: (trigger: boolean) => void;
-  selectedType: KeyboardCategoryType | null;
-  onToggleType: (type: KeyboardCategoryType) => void;
+  onClose: () => void;
+  // selectedType: KeyboardCategoryType | null;
+  // onToggleType: (type: KeyboardCategoryType) => void;
   onReset: () => void;
-  onApply: () => void;
-  priceRange: [number, number];
-  onChangePrice: (range: [number, number]) => void;
-  selectedRating: number | null;
-  onChangeRating: (value: number | null) => void;
+  onApply: (value: Partial<KeyboardListQueryParams>) => void;
+  // priceRange: [number, number];
+  // onChangePrice: (range: [number, number]) => void;
+  // selectedRating: number | null;
+  // onChangeRating: (value: number | null) => void;
   setKeyboardOpen: (toggle: boolean) => void;
 }
 
@@ -36,25 +37,18 @@ const KEYBOARD_TYPE = [
   { name: '펜타그래프', value: 'SPARKLING' },
 ];
 
-const FilterModal = ({
-  open,
-  onClose,
-  selectedType,
-  onToggleType,
-  onReset,
-  onApply,
-  priceRange,
-  onChangePrice,
-  selectedRating,
-  onChangeRating,
-  setKeyboardOpen,
-}: FilterModalProps) => {
+const FilterContent = ({ open, onClose, onReset, onApply, setKeyboardOpen }: FilterModalProps) => {
+  const [type, setType] = useState<KeyboardCategoryType | null>(null);
+  const [price, setPrice] = useState<[number, number]>([0, 300000]);
+  const [rating, setRating] = useState<number | null>(null);
+  const [resetTrigger, setResetTrigger] = useState(0);
+
   const innerWidth = useWindowWidth();
   const isWeb = innerWidth >= 1280;
   const isModalOpenOrWeb = open || isWeb;
   const handleClose = () => {
     if (isWeb) return;
-    onClose(false);
+    onClose();
   };
   const ref = useOutsideClick(handleClose);
 
@@ -69,9 +63,30 @@ const FilterModal = ({
 
   useEffect(() => {
     if (open && isWeb) {
-      onClose(false);
+      onClose();
     }
   }, [isWeb, open, onClose]);
+
+  // 필터 리셋 함수
+  const handleClickReset = () => {
+    onReset();
+    setType(null);
+    setPrice([0, 300000]);
+    setRating(null);
+    setResetTrigger((prev) => prev + 1);
+  };
+
+  // 필터 적용 함수
+  const handleClickFilater = () => {
+    const [minPrice, maxPrice] = price;
+    onApply({
+      type,
+      minPrice,
+      maxPrice,
+      rating,
+    });
+    onClose();
+  };
 
   return (
     <>
@@ -108,8 +123,8 @@ const FilterModal = ({
                     <h3 className='text-xl font-bold uppercase'>types</h3>
                     <div className='mt-[18px]'>
                       <RadioGroup
-                        value={selectedType}
-                        onChange={onToggleType}
+                        value={type}
+                        onChange={setType}
                         className='flex gap-[10px] flex-wrap'
                       >
                         {KEYBOARD_TYPE.map((plan) => (
@@ -122,24 +137,6 @@ const FilterModal = ({
                           </Radio>
                         ))}
                       </RadioGroup>
-                      {/* <FilterCheckbox
-                        label='멤브레인'
-                        value='WHITE'
-                        isChecked={selectedType === 'WHITE'}
-                        onChange={onToggleType}
-                      />
-                      <FilterCheckbox
-                        label='기계식'
-                        value='RED'
-                        isChecked={selectedType === 'RED'}
-                        onChange={onToggleType}
-                      />
-                      <FilterCheckbox
-                        label='펜타그래프'
-                        value='SPARKLING'
-                        isChecked={selectedType === 'SPARKLING'}
-                        onChange={onToggleType}
-                      /> */}
                     </div>
                   </section>
 
@@ -149,8 +146,9 @@ const FilterModal = ({
                     <div className='mt-5 pl-[20px]'>
                       <MultihandleSlider
                         className='lg:w-[80%]'
-                        initialValue={priceRange}
-                        onChange={onChangePrice}
+                        initialValue={price}
+                        onChange={setPrice}
+                        resetTrigger={resetTrigger}
                       />
                     </div>
                   </section>
@@ -159,12 +157,12 @@ const FilterModal = ({
                   <section className='mt-6 pt-6 border-t border-gray-100 lg:mt-15 lg:pt-0 lg:border-none'>
                     <h3 className='text-xl font-bold uppercase'>rating</h3>
                     <div className='mt-[10px]'>
-                      <FilterRating value={selectedRating} onChange={onChangeRating} />
+                      <FilterRating value={rating} onChange={setRating} />
                     </div>
                   </section>
                 </div>
                 <div className='shrink-0 m-6 lg:m-0 lg:mt-15'>
-                  <FilterFooterButton onReset={onReset} onApply={onApply} />
+                  <FilterFooterButton onReset={handleClickReset} onApply={handleClickFilater} />
                   <ButtonDefault
                     onClick={() => setKeyboardOpen(true)}
                     className='hidden w-full mt-4 font-bold lg:block'
@@ -181,4 +179,4 @@ const FilterModal = ({
   );
 };
 
-export default FilterModal;
+export default FilterContent;
