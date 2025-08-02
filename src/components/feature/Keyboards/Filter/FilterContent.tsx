@@ -36,7 +36,7 @@ const KEYBOARD_TYPE = [
   { name: '펜타그래프', value: 'SPARKLING' },
 ];
 
-const FilterModal = ({
+const FilterContent = ({
   open,
   onClose,
   selectedType,
@@ -181,4 +181,4 @@ const FilterModal = ({
   );
 };
 
-export default FilterModal;
+export default FilterContent;
