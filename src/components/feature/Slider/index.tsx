@@ -33,6 +33,7 @@ const ListSlider = ({ items }: ItemsProps) => {
   return (
     <div className='relative'>
       <Swiper
+        className='!pr-5 md:!pr-[30px]'
         slidesPerView='auto'
         spaceBetween={16}
         loop={false}
