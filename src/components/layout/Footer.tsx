@@ -8,17 +8,16 @@ const variant = {
 
 const Footer = () => {
   return (
-    <motion.div
+    <motion.footer
       initial='hidden'
       whileInView='visible'
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.3 }}
       variants={variant}
+      className='flex items-center justify-center text-md text-gray-500 mb-10 bg-transparent'
     >
-      <footer className='flex items-center justify-center text-md text-gray-500 mb-10'>
-        코드잇 파트3 3팀 중급 프로젝트 - tadak
-      </footer>
-    </motion.div>
+      코드잇 파트3 3팀 중급 프로젝트 - tadak
+    </motion.footer>
   );
 };
 
