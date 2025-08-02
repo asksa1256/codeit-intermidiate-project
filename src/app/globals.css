@@ -104,6 +104,7 @@
 }
 
 @layer components {
+  /* input */
   .input {
     @apply w-full px-5 border py-2.5 text-md sm:rounded-xl
           md:py-3 md:text-base md:rounded-2xl
@@ -116,6 +117,7 @@
     @apply w-5 h-5 text-gray-500;
   }
 
+  /* form */
   .form {
     @apply flex flex-col items-center w-full md:w-[496px] bg-white px-5 py-14 md:px-12 md:py-16 rounded-2xl shadow-primary;
   }
@@ -124,6 +126,11 @@
     @apply flex flex-col w-full gap-4;
   }
 
+  .form-btm-link {
+    @apply flex gap-3.5 mt-10 text-sm md:text-base;
+  }
+
+  /* button */
   .btn-outlined {
     @apply !bg-white border border-gray-300 sm:rounded-xl hover:border-primary;
   }

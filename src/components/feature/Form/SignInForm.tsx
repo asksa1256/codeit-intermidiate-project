@@ -121,7 +121,7 @@ const SignInForm = () => {
         </Field>
       </div>
 
-      <div className='form-btm-actions'>
+      <div className='form-btm-actions pt-4 md:pt-8'>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
           <span>로그인</span>
         </ButtonDefault>
@@ -129,7 +129,7 @@ const SignInForm = () => {
         <KakaoLoginButton />
       </div>
 
-      <div className='flex gap-3.5 text-sm md:text-base'>
+      <div className='form-btm-link'>
         <span className='text-gray-500'>계정이 없으신가요?</span>
         <Link href={SIGNUP_PAGE} className='text-primary underline underline-offset-4'>
           회원가입하기
