@@ -6,14 +6,14 @@ import { ReactNode, useEffect, useState, useCallback } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { LOGIN_PAGE, SIGNUP_PAGE, KEYBOARD_LIST_PAGE, KAKAO_LOGIN_PAGE } from '@/constants';
+import { SIGNIN_PAGE, SIGNUP_PAGE, KEYBOARD_LIST_PAGE, KAKAO_LOGIN_PAGE } from '@/constants';
 import { apiClient } from '@/lib/api/apiClient';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
 
 const PUBLIC_PATHS = ['/', KEYBOARD_LIST_PAGE];
-const AUTH_PATHS = [LOGIN_PAGE, SIGNUP_PAGE, KAKAO_LOGIN_PAGE];
+const AUTH_PATHS = [SIGNIN_PAGE, SIGNUP_PAGE, KAKAO_LOGIN_PAGE];
 
 const RequireAuth = ({ children }: { children: ReactNode }) => {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -95,7 +95,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
       // 로그인 권한 필요 페이지 (키보드 상세, 프로필 페이지)
       if (!user) {
         if (!refreshToken) {
-          const url = `${LOGIN_PAGE}?redirect_url=${encodeURIComponent(pathname)}`; // 로그인 후 해당 페이지로 리다이렉트
+          const url = `${SIGNIN_PAGE}?redirect_url=${encodeURIComponent(pathname)}`; // 로그인 후 해당 페이지로 리다이렉트
           router.replace(url);
           return;
         }
@@ -103,7 +103,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
         // !user && refreshToken
         const success = await refreshAccessTokenAndUser(refreshToken);
         if (!success) {
-          router.replace(LOGIN_PAGE);
+          router.replace(SIGNIN_PAGE);
           return;
         }
 

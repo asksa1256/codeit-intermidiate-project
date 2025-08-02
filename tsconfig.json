@@ -29,5 +29,5 @@
     ".next/types/**/*.ts",
     "src/app/listpagefiltertest"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "next"]
 }

@@ -8,8 +8,8 @@ export const ACCESS_TOKEN_KEY = 'accessToken';
 export const REFRESH_TOKEN_KEY = 'refreshToken';
 
 // pages
-export const LOGIN_PAGE = '/login';
-export const SIGNUP_PAGE = '/signUp';
+export const SIGNIN_PAGE = '/signin';
+export const SIGNUP_PAGE = '/signup';
 export const KEYBOARD_LIST_PAGE = '/keyboards';
 export const KAKAO_LOGIN_PAGE = '/oauth/kakao';
 

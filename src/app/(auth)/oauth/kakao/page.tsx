@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { SIGNIN_PAGE } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
@@ -66,7 +67,7 @@ const KakaoOAuthPage = () => {
           type: 'error',
           duration: 2000,
         });
-        router.push('/login');
+        router.push(SIGNIN_PAGE);
       }
     };
     signInByKakao();
