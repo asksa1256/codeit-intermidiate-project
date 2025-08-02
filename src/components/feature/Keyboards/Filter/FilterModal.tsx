@@ -167,7 +167,7 @@ const FilterModal = ({
                   <FilterFooterButton onReset={onReset} onApply={onApply} />
                   <ButtonDefault
                     onClick={() => setKeyboardOpen(true)}
-                    className='hidden w-full h-[50px] mt-4 font-bold lg:block'
+                    className='hidden w-full mt-4 font-bold lg:block'
                   >
                     키보드 등록하기
                   </ButtonDefault>

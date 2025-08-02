@@ -11,6 +11,7 @@ import { apiClient } from '@/lib/api/apiClient';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
+import useToastStore from '@/stores/toastStore';
 
 const PUBLIC_PATHS = ['/', KEYBOARD_LIST_PAGE];
 const AUTH_PATHS = [SIGNIN_PAGE, SIGNUP_PAGE, KAKAO_LOGIN_PAGE];
@@ -28,7 +29,9 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // accessToken 재발급 + 재로그인 (user 전역 상태 저장): refreshToken 있을 때만 호출됨
+  const addToast = useToastStore((state) => state.addToast);
+
+  // accessToken 재발급 + user 전역 상태 갱신: refreshToken 있을 때만 호출
   const refreshAccessTokenAndUser = useCallback(
     async (refreshToken: string) => {
       const auth = new AxiosApiAuth();
@@ -86,36 +89,35 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // ✅ 로그인 권한 필요 없는 공개 페이지 (메인, 키보드 목록 페이지): 권한 검사 없이 바로 페이지 본문 리턴
+      // ✅ 로그인 필요 없는 공개 페이지 (메인, 키보드 목록 페이지): 권한 검사 없이 바로 페이지 본문 리턴
       if (isPublicPath) {
         setIsAuthChecked(true);
         return;
       }
 
-      // 로그인 권한 필요 페이지 (키보드 상세, 프로필 페이지)
+      // // ✅ 로그인 필요한 페이지 (키보드 상세, 내 프로필 페이지): 권한 없으면 로그인 페이지로 이동
       if (!user) {
         if (!refreshToken) {
-          const url = `${SIGNIN_PAGE}?redirect_url=${encodeURIComponent(pathname)}`; // 로그인 후 해당 페이지로 리다이렉트
-          router.replace(url);
+          router.replace(SIGNIN_PAGE);
+          addToast({ message: '로그인이 필요합니다.', type: 'error', duration: 2000 });
           return;
         }
 
-        // !user && refreshToken
         const success = await refreshAccessTokenAndUser(refreshToken);
         if (!success) {
           router.replace(SIGNIN_PAGE);
+          addToast({ message: '로그인이 필요합니다.', type: 'error', duration: 2000 });
           return;
         }
 
         setIsAuthChecked(true);
-        return;
       }
 
       setIsAuthChecked(true);
     };
 
     checkAndRefreshToken();
-  }, [pathname, router, user, refreshAccessTokenAndUser]);
+  }, [pathname, router, user, refreshAccessTokenAndUser, addToast]);
 
   if (!isAuthChecked)
     return isRefreshing ? <LoadingSpinner text='로그인 확인중...' className='h-screen' /> : null;

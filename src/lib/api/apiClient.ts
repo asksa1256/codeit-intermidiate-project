@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
 
-import { SIGNIN_PAGE } from '@/constants';
 import useAuthStore from '@/stores/authStore';
 
 import { AxiosApiAuth } from './axios';
@@ -44,13 +43,10 @@ apiClient.interceptors.response.use(
           // 재발급 실패 시 토큰 삭제 후 로그인 페이지 이동 처리
           signOut(); // 유저 전역 상태 null
           auth.signOut(); // 토큰만 따로 삭제
-          window.location.href = SIGNIN_PAGE;
 
           return Promise.reject(error);
         }
       } else {
-        // refreshToken 없으면 바로 로그인 페이지로
-        window.location.href = SIGNIN_PAGE;
         return Promise.reject(error);
       }
     }

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Field } from '@headlessui/react';
 import { AxiosError } from 'axios';
@@ -27,7 +27,6 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const SignInForm = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const auth = new AxiosApiAuth();
   const signIn = useAuthStore((state) => state.signIn);
   const addToast = useToastStore((state) => state.addToast);
@@ -45,16 +44,8 @@ const SignInForm = () => {
     try {
       const res = await auth.signInByEmail(email, password);
       const { user, accessToken, refreshToken } = res;
-      signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
-
-      // 쿼리 파라미터에서 redirect_url 가져오기 (로그인 후 리다이렉트 처리)
-      const redirectUrl = searchParams.get('redirect_url');
-
-      if (redirectUrl) {
-        router.replace(redirectUrl);
-      } else {
-        router.push('/');
-      }
+      signIn({ user, accessToken, refreshToken }); // 유저 정보 store에 저장
+      router.push('/');
 
       addToast({
         message: (
@@ -121,7 +112,7 @@ const SignInForm = () => {
         </Field>
       </div>
 
-      <div className='form-btm-actions'>
+      <div className='form-btm-actions pt-4 md:pt-8'>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
           <span>로그인</span>
         </ButtonDefault>
@@ -129,7 +120,7 @@ const SignInForm = () => {
         <KakaoLoginButton />
       </div>
 
-      <div className='flex gap-3.5 text-sm md:text-base'>
+      <div className='form-btm-link'>
         <span className='text-gray-500'>계정이 없으신가요?</span>
         <Link href={SIGNUP_PAGE} className='text-primary underline underline-offset-4'>
           회원가입하기
