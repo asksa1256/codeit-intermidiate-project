@@ -1,10 +1,9 @@
 // 목록 페이지의 키보드 카드 컴포넌트
-
-import Image from 'next/image';
 import Link from 'next/link';
 
 import React from 'react';
 
+import CustomRightArrowIcon from '@/components/ui/Icon/CustomRightArrowIcon';
 import KeyboardThumbnail from '@/components/ui/KeyboardThumbnail';
 import RatingAndPrice from '@/components/ui/RatingAndPrice';
 import StarRating from '@/components/ui/StarRating';
@@ -36,7 +35,7 @@ const IndexKeyboardsCard = ({
   return (
     <Link
       href={`/keyboards/${keyboardId}`}
-      className='block mb-5 border border-gray-300 rounded-xl md:rounded-2xl bg-white'
+      className='group block mb-5 border border-gray-300 rounded-xl md:rounded-2xl bg-white  hover:-translate-y-2 hover:shadow-primary hover:border-primary transition-all'
     >
       <div className='flex'>
         {/* 이미지 영역 */}
@@ -73,13 +72,9 @@ const IndexKeyboardsCard = ({
                 {reviewCount}개의 후기
               </div>
             </div>
-            <Image
-              src='/images/RightArrowIcon.svg'
-              alt='오른쪽 이동'
-              width={32}
-              height={32}
-              className='ml-auto w-[32px] md:w-[36px] md:mt-auto cursor-pointer'
-            />
+            <div className='ml-auto md:mt-auto w-[32px] md:w-[36px]'>
+              <CustomRightArrowIcon className=' text-gray-300 transition-all -translate-x-2 group-hover:translate-x-2 group-hover:text-primary' />
+            </div>
           </div>
         </div>
       </div>
