@@ -17,6 +17,7 @@ import SliderSection from '@/components/feature/Slider/SliderSection';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import EmptyList from '@/components/ui/EmptyList';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import ScrollLoading from '@/components/ui/ScrollLoading';
 import { TEAM_ID } from '@/constants';
 import { KEYBOARD_TYPES_MAP } from '@/constants';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
@@ -35,7 +36,6 @@ const getKeyboardList = async (queryString: string) => {
 const KeyboardsPage = () => {
   const [items, setItems] = useState<KeyboardItemType[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isMoreFetchLoading, setIsMoreFetchLoading] = useState(false);
 
   const [selectedType, setSelectedType] = useState<KeyboardCategoryType | null>(null); // 키보드 타입 필터용
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]); // 가격 슬라이더 필터용
@@ -104,12 +104,13 @@ const KeyboardsPage = () => {
 
     try {
       setIsLoading(true);
-      const { list, nextCursor } = await getKeyboardList(q);
+      const { list, nextCursor, totalCount } = await getKeyboardList(q);
 
       // 필터 변경 시 기존 데이터, 커서 초기화
       setItems(list);
       setCursor(nextCursor ?? null);
       setIsFilterOpen(false);
+      setTotalCount(totalCount);
     } catch (error) {
       console.error(error);
     } finally {
@@ -156,13 +157,11 @@ const KeyboardsPage = () => {
 
   // 무한 스크롤
   const fetchMoreItems = async () => {
-    if (!items) return;
-    if (items.length === totalCount) return;
+    if (cursor === null) return;
 
     const q = getQueryString();
 
     try {
-      setIsMoreFetchLoading(true);
       const res = await apiClient.get(`/${TEAM_ID}/wines?${q}`, {
         params: { limit: ScrollLimit, cursor },
       });
@@ -170,10 +169,9 @@ const KeyboardsPage = () => {
       const dataArray: KeyboardItemType[] = res.data.list || [];
       setItems((prev) => [...(prev ?? []), ...dataArray]);
       setCursor(res.data.nextCursor);
+      setTotalCount(res.data.totalCount);
     } catch (err) {
       console.error('기본 데이터 호출 실패:', err);
-    } finally {
-      setIsMoreFetchLoading(false);
     }
   };
 
@@ -243,11 +241,10 @@ const KeyboardsPage = () => {
                 />
               ))
             )}
-            {isMoreFetchLoading ? (
-              <LoadingSpinner className='w-full my-8' />
-            ) : (
-              <div ref={targetRef}></div>
-            )}
+            <ScrollLoading
+              endRef={targetRef}
+              hasNextPage={items?.length !== totalCount && cursor !== null}
+            />
           </div>
         </div>
         {/* 하단 영역 :: E */}
