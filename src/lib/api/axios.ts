@@ -1,6 +1,8 @@
 import axios from 'axios';
-export type SocialProvider = 'GOOGLE' | 'NAVER' | 'KAKAO';
+export type SocialProvider = 'KAKAO';
 import { AxiosInstance } from 'axios';
+
+import { SIGNUP_PAGE } from '@/constants';
 
 import { tokenService } from './tokenService';
 
@@ -55,7 +57,7 @@ export class AxiosApiAuth {
   ) {
     try {
       const response = await axios.post(
-        `${this.requestUrl}/signUp`,
+        `${this.requestUrl}${SIGNUP_PAGE}`,
         { email, nickname, password, passwordConfirmation },
         { headers: { 'Content-Type': 'application/json' } },
       );

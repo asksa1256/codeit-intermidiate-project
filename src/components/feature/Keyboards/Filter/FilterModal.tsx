@@ -12,7 +12,6 @@ import useOutsideClick from '@/hooks/useClickOutside';
 import useWindowWidth from '@/hooks/useWindowWidth';
 import { cn } from '@/utils/style';
 
-import FilterCheckbox from './FilterCheckbox';
 import FilterFooterButton from './FilterFooterButton';
 
 import type { KeyboardCategoryType } from '@/types/keyboardTypes';
@@ -149,9 +148,9 @@ const FilterModal = ({
                     <h3 className='text-xl font-bold uppercase'>price</h3>
                     <div className='mt-5 pl-[20px]'>
                       <MultihandleSlider
-                        value={priceRange}
-                        onChange={onChangePrice}
                         className='lg:w-[80%]'
+                        initialValue={priceRange}
+                        onChange={onChangePrice}
                       />
                     </div>
                   </section>
@@ -168,7 +167,7 @@ const FilterModal = ({
                   <FilterFooterButton onReset={onReset} onApply={onApply} />
                   <ButtonDefault
                     onClick={() => setKeyboardOpen(true)}
-                    className='hidden w-full h-[50px] mt-4 font-bold lg:block'
+                    className='hidden w-full mt-4 font-bold lg:block'
                   >
                     키보드 등록하기
                   </ButtonDefault>

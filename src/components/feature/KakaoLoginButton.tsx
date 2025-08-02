@@ -11,7 +11,10 @@ const KakaoLoginButton = () => {
   };
 
   return (
-    <ButtonDefault onClick={handleLogin} className='w-full btn-outlined'>
+    <ButtonDefault
+      onClick={handleLogin}
+      className='w-full bg-white border border-gray-300 sm:rounded-xl hover:border-[#FEE500] hover:bg-[#FEE500]'
+    >
       <span className='relative w-6 h-6 rounded-full'>
         <Image src='/images/KakaoIcon.svg' alt='카카오톡 로고' fill={true} />
       </span>

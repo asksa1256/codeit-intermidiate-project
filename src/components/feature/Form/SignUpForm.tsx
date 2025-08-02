@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import PasswordInputField from '@/components/feature/InputField/PasswordInputField';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
+import { SIGNIN_PAGE } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
 import useToastStore from '@/stores/toastStore';
@@ -50,7 +51,15 @@ const SignInForm = () => {
       signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
       await auth.signInByEmail(email, password); // 로그인 처리
 
-      addToast({ message: `환영해요, ${user.nickname}님!`, type: 'success', duration: 2000 });
+      addToast({
+        message: (
+          <span>
+            환영해요, <b>{user.nickname}</b>님!
+          </span>
+        ),
+        type: 'success',
+        duration: 2000,
+      });
       router.push('/');
     } catch (error) {
       const err = error as AxiosError;
@@ -172,15 +181,15 @@ const SignInForm = () => {
         </Field>
       </div>
 
-      <div className='form-btm-actions'>
+      <div className='form-btm-actions pt-4 md:pt-8'>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
           가입하기
         </ButtonDefault>
       </div>
 
-      <div className='flex gap-3.5 text-sm md:text-base'>
+      <div className='form-btm-link'>
         <span className='text-gray-500'>계정이 이미 있으신가요?</span>
-        <Link href='/login' className='text-primary underline underline-offset-4'>
+        <Link href={SIGNIN_PAGE} className='text-primary underline underline-offset-4'>
           로그인하기
         </Link>
       </div>

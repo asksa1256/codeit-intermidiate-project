@@ -24,10 +24,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - Notion [Link](https://www.notion.so/2318ca8d39728171822aeb14df352b13?pvs=13)
 
 ## 폴더 구조
+
 ```
-📦public 
- ┣ 📂fonts 
- ┃ ┣ 📜Pretendard-Bold.woff 
+📦public
+ ┣ 📂fonts
+ ┃ ┣ 📜Pretendard-Bold.woff
  ┃ ┣ 📜Pretendard-Medium.woff
  ┃ ┣ 📜Pretendard-Regular.woff
  ┃ ┗ 📜Pretendard-SemiBold.woff
@@ -35,13 +36,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
  ┃ ┣ 📜logoImg.svg
  ┃ ┣ 📜keyboard1.png
  ┃ ┣ 📜keyboard2.png
- ┃ ┣ 📜.svg
  ┃ ┗ 📜window.svg
  ┃
  📦src
  ┣ 📂app
  ┃ ┣ 📂(auth)
- ┃ ┃ ┣ 📂login
+ ┃ ┃ ┣ 📂signin
  ┃ ┃ ┃ ┗ 📜page.tsx
  ┃ ┃ ┗ 📜layout.tsx
  ┃ ┣ 📂(global)
@@ -54,7 +54,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
  ┃ ┗ 📜layout.tsx
  ┣ 📂components
  ┃ ┣ 📂feature
- ┃ ┃ ┣ 📜LoginForm.tsx
+ ┃ ┃ ┣ 📜SignInForm.tsx
  ┃ ┃ ┗ 📜SignUpForm.tsx
  ┃ ┣ 📂layout
  ┃ ┃ ┗ 📜Header.tsx

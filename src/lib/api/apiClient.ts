@@ -35,21 +35,18 @@ apiClient.interceptors.response.use(
       if (refreshToken) {
         try {
           const { accessToken } = await auth.refreshToken(refreshToken);
-          tokenService.setAccessToken(accessToken); // 이미 유저 전역에서 관리되지만, 추후 쿠키 토큰용으로 사용할 수도 있어서 임시 보류
+          tokenService.setAccessToken(accessToken);
 
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return apiClient(originalRequest);
         } catch {
           // 재발급 실패 시 토큰 삭제 후 로그인 페이지 이동 처리
-          signOut(); // 유저 전역 상태에서 삭제
-          auth.signOut(); // 토큰만 따로 삭제 (쿠키 토큰용)
-          window.location.href = '/login';
+          signOut(); // 유저 전역 상태 null
+          auth.signOut(); // 토큰만 따로 삭제
 
           return Promise.reject(error);
         }
       } else {
-        // refreshToken 없으면 바로 로그인 페이지로
-        window.location.href = '/login';
         return Promise.reject(error);
       }
     }
