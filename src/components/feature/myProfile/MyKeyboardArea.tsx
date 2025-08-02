@@ -31,12 +31,16 @@ const MyKeyboardArea = () => {
   const [keyboardList, setKeyboardList] = useState<MyKeyboardItemType[] | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [cursor, setCursor] = useState<number | null>(0);
+  const [isLoading, setIsLoading] = useState(false);
   const isListEmpty = keyboardList?.length === 0;
 
   const getKeyboardList = async () => {
     if (cursor === null) return;
+    if (isLoading) return;
 
+    console.log('loading');
     try {
+      setIsLoading(true);
       const data = await fetchKeyboardList(cursor);
       const { list, nextCursor, totalCount } = data;
 
@@ -45,6 +49,8 @@ const MyKeyboardArea = () => {
       setCursor(nextCursor);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
