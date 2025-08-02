@@ -1,6 +1,6 @@
 import SignUpForm from '@/components/feature/Form/SignUpForm';
 
-const SignInPage = async () => {
+const SignUpPage = async () => {
   return (
     <section className='w-full flex justify-center py-20 px-4'>
       <SignUpForm />
@@ -8,4 +8,4 @@ const SignInPage = async () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;
