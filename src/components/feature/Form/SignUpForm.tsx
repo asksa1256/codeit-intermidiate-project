@@ -51,7 +51,15 @@ const SignInForm = () => {
       signIn({ user, accessToken, refreshToken }); // 유저 정보 zustand store에 저장
       await auth.signInByEmail(email, password); // 로그인 처리
 
-      addToast({ message: `환영해요, ${user.nickname}님!`, type: 'success', duration: 2000 });
+      addToast({
+        message: (
+          <span>
+            환영해요, <b>{user.nickname}</b>님!
+          </span>
+        ),
+        type: 'success',
+        duration: 2000,
+      });
       router.push('/');
     } catch (error) {
       const err = error as AxiosError;
