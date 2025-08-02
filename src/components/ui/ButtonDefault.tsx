@@ -88,12 +88,12 @@ const ButtonDefault = ({
    * - `transition-colors duration-200`: 배경색 변경 시 200ms 동안 부드러운 전환 효과를 적용합니다.
    */
   const baseStyles = `
-    w-[400px] h-[50px]
+    w-[400px] 
     flex flex-row justify-center items-center
-    py-4 px-[20px] gap-[10px]
-    bg-[#8642DB] rounded-2xl
+    py-3 px-[20px] gap-[10px]
+    bg-primary rounded-2xl
     text-white font-semibold
-    disabled:bg-gray-400 disabled:cursor-not-allowed
+    disabled:bg-gray-300 disabled:cursor-not-allowed 
     transition-colors duration-200
     hover:bg-primary-dark
   `;
