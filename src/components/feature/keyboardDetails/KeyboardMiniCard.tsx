@@ -19,7 +19,7 @@ const KeyboardMiniCard = ({ item }: KeyboardMiniItem) => {
                 src={item.image}
                 alt={item.name}
                 fill
-                sizes={`(max-width: 639px) 50px, 60px`}
+                sizes={`(max-width: 639px) 128px, 400px`}
               />
             </figure>
           </div>

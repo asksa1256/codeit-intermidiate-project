@@ -3,7 +3,6 @@
 
 import { useRouter } from 'next/navigation';
 
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import KeyboardForm from '@/components/feature/Form/KeyboardForm';
