@@ -31,7 +31,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
 
   const addToast = useToastStore((state) => state.addToast);
 
-  // accessToken 재발급 + 재로그인 (user 전역 상태 저장): refreshToken 있을 때만 호출됨
+  // accessToken 재발급 + user 전역 상태 갱신: refreshToken 있을 때만 호출
   const refreshAccessTokenAndUser = useCallback(
     async (refreshToken: string) => {
       const auth = new AxiosApiAuth();
@@ -95,11 +95,22 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      // ✅ 로그인 필요한 페이지 (키보드 상세, 내 프로필 페이지): 권한 없으면 로그인 페이지로 이동
-      if (!user && !refreshToken) {
-        router.replace(SIGNIN_PAGE);
-        addToast({ message: '로그인이 필요합니다.', type: 'error', duration: 2000 });
-        return;
+      // // ✅ 로그인 필요한 페이지 (키보드 상세, 내 프로필 페이지): 권한 없으면 로그인 페이지로 이동
+      if (!user) {
+        if (!refreshToken) {
+          router.replace(SIGNIN_PAGE);
+          addToast({ message: '로그인이 필요합니다.', type: 'error', duration: 2000 });
+          return;
+        }
+
+        const success = await refreshAccessTokenAndUser(refreshToken);
+        if (!success) {
+          router.replace(SIGNIN_PAGE);
+          addToast({ message: '로그인이 필요합니다.', type: 'error', duration: 2000 });
+          return;
+        }
+
+        setIsAuthChecked(true);
       }
 
       setIsAuthChecked(true);

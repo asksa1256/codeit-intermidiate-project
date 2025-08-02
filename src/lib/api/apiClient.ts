@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
 
-import { SIGNIN_PAGE } from '@/constants';
 import useAuthStore from '@/stores/authStore';
 
 import { AxiosApiAuth } from './axios';
