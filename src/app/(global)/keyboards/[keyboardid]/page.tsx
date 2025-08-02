@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 import KeyboardInfoCard from '@/components/feature/keyboardDetails/KeyboardInfoCard';
 import RatingsInfo from '@/components/feature/keyboardDetails/RatingsInfo';
@@ -28,6 +28,10 @@ const KeyboardDetailsPage = () => {
     } finally {
     }
   }, [keyboardid]);
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   //patch, delete등의 정보 수정이 일어나면 다시 데이터fetch
   useEffect(() => {
