@@ -67,9 +67,11 @@ const RatingsInfo = ({
             },
           )}
         >
-          <div className='lg:hidden text-md md:text-base font-semibold w-full whitespace-nowrap overflow-hidden overflow-ellipsis pb-2 md:px-21'>
-            {name}
-          </div>
+          {isFixedOnTop ? (
+            <div className='lg:hidden text-md md:text-base font-semibold w-full whitespace-nowrap overflow-hidden overflow-ellipsis pb-2 md:px-21'>
+              {name}
+            </div>
+          ) : undefined}
           <div
             className={cn(
               'flex flex-col md:flex-row lg:flex-col lg:items-start md:items-center md:justify-between lg:gap-[20px] md:max-w-285 lg:max-w-200 md:px-21 lg:px-0 md:mx-auto',
