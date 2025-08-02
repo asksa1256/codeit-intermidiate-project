@@ -73,14 +73,14 @@ const ListSlider = ({ items }: ItemsProps) => {
           icon={RightArrowIcon}
           iconReverse
           rounded
-          className='absolute left-5 shadow-md'
+          className='absolute left-2 md:left-5 shadow-md'
           disabled={isBeginning}
           onClick={() => swiperRef.current?.slidePrev()}
         />
         <IconButton
           icon={RightArrowIcon}
           rounded
-          className='absolute right-5 shadow-md'
+          className='absolute right-2 md:right-5 shadow-md'
           disabled={isEnd}
           onClick={() => swiperRef.current?.slideNext()}
         />
