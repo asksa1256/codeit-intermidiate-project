@@ -51,18 +51,18 @@ const ToastContainer = () => {
   if (!overlayRoot) return null;
 
   return createPortal(
-    <div className='fixed left-1/2 -translate-x-1/2 bottom-9 z-60'>
+    <div className='fixed left-1/2 -translate-x-1/2 bottom-9 z-60 whitespace-nowrap'>
       {toasts.map((t) => (
         <div
           key={t.id}
           className={`flex gap-4 py-4 px-6 rounded-xl shadow-lg text-gray-800 bg-white ${t.isClosing ? 'fade-down' : 'bounce-in'}`}
         >
           {t.type === 'success' ? (
-            <SuccessIcon className='w-6 h-6 text-emerald-500' />
+            <SuccessIcon className='shrink-0 w-6 h-6 text-emerald-500' />
           ) : t.type === 'error' ? (
-            <WarningIcon className='w-6 h-6 text-red-500' />
+            <WarningIcon className='shrink-0 w-6 h-6 text-red-500' />
           ) : (
-            <InfoIcon className='w-6 h-6 text-gray-500' />
+            <InfoIcon className='shrink-0 w-6 h-6 text-gray-500' />
           )}
           {t.message}
           <button className='ml-4' onClick={() => removeWithAnim(t.id, 0)}>

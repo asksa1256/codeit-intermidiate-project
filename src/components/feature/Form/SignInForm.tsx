@@ -12,6 +12,7 @@ import PasswordInputField from '@/components/feature/InputField/PasswordInputFie
 import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
+import { SIGNUP_PAGE } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
 import useToastStore from '@/stores/toastStore';
@@ -24,7 +25,7 @@ interface FormValues {
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-const LoginForm = () => {
+const SignInForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const auth = new AxiosApiAuth();
@@ -130,7 +131,7 @@ const LoginForm = () => {
 
       <div className='flex gap-3.5 text-sm md:text-base'>
         <span className='text-gray-500'>계정이 없으신가요?</span>
-        <Link href='/signUp' className='text-primary underline underline-offset-4'>
+        <Link href={SIGNUP_PAGE} className='text-primary underline underline-offset-4'>
           회원가입하기
         </Link>
       </div>
@@ -138,4 +139,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignInForm;

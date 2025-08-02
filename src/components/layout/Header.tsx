@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/shallow';
 
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import UserThumbnail from '@/components/ui/UserThumbnail';
+import { SIGNIN_PAGE, SIGNUP_PAGE } from '@/constants';
 import useSticky from '@/hooks/useSticky';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
@@ -68,10 +69,10 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
             </Dropdown>
           ) : (
             <>
-              <Link href='/login' className='link'>
+              <Link href={SIGNIN_PAGE} className='link'>
                 로그인
               </Link>
-              <Link href='/signUp' className='link'>
+              <Link href={SIGNUP_PAGE} className='link'>
                 회원가입
               </Link>
             </>

@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import PasswordInputField from '@/components/feature/InputField/PasswordInputField';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
+import { SIGNIN_PAGE } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
 import useToastStore from '@/stores/toastStore';
@@ -180,7 +181,7 @@ const SignInForm = () => {
 
       <div className='flex gap-3.5 text-sm md:text-base'>
         <span className='text-gray-500'>계정이 이미 있으신가요?</span>
-        <Link href='/login' className='text-primary underline underline-offset-4'>
+        <Link href={SIGNIN_PAGE} className='text-primary underline underline-offset-4'>
           로그인하기
         </Link>
       </div>
