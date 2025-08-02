@@ -64,7 +64,7 @@ const KeyboardsPage = () => {
       const res = await apiClient.post(`/${TEAM_ID}/wines`, payload);
       const data = res?.data;
 
-      router.replace(`/keyboards/${data.id}`);
+      router.push(`/keyboards/${data.id}`);
     } catch (err) {
       throw err;
     }
