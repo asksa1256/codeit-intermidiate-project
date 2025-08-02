@@ -9,7 +9,7 @@ export default function Layout({
   return (
     <>
       <HeaderComponent />
-      <main>{children}</main>
+      {children}
       <Footer />
     </>
   );
