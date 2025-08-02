@@ -51,7 +51,7 @@ const ToastContainer = () => {
   if (!overlayRoot) return null;
 
   return createPortal(
-    <div className='fixed left-1/2 -translate-x-1/2 bottom-9 z-60 whitespace-nowrap'>
+    <div className='fixed flex flex-col gap-2 left-1/2 -translate-x-1/2 bottom-9 z-60 whitespace-nowrap'>
       {toasts.map((t) => (
         <div
           key={t.id}
