@@ -72,7 +72,9 @@ const MyReviewItem = ({ review, onDelete, onEdit }: MyReviewItemProps) => {
           />
         </div>
         <h3 className='mb-[10px] text-md text-gray-500 line-clamp-1 md:text-base'>{wine.name}</h3>
-        <p className='text-md text-ellipsis break-keep md:text-base'>{content}</p>
+        <p className='text-md text-ellipsis break-keep md:text-base whitespace-pre-wrap'>
+          {content}
+        </p>
       </li>
       {/* 삭제 컨펌 모달 */}
       <ConfirmModal
