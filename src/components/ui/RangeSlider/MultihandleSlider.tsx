@@ -14,8 +14,9 @@ const MINIMUM_HANDLE_GAP = 20; // 전체 트랙 길이 300중 20
 
 const MultihandleSlider = ({
   className,
-  initialValue = [0, 300],
+  initialValue,
   onChange,
+  resetTrigger,
 }: MultihandleSliderProps) => {
   const [minValue, setMinValue] = useState(initialValue[0] / 1000);
   const [maxValue, setMaxValue] = useState(initialValue[1] / 1000);
@@ -26,6 +27,7 @@ const MultihandleSlider = ({
   const maxHandleStyle = { left: `${(maxValue / 300) * 100}%` };
   const minPrice = `￦ ${formatPrice(1000 * minValue)}`;
   const maxPrice = `￦ ${formatPrice(1000 * maxValue)}`;
+  const isMountFlag = useRef(true);
 
   const handleMouseDown = (event: React.MouseEvent | MouseEvent) => {
     isDragging.current = true;
@@ -59,11 +61,13 @@ const MultihandleSlider = ({
       }
       //핸들이 트랙의 끝에 있을 때, 드래그를 해도 값이 바뀌지 않으면 상태 업데이트를 하지않도록 설정
       setMinValue((prev) => (prev === value ? prev : value));
+      onChange([1000 * value, 1000 * maxValue]);
     } else if (activeHandleRef.current === 'max') {
       if (Math.abs(value - minValue) < MINIMUM_HANDLE_GAP || value < minValue) {
         return;
       }
       setMaxValue((prev) => (prev === value ? prev : value));
+      onChange([1000 * minValue, 1000 * value]);
     }
   };
 
@@ -105,11 +109,13 @@ const MultihandleSlider = ({
         return;
       }
       setMinValue((prev) => (prev === value ? prev : value));
+      onChange([1000 * value, 1000 * maxValue]);
     } else if (activeHandleRef.current === 'max') {
       if (Math.abs(value - minValue) < MINIMUM_HANDLE_GAP || value < minValue) {
         return;
       }
       setMaxValue((prev) => (prev === value ? prev : value));
+      onChange([1000 * minValue, 1000 * value]);
     }
   };
 
@@ -119,10 +125,14 @@ const MultihandleSlider = ({
     window.removeEventListener('touchend', handleTouchEnd);
   };
 
-  //마운트시 초기값 전달
   useEffect(() => {
-    onChange([1000 * minValue, 1000 * maxValue]);
-  }, [minValue, maxValue]);
+    if (isMountFlag.current) {
+      isMountFlag.current = false;
+      return;
+    }
+    setMinValue(0);
+    setMaxValue(300);
+  }, [resetTrigger]);
 
   if (!RangesliderRef) {
     return;

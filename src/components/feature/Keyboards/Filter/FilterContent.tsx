@@ -19,7 +19,7 @@ import type { KeyboardCategoryType } from '@/types/keyboardTypes';
 
 interface FilterModalProps {
   open: boolean;
-  onClose: (trigger: boolean) => void;
+  onClose: () => void;
   // selectedType: KeyboardCategoryType | null;
   // onToggleType: (type: KeyboardCategoryType) => void;
   onReset: () => void;
@@ -41,13 +41,14 @@ const FilterContent = ({ open, onClose, onReset, onApply, setKeyboardOpen }: Fil
   const [type, setType] = useState<KeyboardCategoryType | null>(null);
   const [price, setPrice] = useState<[number, number]>([0, 300000]);
   const [rating, setRating] = useState<number | null>(null);
+  const [resetTrigger, setResetTrigger] = useState(0);
 
   const innerWidth = useWindowWidth();
   const isWeb = innerWidth >= 1280;
   const isModalOpenOrWeb = open || isWeb;
   const handleClose = () => {
     if (isWeb) return;
-    onClose(false);
+    onClose();
   };
   const ref = useOutsideClick(handleClose);
 
@@ -62,7 +63,7 @@ const FilterContent = ({ open, onClose, onReset, onApply, setKeyboardOpen }: Fil
 
   useEffect(() => {
     if (open && isWeb) {
-      onClose(false);
+      onClose();
     }
   }, [isWeb, open, onClose]);
 
@@ -72,6 +73,7 @@ const FilterContent = ({ open, onClose, onReset, onApply, setKeyboardOpen }: Fil
     setType(null);
     setPrice([0, 300000]);
     setRating(null);
+    setResetTrigger((prev) => prev + 1);
   };
 
   // 필터 적용 함수
@@ -83,6 +85,7 @@ const FilterContent = ({ open, onClose, onReset, onApply, setKeyboardOpen }: Fil
       maxPrice,
       rating,
     });
+    onClose();
   };
 
   return (
@@ -145,6 +148,7 @@ const FilterContent = ({ open, onClose, onReset, onApply, setKeyboardOpen }: Fil
                         className='lg:w-[80%]'
                         initialValue={price}
                         onChange={setPrice}
+                        resetTrigger={resetTrigger}
                       />
                     </div>
                   </section>
