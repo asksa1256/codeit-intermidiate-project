@@ -33,6 +33,7 @@ const ListSlider = ({ items }: ItemsProps) => {
   return (
     <div className='relative'>
       <Swiper
+        className='!pr-5 md:!pr-[30px]'
         slidesPerView='auto'
         spaceBetween={16}
         loop={false}
@@ -72,14 +73,14 @@ const ListSlider = ({ items }: ItemsProps) => {
           icon={RightArrowIcon}
           iconReverse
           rounded
-          className='absolute left-5 shadow-md'
+          className='absolute left-2 md:left-5 shadow-md'
           disabled={isBeginning}
           onClick={() => swiperRef.current?.slidePrev()}
         />
         <IconButton
           icon={RightArrowIcon}
           rounded
-          className='absolute right-5 shadow-md'
+          className='absolute right-2 md:right-5 shadow-md'
           disabled={isEnd}
           onClick={() => swiperRef.current?.slideNext()}
         />

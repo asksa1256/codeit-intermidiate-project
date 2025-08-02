@@ -15,7 +15,12 @@ const KeyboardMiniCard = ({ item }: KeyboardMiniItem) => {
         <div className='shrink-0 w-[52px] md:w-[60px] mt-[130%] md:mt-[118%]'>
           <div className='relative'>
             <figure className='absolute bottom-0 rotate-90 right-full origin-bottom-right w-[180px] aspect-[160/44] md:w-[200px] md:aspect-[184/56]'>
-              <Image src={item.image} alt={item.name} fill />
+              <Image
+                src={item.image}
+                alt={item.name}
+                fill
+                sizes={`(max-width: 639px) 128px, 400px`}
+              />
             </figure>
           </div>
         </div>

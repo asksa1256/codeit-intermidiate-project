@@ -24,7 +24,7 @@ const Home = () => {
   };
 
   return (
-    <main className='bg-gray-100 lg:bg-white px-4 pt-[90px] md:pt-[114px] lg:pt-[178px] pb-16 -mt-[90px] md:-mt-[110px] overflow-hidden'>
+    <main className='bg-white px-4 pt-[90px] md:pt-[114px] lg:pt-[178px] pb-16 -mt-[90px] md:-mt-[110px] overflow-hidden'>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}

@@ -26,7 +26,7 @@ const SliderSection = ({ title }: { title?: string | ReactNode }) => {
 
   return (
     <section className='w-full'>
-      <article className='bg-gray-100 p-5 md:p-[30px] rounded-xl md:rounded-2xl'>
+      <article className='bg-gray-100 py-5 pl-5 pr-0 md:py-[30px] md:pl-[30px] rounded-xl md:rounded-2xl'>
         {title && <h4 className='text-lg md:text-xl font-bold mb-5 md:mb-[30px]'>{title}</h4>}
         {!isError ? <ListSlider items={items} /> : <p>추천 데이터 가져오기에 실패했습니다.</p>}
       </article>
