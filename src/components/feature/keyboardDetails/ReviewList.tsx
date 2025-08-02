@@ -1,4 +1,6 @@
 'use client';
+import { useRouter } from 'next/navigation';
+
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import ButtonDefault from '@/components/ui/ButtonDefault';
@@ -20,6 +22,7 @@ const LIMIT = 10;
 const ReviewList = ({ keyboardInfo, onCreateModalOpen, updateTrigger }: Props) => {
   const [cursor, setCursor] = useState(LIMIT);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const reviewList = keyboardInfo.reviews;
   const maxCursor = reviewList.length;
   const loadMoreReview = () => {
@@ -63,6 +66,14 @@ const ReviewList = ({ keyboardInfo, onCreateModalOpen, updateTrigger }: Props) =
               }}
             >
               리뷰 남기기
+            </ButtonDefault>
+            <ButtonDefault
+              className='bg-white hover:bg-white text-gray-800 border-1 border-gray-300 font-medium w-full h-12 px-[18px] py-4 mt-3 rounded-xl'
+              onClick={() => {
+                router.push('/keyboards');
+              }}
+            >
+              목록으로 돌아가기
             </ButtonDefault>
           </EmptyList>
         </div>
