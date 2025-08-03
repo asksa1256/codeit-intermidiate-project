@@ -20,14 +20,8 @@ import type { KeyboardCategoryType } from '@/types/keyboardTypes';
 interface FilterModalProps {
   open: boolean;
   onClose: () => void;
-  // selectedType: KeyboardCategoryType | null;
-  // onToggleType: (type: KeyboardCategoryType) => void;
   onReset: () => void;
   onApply: (value: Partial<KeyboardListQueryParams>) => void;
-  // priceRange: [number, number];
-  // onChangePrice: (range: [number, number]) => void;
-  // selectedRating: number | null;
-  // onChangeRating: (value: number | null) => void;
   setKeyboardOpen: (toggle: boolean) => void;
 }
 
