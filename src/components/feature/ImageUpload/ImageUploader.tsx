@@ -4,6 +4,8 @@ import { ChangeEvent } from 'react';
 
 import ImageUploadButton from '@/components/feature/ImageUpload/ImageUploadButton';
 import useImageUpload from '@/hooks/useImageUpload';
+import useToastStore from '@/stores/toastStore';
+import { AxiosError } from 'axios';
 
 interface ImageUploaderProps {
   value: string;
@@ -13,15 +15,25 @@ interface ImageUploaderProps {
 
 const ImageUploader = ({ value, error, onChange }: ImageUploaderProps) => {
   const { handleChangeImage, fileRef, isUploading } = useImageUpload();
+  const addToast = useToastStore((state) => state.addToast);
 
   const handleImageUpload = () => {
     fileRef.current?.click();
   };
 
   const handleImageUrl = async (e: ChangeEvent<HTMLInputElement>) => {
-    const url = await handleChangeImage(e);
-    if (url) {
-      onChange?.(url);
+    try {
+      const url = await handleChangeImage(e);
+      if (url) {
+        onChange?.(url);
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      if (error.status === 401) {
+        addToast({ message: '로그인이 필요합니다.', type: 'error', duration: 2000 });
+      } else {
+        addToast({ message: '문제가 발생했습니다.', type: 'error', duration: 2000 });
+      }
     }
   };
 
