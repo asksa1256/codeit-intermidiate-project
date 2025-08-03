@@ -9,7 +9,7 @@ export const REFRESH_TOKEN_KEY = 'refreshToken';
 
 // pages
 export const SIGNIN_PAGE = '/signin';
-export const SIGNUP_PAGE = '/signup';
+export const SIGNUP_PAGE = '/signUp';
 export const KEYBOARD_LIST_PAGE = '/keyboards';
 export const KAKAO_LOGIN_PAGE = '/oauth/kakao';
 
