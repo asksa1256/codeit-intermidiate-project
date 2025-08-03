@@ -1,5 +1,4 @@
 import localFont from 'next/font/local';
-import Head from 'next/head';
 import './globals.css';
 
 import RequireAuth from '@/components/feature/RequireAuth';

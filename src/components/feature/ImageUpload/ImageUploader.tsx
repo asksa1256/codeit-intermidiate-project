@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
+import { AxiosError } from 'axios';
 import { ChangeEvent } from 'react';
 
 import ImageUploadButton from '@/components/feature/ImageUpload/ImageUploadButton';
 import useImageUpload from '@/hooks/useImageUpload';
 import useToastStore from '@/stores/toastStore';
-import { AxiosError } from 'axios';
 
 interface ImageUploaderProps {
   value: string;
