@@ -16,7 +16,7 @@
 
 ## 기술 스택
 <img src='https://img.shields.io/badge/Node.js-22-white?labelColor=5FA04E' /> <img src='https://img.shields.io/badge/Next.js-15.4-white?labelColor=black' /> <img src='https://img.shields.io/badge/TypeScript-5-white?labelColor=3178C6' /> <img src='https://img.shields.io/badge/TailwindCSS-4-white?labelColor=06B6D4' /> 
-<img src='https://img.shields.io/badge/clsx-2-white?labelColor=gray'/> <img src='https://img.shields.io/badge/tailwindMerge-3.3-white?labelColor=gray' /> <img src='https://img.shields.io/badge/HeadlessUI-2.2-white?labelColor=66E3FF'/> <img src='https://img.shields.io/badge/HeadlessUI-2.2-white?labelColor=66E3FF'/> <img src='https://img.shields.io/badge/React%20Hook%20Form-7.6-white?labelColor=EC5990' /> <img src='https://img.shields.io/badge/Zustand-5-white?labelColor=9C4121' />
+<img src='https://img.shields.io/badge/clsx-2-white?labelColor=gray'/> <img src='https://img.shields.io/badge/tailwindMerge-3.3-white?labelColor=gray' /> <img src='https://img.shields.io/badge/HeadlessUI-2.2-white?labelColor=66E3FF'/> <img src='https://img.shields.io/badge/React%20Hook%20Form-7.6-white?labelColor=EC5990' /> <img src='https://img.shields.io/badge/Zustand-5-white?labelColor=9C4121' />
 <img src='https://img.shields.io/badge/axios-1.10-white?labelColor=5A29E4' /> <img src='https://img.shields.io/badge/Swiper-11-white?labelColor=6332F6' /> <img src='https://img.shields.io/badge/Framer%20Motion-12-white?labelColor=0055FF'/>
 
 <!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
