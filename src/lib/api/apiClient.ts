@@ -42,7 +42,7 @@ apiClient.interceptors.response.use(
         } catch {
           // 재발급 실패 시 토큰 삭제 후 로그인 페이지 이동 처리
           signOut(); // 유저 전역 상태 null
-          auth.signOut(); // 토큰만 따로 삭제
+          auth.signOut(); // 토큰 삭제
 
           return Promise.reject(error);
         }
