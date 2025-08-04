@@ -1,13 +1,29 @@
 # ⌨️ 키보드 추천 서비스 `tadak`
+다양한 키보드 정보와 리뷰를 공유할 수 있는 커뮤니티형 웹 플랫폼 
 
-- 배포 사이트 [Link](https://tadak.alex-choi.com/)
+## 배포 사이트 
+[Link](https://tadak.alex-choi.com/)
 
-## Description
+## 📸 데모
+|CRUD|무한스크롤|
+|---|---|
+|<img src='https://github.com/user-attachments/assets/6fa95589-6b36-4f58-8c9a-545c0a3faa51'/>|<img src='https://github.com/user-attachments/assets/2dfe8ce8-7bab-4a6a-89de-661c8b58f21f'/>|
+
+|인증 시스템|필터링|
+|---|---|
+|<img src='https://github.com/user-attachments/assets/00b176d3-61d3-4d6b-b434-e50a47fa802e'/>|<img src='https://github.com/user-attachments/assets/541edea9-5dab-405e-982e-4ae1e5b9b60c'/>|
+
+
+## 기술 스택
+<img src='https://img.shields.io/badge/Node.js-22-white?labelColor=5FA04E' /> <img src='https://img.shields.io/badge/Next.js-15.4-white?labelColor=black' /> <img src='https://img.shields.io/badge/TypeScript-5-white?labelColor=3178C6' /> <img src='https://img.shields.io/badge/TailwindCSS-4-white?labelColor=06B6D4' /> 
+<img src='https://img.shields.io/badge/clsx-2-white?labelColor=gray'/> <img src='https://img.shields.io/badge/tailwindMerge-3.3-white?labelColor=gray' /> <img src='https://img.shields.io/badge/HeadlessUI-2.2-white?labelColor=66E3FF'/> <img src='https://img.shields.io/badge/HeadlessUI-2.2-white?labelColor=66E3FF'/> <img src='https://img.shields.io/badge/React%20Hook%20Form-7.6-white?labelColor=EC5990' /> <img src='https://img.shields.io/badge/Zustand-5-white?labelColor=9C4121' />
+<img src='https://img.shields.io/badge/axios-1.10-white?labelColor=5A29E4' /> <img src='https://img.shields.io/badge/Swiper-11-white?labelColor=6332F6' /> <img src='https://img.shields.io/badge/Framer%20Motion-12-white?labelColor=0055FF'/>
 
 <!-- [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. -->
-<p>Node Version : 22.9.0</p>
-<p>NextJS Version : 15.4.1</p>
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+
+
 
 ## Access to Swagger Document
 
@@ -46,9 +62,6 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
  ┃ ┃ ┗ 📜layout.tsx
  ┃ ┣ 📂(global)
  ┃ ┃ ┗ 📜page.tsx
- ┃ ┣ 📂api
- ┃ ┃ ┗ 📜getKeyboards.ts
- ┃ ┃ ┗ 📜addKeyboard.ts
  ┃ ┣ 📜favicon.ico
  ┃ ┣ 📜globals.css
  ┃ ┗ 📜layout.tsx
@@ -71,39 +84,34 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
  ┗ 📂utils
  ┃ ┣ 📜formatDate.ts
  ┃ ┗ 📜formatPrice.ts
+ ┗ package.json
+ ┗ package-lock.json
+ ┗ .gitignore
+ ┗ .dockerignore
+ ┗ Dockerfile
+ ┗ .prettierrc
+ ┗ .prettierignore
+ ┗ eslint.config.mjs
+ ┗ next.config.ts
+ ┗ tsconfig.json
+ ┗ README.md
 ```
 
-## Getting Started
+## 시작하기
 
-First, run the development server:
+개발 서버 실행:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
