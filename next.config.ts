@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
+    //이미지 최적화를 vercel이 아닌 wsrv에서 처리
+    loader: 'custom',
+    loaderFile: './src/lib/wsrvLoader.ts',
     remotePatterns: [
       {
         protocol: 'https',
