@@ -8,7 +8,7 @@
 - 로컬스토리지 기반 인증 시스템 (OAuth 포함)
 - 키보드 등록/수정/삭제 (회원 기능)
 - 키보드 리뷰 등록/수정/삭제 (회원 기능)
-- 외부 CDN 기반(wsrv.nl) 이미지 프록시 적용 → Vercel Next.js Image Optimization 비용 문제 해결
+- 외부 CDN 기반(wsrv.nl) 이미지 프록시 적용 → Vercel Next.js Image Optimization 한도 초과 방지
 
 ## 배포 링크
 
@@ -66,7 +66,6 @@
  ┃ ┗ 📂(global)      # 일반 라우팅 그룹
  ┃   ┣ 📂keyboards
  ┃   ┣ 📂myprofile
- ┃   ┗ 📂slider
  ┣ 📂components
  ┃ ┣ 📂feature       # 도메인 단위 컴포넌트 (페이지/기능 중심)
  ┃ ┣ 📂layout        # layout.tsx
@@ -76,7 +75,6 @@
  ┣ 📂lib
  ┃ ┗ 📂api           # API 클라이언트, 인증 관련 로직
  ┣ 📂stores          # 전역 상태 관리 (Zustand)
- ┣ 📂styles          # 전역 스타일
  ┣ 📂types           # 타입 정의
  ┗ 📂utils           # 공용 유틸 함수
 ```
