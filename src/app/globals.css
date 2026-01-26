@@ -182,6 +182,11 @@
   .link {
     @apply py-1 px-2.5 md:py-2.5 md:px-4 hover:bg-white hover:text-black rounded-lg transition-colors;
   }
+
+  /* tailwind 'break-words' 레거시 css 적용 */
+  .break-word-legacy {
+    word-break: break-word;
+  }
 }
 
 @layer base {
