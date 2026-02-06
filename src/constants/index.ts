@@ -24,6 +24,11 @@ export const KEYBOARD_TYPES_MAP = [
   { id: 3, type: 'SPARKLING', value: '펜타그래프' },
 ];
 
+export const GUEST_USER = {
+  email: 'guest@guest.com',
+  password: 'guest1234',
+};
+
 // aroma 속성 색상값 매핑
 export const KEYBOARD_COLOR_MAP = {
   CHERRY: '레드',

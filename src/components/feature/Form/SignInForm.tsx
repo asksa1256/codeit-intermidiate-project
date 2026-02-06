@@ -6,21 +6,22 @@ import { useRouter } from 'next/navigation';
 
 import { Field } from '@headlessui/react';
 import { AxiosError } from 'axios';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import PasswordInputField from '@/components/feature/InputField/PasswordInputField';
 import KakaoLoginButton from '@/components/feature/KakaoLoginButton';
 import ButtonDefault from '@/components/ui/ButtonDefault';
 import InputField from '@/components/ui/Input';
-import { SIGNUP_PAGE } from '@/constants';
+import { SIGNUP_PAGE, GUEST_USER } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
 import useToastStore from '@/stores/toastStore';
 
-interface FormValues {
+interface SignInFormValues {
   email: string;
   password: string;
-  passwordCheck: string;
+  passwordCheck?: string;
 }
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -30,15 +31,16 @@ const SignInForm = () => {
   const auth = new AxiosApiAuth();
   const signIn = useAuthStore((state) => state.signIn);
   const addToast = useToastStore((state) => state.addToast);
+  const [isGuestSubmitting, setIsGuestSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
     setError,
-  } = useForm<FormValues>({ mode: 'onBlur' });
+  } = useForm<SignInFormValues>({ mode: 'onBlur' });
 
-  const onSubmit = async (formValues: FormValues) => {
+  const onSubmit = async (formValues: SignInFormValues) => {
     const { email, password } = formValues;
 
     try {
@@ -65,6 +67,12 @@ const SignInForm = () => {
         });
       }
     }
+  };
+
+  const handleGuestLogin = async () => {
+    setIsGuestSubmitting(true);
+    await onSubmit(GUEST_USER);
+    setIsGuestSubmitting(false);
   };
 
   return (
@@ -115,6 +123,15 @@ const SignInForm = () => {
       <div className='form-btm-actions pt-4 md:pt-8'>
         <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
           <span>로그인</span>
+        </ButtonDefault>
+
+        <ButtonDefault
+          type='button'
+          disabled={isSubmitting || isGuestSubmitting}
+          className='w-full bg-white border border-gray-300 text-gray-800 hover:bg-primary hover:text-white disabled:border-gray-300 disabled:text-white'
+          onClick={handleGuestLogin}
+        >
+          <span>게스트 로그인</span>
         </ButtonDefault>
 
         <KakaoLoginButton />
