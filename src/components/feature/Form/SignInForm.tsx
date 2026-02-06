@@ -121,7 +121,11 @@ const SignInForm = () => {
       </div>
 
       <div className='form-btm-actions pt-4 md:pt-8'>
-        <ButtonDefault type='submit' disabled={!isValid || isSubmitting} className='w-full'>
+        <ButtonDefault
+          type='submit'
+          disabled={!isValid || isSubmitting || isGuestSubmitting}
+          className='w-full'
+        >
           <span>로그인</span>
         </ButtonDefault>
 
