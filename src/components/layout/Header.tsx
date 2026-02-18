@@ -7,7 +7,7 @@ import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import UserThumbnail from '@/components/ui/UserThumbnail';
 import { SIGNIN_PAGE, SIGNUP_PAGE } from '@/constants';
 import useSticky from '@/hooks/useSticky';
-import { tokenService } from '@/lib/api/tokenService';
+import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
 import useToastStore from '@/stores/toastStore';
 import { cn } from '@/utils/style';
@@ -28,9 +28,10 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
   );
   const addToast = useToastStore((state) => state.addToast);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    const auth = new AxiosApiAuth();
+    await auth.signOut();
     signOut(); // user 전역 상태 초기화
-    tokenService.clearTokens(); // 토큰 제거
     addToast({ message: '로그아웃 되었습니다.', duration: 2000, type: 'success' });
   };
 

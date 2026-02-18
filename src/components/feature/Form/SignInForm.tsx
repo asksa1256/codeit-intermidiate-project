@@ -45,8 +45,8 @@ const SignInForm = () => {
 
     try {
       const res = await auth.signInByEmail(email, password);
-      const { user, accessToken, refreshToken } = res;
-      signIn({ user, accessToken, refreshToken }); // 유저 정보 store에 저장
+      const { user } = res;
+      signIn({ user }); // 유저 정보 store에 저장
       router.push('/');
 
       addToast({
