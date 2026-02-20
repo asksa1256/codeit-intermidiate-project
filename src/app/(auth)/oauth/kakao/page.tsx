@@ -7,12 +7,10 @@ import { useEffect, useState, useRef } from 'react';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { SIGNIN_PAGE } from '@/constants';
 import { AxiosApiAuth } from '@/lib/api/axios';
-import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
 import useToastStore from '@/stores/toastStore';
 
 const KakaoOAuthPage = () => {
-  // routing
   const router = useRouter();
   const searchParams = useSearchParams();
   const signIn = useAuthStore((state) => state.signIn);
@@ -39,16 +37,13 @@ const KakaoOAuthPage = () => {
     const signInByKakao = async () => {
       try {
         const KAKAO_REDIRECT_URI = `${window.location.origin}/oauth/kakao`;
-        const { user, accessToken, refreshToken } = await authService.signInBySocial(
+        const { user } = await authService.signInBySocial(
           'KAKAO',
           KAKAO_REDIRECT_URI,
           code,
         );
 
-        tokenService.setAccessToken(accessToken);
-        tokenService.setRefreshToken(refreshToken);
         signIn({ user }); // 유저 정보 zustand store에 저장
-
         router.push('/');
         addToast({
           message: (
@@ -60,7 +55,7 @@ const KakaoOAuthPage = () => {
           duration: 2000,
         });
       } catch (err) {
-        // code가 없는 경우 (로그인 실패)
+        // 인가 코드를 못 받은 경우 (로그인 실패)
         console.error(err);
         addToast({
           message: '카카오 로그인에 실패했습니다. 다시 시도해주세요.',
