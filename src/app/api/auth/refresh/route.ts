@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+
 import axios from 'axios';
 
 export async function POST() {
@@ -32,7 +33,7 @@ export async function POST() {
     });
 
     return NextResponse.json({ accessToken });
-  } catch (error: any) {
+  } catch {
     return NextResponse.json({ message: '토큰 갱신 실패' }, { status: 401 });
   }
 }

@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+
 import axios from 'axios';
 
 export async function POST(request: Request) {
@@ -48,9 +49,12 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ user });
-  } catch (error: any) {
-    const status = error.response?.status || 500;
-    const message = error.response?.data?.message || '간편 로그인 실패';
-    return NextResponse.json({ message }, { status });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status || 500;
+      const message = error.response?.data?.message || '간편 로그인 실패';
+      return NextResponse.json({ message }, { status });
+    }
+    return NextResponse.json({ message: '간편 로그인 실패' }, { status: 500 });
   }
 }

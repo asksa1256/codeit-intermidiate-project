@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
+
 import axios from 'axios';
 
 export async function POST(request: Request) {
@@ -51,9 +52,12 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ user });
-  } catch (error: any) {
-    const status = error.response?.status || 500;
-    const message = error.response?.data?.message || '로그인에 실패했습니다.';
-    return NextResponse.json({ message }, { status });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status || 500;
+      const message = error.response?.data?.message || '로그인에 실패했습니다.';
+      return NextResponse.json({ message }, { status });
+    }
+    return NextResponse.json({ message: '로그인에 실패했습니다.' }, { status: 500 });
   }
 }

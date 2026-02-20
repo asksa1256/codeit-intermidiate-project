@@ -1,15 +1,15 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { ReactNode, useEffect, useState } from 'react';
 
 import axios from 'axios';
+import { ReactNode, useEffect, useState } from 'react';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { SIGNIN_PAGE, SIGNUP_PAGE, KEYBOARD_LIST_PAGE, KAKAO_LOGIN_PAGE } from '@/constants';
 import useAuthStore from '@/stores/authStore';
-import { UserData } from '@/types/userTypes';
 import useToastStore from '@/stores/toastStore';
+import { UserData } from '@/types/userTypes';
 
 const PUBLIC_PATHS = ['/', KEYBOARD_LIST_PAGE];
 const AUTH_PATHS = [SIGNIN_PAGE, SIGNUP_PAGE, KAKAO_LOGIN_PAGE];
