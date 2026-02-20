@@ -30,7 +30,7 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
 
   const handleSignOut = async () => {
     const auth = new AxiosApiAuth();
-    await auth.signOut();
+    await auth.signOut(); // 쿠키 삭제
     signOut(); // user 전역 상태 초기화
     addToast({ message: '로그아웃 되었습니다.', duration: 2000, type: 'success' });
   };
