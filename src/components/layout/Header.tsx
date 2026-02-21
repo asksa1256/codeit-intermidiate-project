@@ -6,7 +6,7 @@ import { useShallow } from 'zustand/shallow';
 
 import Dropdown from '@/components/ui/Dropdown/Dropdown';
 import UserThumbnail from '@/components/ui/UserThumbnail';
-import { SIGNIN_PAGE, SIGNUP_PAGE } from '@/constants';
+import { SIGNIN_PAGE, SIGNUP_PAGE, PUBLIC_PATHS } from '@/constants';
 import useSticky from '@/hooks/useSticky';
 import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
@@ -18,7 +18,6 @@ interface HeaderProps {
 }
 
 const STICKY_TOP = 0;
-const PUBLIC_PATHS = ['/', '/keyboards']; // 전체 권한 페이지
 
 const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
   const router = useRouter();

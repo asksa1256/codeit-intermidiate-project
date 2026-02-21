@@ -39,8 +39,7 @@ export function middleware(request: NextRequest) {
   }
 
   // 페이지 권한 제어 라우팅
-  const PUBLIC_PATHS = ['/', '/keyboards']; // 메인, 키보드 목록 페이지: 전체 접근 
-  const AUTH_PATHS = ['/signin', '/signUp', '/oauth/kakao']; // 로그인, 회원가입 페이지
+  const { PUBLIC_PATHS, AUTH_PATHS } = require('@/constants');
 
   const isPublicRoute = PUBLIC_PATHS.includes(pathname);
   const isAuthRoute = AUTH_PATHS.includes(pathname);
