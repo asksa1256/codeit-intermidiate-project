@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { useShallow } from 'zustand/shallow';
 
@@ -17,8 +18,11 @@ interface HeaderProps {
 }
 
 const STICKY_TOP = 0;
+const PUBLIC_PATHS = ['/', '/keyboards']; // 전체 권한 페이지
 
 const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const { isFixedOnTop, stickyRef } = useSticky(STICKY_TOP);
   const { user, signOut } = useAuthStore(
     useShallow((state) => ({
@@ -33,6 +37,11 @@ const HeaderComponent = ({ imgSrc = null }: HeaderProps) => {
     await auth.signOut(); // 쿠키 삭제
     signOut(); // user 전역 상태 초기화
     addToast({ message: '로그아웃 되었습니다.', duration: 2000, type: 'success' });
+
+    const isPublicRoute = PUBLIC_PATHS.includes(pathname);
+    if (!isPublicRoute) {
+      router.replace(SIGNIN_PAGE);
+    }
   };
 
   return (
