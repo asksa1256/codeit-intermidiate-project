@@ -2,7 +2,7 @@
 
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { SIGNIN_PAGE } from '@/constants';
@@ -10,7 +10,7 @@ import { AxiosApiAuth } from '@/lib/api/axios';
 import useAuthStore from '@/stores/authStore';
 import useToastStore from '@/stores/toastStore';
 
-const KakaoOAuthPage = () => {
+const KakaoOAuthContainer = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const signIn = useAuthStore((state) => state.signIn);
@@ -69,6 +69,14 @@ const KakaoOAuthPage = () => {
   }, [router, code, signIn, addToast]);
 
   return <LoadingSpinner text='카카오 로그인 처리중...' className='h-screen' />;
+};
+
+const KakaoOAuthPage = () => {
+  return (
+    <Suspense fallback={<LoadingSpinner text='카카오 로그인 처리중...' className='h-screen' />}>
+      <KakaoOAuthContainer />
+    </Suspense>
+  );
 };
 
 export default KakaoOAuthPage;
