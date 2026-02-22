@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { PUBLIC_PATHS, AUTH_PATHS } from './constants';
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get('accessToken')?.value;
@@ -15,9 +17,7 @@ export function middleware(request: NextRequest) {
 
     // 만약 targetPath가 이미 /TEAM_ID로 시작한다면 중복 추가 방지
     const teamPrefix = `/${teamId}`;
-    const path = targetPath.startsWith(teamPrefix)
-      ? targetPath
-      : `${teamPrefix}${targetPath}`;
+    const path = targetPath.startsWith(teamPrefix) ? targetPath : `${teamPrefix}${targetPath}`;
 
     const url = new URL(`${backendUrl}${path}${request.nextUrl.search}`);
 
@@ -33,14 +33,12 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  // '/api/auth' api는 가로채기 X (해당 페이지, 컴포넌트에서 자체 리디렉션 처리) 
+  // '/api/auth' api는 가로채기 X (해당 페이지, 컴포넌트에서 자체 리디렉션 처리)
   if (pathname.startsWith('/api/auth')) {
     return NextResponse.next();
   }
 
   // 페이지 권한 제어 라우팅
-  const { PUBLIC_PATHS, AUTH_PATHS } = require('@/constants');
-
   const isPublicRoute = PUBLIC_PATHS.includes(pathname);
   const isAuthRoute = AUTH_PATHS.includes(pathname);
 
