@@ -32,7 +32,7 @@ export async function POST() {
       maxAge: 60 * 60 * 24, // 24시간
     });
 
-    return NextResponse.json({ accessToken });
+    return NextResponse.json({ message: '토큰 갱신 성공' }, { status: 200 });
   } catch {
     return NextResponse.json({ message: '토큰 갱신 실패' }, { status: 401 });
   }
