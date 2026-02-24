@@ -24,7 +24,7 @@ const KakaoOAuthContainer = () => {
   useEffect(() => {
     const currentCode = searchParams.get('code');
     if (currentCode) setCode(currentCode);
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     // 인가 코드가 null이거나, 이미 인가 코드를 받았다면 실행 X
