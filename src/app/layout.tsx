@@ -1,7 +1,7 @@
 import localFont from 'next/font/local';
 import './globals.css';
 
-import RequireAuth from '@/components/feature/RequireAuth';
+import AuthProvider from '@/components/feature/AuthProvider';
 import ScrollToTopButton from '@/components/feature/ScrollToTopButton';
 import ToastContainer from '@/components/ui/Toast';
 
@@ -53,7 +53,7 @@ export default function RootLayout({
         />
       </head>
       <body className={pretendard.className}>
-        <RequireAuth>{children}</RequireAuth>
+        <AuthProvider>{children}</AuthProvider>
         <ScrollToTopButton />
         <ToastContainer />
         <div id='overlay-root'></div>
