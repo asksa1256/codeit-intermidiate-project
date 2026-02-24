@@ -1,8 +1,8 @@
 'use client';
 
-import { apiClient } from '@/lib/api/apiClient';
 import { ReactNode, useEffect } from 'react';
 
+import { apiClient } from '@/lib/api/apiClient';
 import { tokenService } from '@/lib/api/tokenService';
 import useAuthStore from '@/stores/authStore';
 
@@ -16,7 +16,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!user && document.cookie.includes('isLoggedIn=true')) {
         try {
           // 액세스 토큰만 만료되었을 경우, 즉시 로그아웃 대신 apiClient로 자동 토큰 재발급 시도 -> user 데이터 재요청
-          const fetchedUser = await apiClient.get('/users/me').then(res => res.data);
+          const fetchedUser = await apiClient.get('/users/me').then((res) => res.data);
 
           if (fetchedUser) {
             signIn({ user: fetchedUser });
