@@ -5,7 +5,7 @@
 
 ## 주요 기능
 - 키보드 목록·리뷰 조회 및 상세 필터
-- 로컬스토리지 기반 인증 시스템 (OAuth 포함)
+- Next.js API Routes를 활용한 쿠키 기반 인증 구현
 - 키보드 등록/수정/삭제 (회원 기능)
 - 키보드 리뷰 등록/수정/삭제 (회원 기능)
 - 외부 CDN 기반(wsrv.nl) 이미지 프록시 적용 → Vercel Next.js Image Optimization 한도 초과 방지
